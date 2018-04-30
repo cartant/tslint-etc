@@ -41,7 +41,7 @@
   },
   "private": false,
   "publishConfig": {
-    "tag": "latest"
+    "tag": "rc"
   },
   "repository": {
     "type": "git",
