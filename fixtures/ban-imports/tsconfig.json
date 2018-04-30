@@ -1,0 +1,4 @@
+{
+  "compilerOptions": {},
+  "files": ["banned.ts", "non-banned.ts"]
+}

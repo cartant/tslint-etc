@@ -1,0 +1,13 @@
+{
+  "rules": {
+    "ban-imports": {
+      "options": [{
+        "^a$": "Explanation for a",
+        "^b$": false,
+        "(^|/)c$": true
+      }],
+      "severity": "error"
+    }
+  },
+  "rulesDirectory": "../../build/rules"
+}
