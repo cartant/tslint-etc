@@ -56,7 +56,7 @@
     "test": "yarn run lint && yarn run test:build && yarn run test:fixtures",
     "test:build": "yarn run test:clean && tsc -p tsconfig.json",
     "test:clean": "rimraf build",
-    "test:fixtures": "mocha build/**/*-spec.js"
+    "test:fixtures": "cross-env mocha build/**/*-spec.js"
   },
   "version": "1.0.0-rc.0"
 }
