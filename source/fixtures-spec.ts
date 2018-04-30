@@ -5,6 +5,7 @@
 
 import { expect } from "chai";
 import * as fs from "fs";
+import * as path from "path";
 import { Configuration, Linter, LintResult } from "tslint";
 import * as ts from "typescript";
 
@@ -55,7 +56,7 @@ describe("fixtures", function (): void {
 
     function lint(dir: string, configFileName?: string, fixtureFileName?: string): LintResult {
 
-        const fixturesDir = "./fixtures";
+        const fixturesDir = path.resolve("./fixtures");
         const fixtureDir = `${fixturesDir}/${dir}`;
         const fileName = `${fixtureDir}/${fixtureFileName || "fixture.ts"}`;
         const content = fs.readFileSync(fileName, "utf8");
