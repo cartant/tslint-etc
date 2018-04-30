@@ -17,7 +17,7 @@ describe("fixtures", function (): void {
 
         it("should effect 'ban-imports' errors for banned imports", () => {
 
-            const result = lint("ban-imports", "tslint.json", "banned.ts");
+            const result = lint("ban-imports", "tslint.json", "fixture-banned.ts");
 
             expect(result).to.have.property("errorCount", 2);
             result.failures.forEach(failure => expect(failure).to.have.property("ruleName", "ban-imports"));
@@ -25,7 +25,7 @@ describe("fixtures", function (): void {
 
         it("should not effect 'ban-imports' errors for non-banned imports", () => {
 
-            const result = lint("ban-imports", "tslint.json", "non-banned.ts");
+            const result = lint("ban-imports", "tslint.json", "fixture-non-banned.ts");
 
             expect(result).to.have.property("errorCount", 0);
         });
@@ -34,7 +34,23 @@ describe("fixtures", function (): void {
     describe.skip("no-unsafe-callback-scope", () => {
     });
 
-    describe.skip("throw-error", () => {
+    describe("throw-error", () => {
+
+        it("should effect 'throw-error' errors for thrown non-errors", () => {
+
+            const result = lint("throw-error", "tslint.json", "fixture.ts");
+
+            expect(result).to.have.property("errorCount", 1);
+            result.failures.forEach(failure => expect(failure).to.have.property("ruleName", "throw-error"));
+        });
+
+        it("should effect 'throw-error' errors for rejected non-errors", () => {
+
+            const result = lint("throw-error", "tslint.json", "fixture-rejected.ts");
+
+            expect(result).to.have.property("errorCount", 3);
+            result.failures.forEach(failure => expect(failure).to.have.property("ruleName", "throw-error"));
+        });
     });
 
     function lint(dir: string, configFileName?: string, fixtureFileName?: string): LintResult {
