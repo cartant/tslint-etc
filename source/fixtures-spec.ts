@@ -9,7 +9,7 @@ import * as path from "path";
 import { Configuration, Linter, LintResult } from "tslint";
 import * as ts from "typescript";
 
-describe("fixtures", function (): void {
+describe.skip("fixtures", function (): void {
 
     /*tslint:disable-next-line:no-invalid-this*/
     this.timeout(5000);
