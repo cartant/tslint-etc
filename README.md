@@ -1,5 +1,7 @@
 # tslint-etc
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/cartant/tslint-etc.svg)](https://greenkeeper.io/)
+
 [![GitHub License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/cartant/tslint-etc/blob/master/LICENSE)
 [![NPM version](https://img.shields.io/npm/v/tslint-etc.svg)](https://www.npmjs.com/package/tslint-etc)
 [![Build status](https://img.shields.io/travis/cartant/tslint-etc.svg)](http://travis-ci.org/cartant/tslint-etc)
