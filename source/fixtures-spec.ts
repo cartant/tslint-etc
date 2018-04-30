@@ -21,7 +21,14 @@ describe("fixtures", function (): void {
             const result = lint("ban-imports", "tslint.json", "fixture-banned.ts");
 
             expect(result).to.have.property("errorCount", 2);
-            result.failures.forEach(failure => expect(failure).to.have.property("ruleName", "ban-imports"));
+            result.failures.forEach(failure => {
+                expect(failure).to.have.property("ruleName", "ban-imports");
+                const message = failure.getFailure();
+                if (/: a/.test(message)) {
+                    expect(message).to.contain("'a' matches /^a$/");
+                    expect(message).to.match(/Explanation for a/);
+                }
+            });
         });
 
         it("should not effect 'ban-imports' errors for non-banned imports", () => {

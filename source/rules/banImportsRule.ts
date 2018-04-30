@@ -62,7 +62,7 @@ class Walker extends Lint.RuleWalker {
             const ban = _bans[b];
             if (ban.regExp.test(moduleSpecifier)) {
                 const explanation = ban.explanation ? `: ${ban.explanation}` : "";
-                const failure = `${Rule.FAILURE_STRING}: ${moduleSpecifier}${explanation}`;
+                const failure = `${Rule.FAILURE_STRING}: '${moduleSpecifier}' matches ${ban.regExp.toString()}${explanation}`;
                 this.addFailureAtNode(node.moduleSpecifier, failure);
             }
         }
