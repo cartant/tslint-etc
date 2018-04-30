@@ -69,6 +69,10 @@ describe("fixtures", function (): void {
                 `${fixturesDir}/tslint.json`,
             fileName
         ).results;
+
+        console.log(path.resolve("."));
+        console.log(configuration);
+
         linter.lint(fileName, content, configuration);
         return linter.getResult();
     }
