@@ -70,10 +70,6 @@ describe("fixtures", function (): void {
             fileName
         ).results;
 
-        console.log(path.resolve("."));
-        console.log(configuration.rulesDirectory);
-        console.log(fs.readdirSync(configuration.rulesDirectory[0]));
-
         linter.lint(fileName, content, configuration);
         return linter.getResult();
     }
