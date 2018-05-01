@@ -13,7 +13,7 @@ import { couldBeType } from "../support/util";
 export class Rule extends Lint.Rules.TypedRule {
 
     public static metadata: Lint.IRuleMetadata = {
-        description: "Enforces the throwing of Error values.",
+        description: "Enforces the use of `Error` values when throwing or rejecting.",
         options: null,
         optionsDescription: "Not configurable.",
         requiresTypeInfo: true,
