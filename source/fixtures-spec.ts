@@ -39,7 +39,73 @@ describe("fixtures", function (): void {
         });
     });
 
-    describe.skip("no-unsafe-callback-scope", () => {
+    describe("no-unsafe-callback-scope", () => {
+
+        it("should effect 'no-unsafe-callback-scope' errors", () => {
+
+            const result = lint("no-unsafe-callback-scope", "tslint.json");
+
+            expect(result).to.have.property("errorCount", 1);
+            result.failures.forEach(failure => expect(failure).to.have.property("ruleName", "no-unsafe-callback-scope"));
+        });
+
+        it("should effect 'no-unsafe-callback-scope' errors for non-arrow functions", () => {
+
+            const result = lint("no-unsafe-callback-scope", "tslint.json", "fixture-functions.ts");
+
+            expect(result).to.have.property("errorCount", 1);
+            result.failures.forEach(failure => expect(failure).to.have.property("ruleName", "no-unsafe-callback-scope"));
+        });
+
+        it("should not effect 'no-unsafe-callback-scope' errors for safe usage", () => {
+
+            const result = lint("no-unsafe-callback-scope", "tslint.json", "fixture-safe.ts");
+
+            expect(result).to.have.property("errorCount", 0);
+        });
+
+        it("should not effect 'no-unsafe-callback-scope' errors for globals", () => {
+
+            const result = lint("no-unsafe-callback-scope", "tslint.json", "fixture-globals.ts");
+
+            expect(result).to.have.property("errorCount", 0);
+        });
+
+        it("should not effect 'no-unsafe-callback-scope' errors for Math", () => {
+
+            const result = lint("no-unsafe-callback-scope", "tslint.json", "fixture-math.ts");
+
+            expect(result).to.have.property("errorCount", 0);
+        });
+
+        it("should not effect 'no-unsafe-callback-scope' errors for constants", () => {
+
+            const result = lint("no-unsafe-callback-scope", "tslint.json", "fixture-constants.ts");
+
+            expect(result).to.have.property("errorCount", 0);
+        });
+
+        it("should not effect 'no-unsafe-callback-scope' errors for enums", () => {
+
+            const result = lint("no-unsafe-callback-scope", "tslint.json", "fixture-enums.ts");
+
+            expect(result).to.have.property("errorCount", 0);
+        });
+
+        it("should effect 'no-unsafe-callback-scope' errors for this", () => {
+
+            const result = lint("no-unsafe-callback-scope", "tslint.json", "fixture-this.ts");
+
+            expect(result).to.have.property("errorCount", 1);
+            result.failures.forEach(failure => expect(failure).to.have.property("ruleName", "no-unsafe-callback-scope"));
+        });
+
+        it("should not effect 'no-unsafe-callback-scope' errors for parameters", () => {
+
+            const result = lint("no-unsafe-callback-scope", "tslint.json", "fixture-parameters.ts");
+
+            expect(result).to.have.property("errorCount", 0);
+        });
     });
 
     describe("throw-error", () => {
