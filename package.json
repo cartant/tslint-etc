@@ -6,7 +6,7 @@
   "dependencies": {
     "tslib": "^1.8.0"
   },
-  "description": "TSLint rules for RxJS",
+  "description": "More rules for TSLint",
   "devDependencies": {
     "@types/chai": "^4.0.0",
     "@types/mocha": "^5.0.0",
@@ -22,7 +22,6 @@
   "keywords": [
     "lint",
     "rules",
-    "rxjs",
     "tslint"
   ],
   "license": "MIT",
@@ -30,7 +29,6 @@
   "name": "tslint-etc",
   "optionalDependencies": {},
   "peerDependencies": {
-    "rxjs": "^5.0.0 || ^6.0.0",
     "tslint": "^5.0.0",
     "typescript": "^2.3.0"
   },
