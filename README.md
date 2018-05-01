@@ -59,7 +59,7 @@ For example, to following configuration would disallow `"foo"` with an explanati
 "rules": {
   "ban-imports": {
     "options": [{
-      "^foo$": "foo has been deprecated; use 'baz'",
+      "^foo$": "'foo' has been deprecated; use 'baz'",
       "^bar$": true,
       "^baz$": false
     }],
