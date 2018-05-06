@@ -80,13 +80,15 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
 
             const typeChecker = this.getTypeChecker();
             const symbol = typeChecker.getSymbolAtLocation(node);
-            const [declaration] = symbol.getDeclarations();
+            const declarations = symbol.getDeclarations();
 
-            const identifier = getIdentifier(declaration);
-            const isEnforced = _identifiers.has(identifier);
-            if (isEnforced) {
-                _identifiers.set(identifier, true);
-            }
+            declarations.forEach(declaration => {
+                const identifier = getIdentifier(declaration);
+                const isEnforced = _identifiers.has(identifier);
+                if (isEnforced) {
+                    _identifiers.set(identifier, true);
+                }
+            });
         }
         super.visitIdentifier(node);
     }
