@@ -192,6 +192,36 @@ describe("fixtures", function (): void {
             expect(result).to.have.property("errorCount", 2);
             result.failures.forEach(failure => expect(failure).to.have.property("ruleName", "no-unused-declaration"));
         });
+
+        it("should effect 'no-unused-declaration' errors for unused classes", () => {
+
+            const result = lint("no-unused-declaration", "tslint.json", "fixture-unused-classes.ts");
+
+            expect(result).to.have.property("errorCount", 1);
+            result.failures.forEach(failure => expect(failure).to.have.property("ruleName", "no-unused-declaration"));
+        });
+
+        it("should not effect 'no-unused-declaration' errors for used classes", () => {
+
+            const result = lint("no-unused-declaration", "tslint.json", "fixture-used-classes.ts");
+
+            expect(result).to.have.property("errorCount", 0);
+        });
+
+        it("should effect 'no-unused-declaration' errors for unused enums", () => {
+
+            const result = lint("no-unused-declaration", "tslint.json", "fixture-unused-enums.ts");
+
+            expect(result).to.have.property("errorCount", 1);
+            result.failures.forEach(failure => expect(failure).to.have.property("ruleName", "no-unused-declaration"));
+        });
+
+        it("should not effect 'no-unused-declaration' errors for used enums", () => {
+
+            const result = lint("no-unused-declaration", "tslint.json", "fixture-used-enums.ts");
+
+            expect(result).to.have.property("errorCount", 0);
+        });
     });
 
     describe("throw-error", () => {

@@ -42,6 +42,26 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
         });
     }
 
+    protected visitClassDeclaration(node: ts.ClassDeclaration): void {
+
+        const { name } = node;
+        if (!tsutils.hasModifier(node.modifiers, ts.SyntaxKind.ExportKeyword)) {
+            const { _identifiers } = this;
+            _identifiers.set(name, false);
+        }
+        super.visitClassDeclaration(node);
+    }
+
+    protected visitEnumDeclaration(node: ts.EnumDeclaration): void {
+
+        const { name } = node;
+        if (!tsutils.hasModifier(node.modifiers, ts.SyntaxKind.ExportKeyword)) {
+            const { _identifiers } = this;
+            _identifiers.set(name, false);
+        }
+        super.visitEnumDeclaration(node);
+    }
+
     protected visitFunctionDeclaration(node: ts.FunctionDeclaration): void {
 
         const { name } = node;
