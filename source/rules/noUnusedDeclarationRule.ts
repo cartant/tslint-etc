@@ -56,7 +56,7 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
 
         const { _identifiers } = this;
         const isDeclaration = _identifiers.has(node);
-        if (!isDeclaration) {
+        if (!isDeclaration && !tsutils.isReassignmentTarget(node)) {
 
             const typeChecker = this.getTypeChecker();
             const symbol = typeChecker.getSymbolAtLocation(node);

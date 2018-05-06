@@ -184,6 +184,14 @@ describe("fixtures", function (): void {
             expect(result).to.have.property("errorCount", 2);
             result.failures.forEach(failure => expect(failure).to.have.property("ruleName", "no-unused-declaration"));
         });
+
+        it("should effect 'no-unused-declaration' errors for unused reassigned variables", () => {
+
+            const result = lint("no-unused-declaration", "tslint.json", "fixture-reassigned.ts");
+
+            expect(result).to.have.property("errorCount", 2);
+            result.failures.forEach(failure => expect(failure).to.have.property("ruleName", "no-unused-declaration"));
+        });
     });
 
     describe("throw-error", () => {
