@@ -8,6 +8,7 @@ The package includes the following rules (none of which are enabled by default):
 | --- | --- | --- |
 | `ban-imports` | Disallows the use of banned imports. | [See below](#ban-imports) |
 | `no-unsafe-callback-scope` | Disallows the use of variables/properties from unsafe/outer scopes in callbacks. | None |
+| `no-unused-declaration` | Disallows unused declarations. | None |
 | `throw-error` | Enforces the use of `Error` values when throwing or rejecting. | None |
 
 ### Options
