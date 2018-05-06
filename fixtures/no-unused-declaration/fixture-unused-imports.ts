@@ -1,3 +1,3 @@
-import { other } from "./other";
-import { other as alias } from "./other";
-import * as o from "./other";
+import { a } from "./letters";
+import { a as alias } from "./letters";
+import * as l from "./letters";

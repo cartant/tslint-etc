@@ -22,6 +22,7 @@
     "fixture-used-functions.ts",
     "fixture-used-imports.ts",
     "fixture-used-variables.ts",
-    "other.ts"
+    "letters.ts",
+    "module.ts"
   ]
 }

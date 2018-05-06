@@ -7,6 +7,7 @@ import { expect } from "chai";
 import * as fs from "fs";
 import * as path from "path";
 import { Configuration, Linter, LintResult } from "tslint";
+import { runTest } from "tslint/lib/test";
 import * as ts from "typescript";
 
 describe("fixtures", function (): void {
