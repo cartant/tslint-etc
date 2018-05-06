@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "lib": ["es2015"],
+    "noEmit": true,
+    "skipLibCheck": true,
+    "target": "es5"
+  },
+  "files": [
+    "fixture.ts",
+    "fixture-exports.ts",
+    "fixture-shadowed.ts",
+    "fixture-unused-destructuring.ts",
+    "fixture-unused-functions.ts",
+    "fixture-unused-imports.ts",
+    "fixture-used-destructuring.ts",
+    "fixture-used-functions.ts",
+    "fixture-used-imports.ts",
+    "fixture-used-variables.ts",
+    "other.ts"
+  ]
+}

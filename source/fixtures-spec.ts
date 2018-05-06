@@ -108,6 +108,84 @@ describe("fixtures", function (): void {
         });
     });
 
+    describe("no-unused-declaration", () => {
+
+        it("should effect 'no-unused-declaration' errors for unused variables", () => {
+
+            const result = lint("no-unused-declaration", "tslint.json");
+
+            expect(result).to.have.property("errorCount", 3);
+            result.failures.forEach(failure => expect(failure).to.have.property("ruleName", "no-unused-declaration"));
+        });
+
+        it("should not effect 'no-unused-declaration' errors for used variables", () => {
+
+            const result = lint("no-unused-declaration", "tslint.json", "fixture-used-variables.ts");
+
+            expect(result).to.have.property("errorCount", 0);
+        });
+
+        it("should effect 'no-unused-declaration' errors for unused imports", () => {
+
+            const result = lint("no-unused-declaration", "tslint.json", "fixture-unused-imports.ts");
+
+            expect(result).to.have.property("errorCount", 3);
+            result.failures.forEach(failure => expect(failure).to.have.property("ruleName", "no-unused-declaration"));
+        });
+
+        it("should not effect 'no-unused-declaration' errors for used imports", () => {
+
+            const result = lint("no-unused-declaration", "tslint.json", "fixture-used-imports.ts");
+
+            expect(result).to.have.property("errorCount", 0);
+        });
+
+        it("should effect 'no-unused-declaration' errors for unused functions", () => {
+
+            const result = lint("no-unused-declaration", "tslint.json", "fixture-unused-functions.ts");
+
+            expect(result).to.have.property("errorCount", 2);
+            result.failures.forEach(failure => expect(failure).to.have.property("ruleName", "no-unused-declaration"));
+        });
+
+        it("should not effect 'no-unused-declaration' errors for used functions", () => {
+
+            const result = lint("no-unused-declaration", "tslint.json", "fixture-used-functions.ts");
+
+            expect(result).to.have.property("errorCount", 0);
+        });
+
+        it("should not effect 'no-unused-declaration' errors for exports", () => {
+
+            const result = lint("no-unused-declaration", "tslint.json", "fixture-exports.ts");
+
+            expect(result).to.have.property("errorCount", 0);
+        });
+
+        it("should effect 'no-unused-declaration' errors for unused destructuring", () => {
+
+            const result = lint("no-unused-declaration", "tslint.json", "fixture-unused-destructuring.ts");
+
+            expect(result).to.have.property("errorCount", 2);
+            result.failures.forEach(failure => expect(failure).to.have.property("ruleName", "no-unused-declaration"));
+        });
+
+        it("should not effect 'no-unused-declaration' errors for used destructuring", () => {
+
+            const result = lint("no-unused-declaration", "tslint.json", "fixture-used-destructuring.ts");
+
+            expect(result).to.have.property("errorCount", 0);
+        });
+
+        it("should effect 'no-unused-declaration' errors for shadowed unused variables", () => {
+
+            const result = lint("no-unused-declaration", "tslint.json", "fixture-shadowed.ts");
+
+            expect(result).to.have.property("errorCount", 2);
+            result.failures.forEach(failure => expect(failure).to.have.property("ruleName", "no-unused-declaration"));
+        });
+    });
+
     describe("throw-error", () => {
 
         it("should effect 'throw-error' errors for thrown non-errors", () => {

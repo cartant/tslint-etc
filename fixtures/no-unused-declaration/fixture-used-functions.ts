@@ -1,0 +1,6 @@
+import "./module";
+
+function f (): void {}
+const g = () => {};
+
+console.log(f.toString(), g.toString());
