@@ -130,7 +130,7 @@ describe("fixtures", function (): void {
 
             const result = lint("no-unused-declaration", "tslint.json", "fixture-unused-imports.ts");
 
-            expect(result).to.have.property("errorCount", 3);
+            expect(result).to.have.property("errorCount", 4);
             result.failures.forEach(failure => expect(failure).to.have.property("ruleName", "no-unused-declaration"));
         });
 

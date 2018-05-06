@@ -30,7 +30,7 @@ export class Rule extends Lint.Rules.TypedRule {
 
 export class Walker extends Lint.ProgramAwareRuleWalker {
 
-    private _declarationsByIdentifier = new Map<ts.Node, ts.Declaration>();
+    private _declarationsByIdentifier = new Map<ts.Node, ts.Node>();
     private _usageByIdentifier = new Map<ts.Node, boolean>();
 
     protected visitClassDeclaration(node: ts.ClassDeclaration): void {
@@ -87,6 +87,20 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
         super.visitIdentifier(node);
     }
 
+    protected visitImportDeclaration(node: ts.ImportDeclaration): void {
+
+        const { importClause } = node;
+        if (importClause) {
+            const { name } = node.importClause;
+            if (name) {
+                const { _declarationsByIdentifier, _usageByIdentifier } = this;
+                _declarationsByIdentifier.set(name, node);
+                _usageByIdentifier.set(name, false);
+            }
+        }
+        super.visitImportDeclaration(node);
+    }
+
     protected visitNamedImports(node: ts.NamedImports): void {
 
         const { _declarationsByIdentifier, _usageByIdentifier } = this;
@@ -138,13 +152,14 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
         _usageByIdentifier.forEach((used, identifier) => {
             if (!used) {
                 const declaration = _declarationsByIdentifier.get(identifier);
-                this.addFailureAtNode(identifier, Rule.FAILURE_STRING, getFix(declaration));
+                const fix = getFix(identifier, declaration);
+                this.addFailureAtNode(identifier, Rule.FAILURE_STRING, fix);
             }
         });
     }
 }
 
-function getFix(declaration: ts.Declaration): Lint.Fix | undefined {
+function getFix(identifier: ts.Node, declaration: ts.Node): Lint.Fix | undefined {
 
     // https://github.com/palantir/tslint/blob/master/src/rules/noUnusedVariableRule.ts#L192-L197
     return undefined;
