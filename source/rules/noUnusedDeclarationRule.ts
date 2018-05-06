@@ -30,24 +30,16 @@ export class Rule extends Lint.Rules.TypedRule {
 
 export class Walker extends Lint.ProgramAwareRuleWalker {
 
-    private _identifiers = new Map<ts.Node, boolean>();
-
-    protected onSourceFileEnd(): void {
-
-        const { _identifiers } = this;
-        _identifiers.forEach((used, identifier) => {
-            if (!used) {
-                this.addFailureAtNode(identifier, Rule.FAILURE_STRING);
-            }
-        });
-    }
+    private _declarationsByIdentifier = new Map<ts.Node, ts.Declaration>();
+    private _usageByIdentifier = new Map<ts.Node, boolean>();
 
     protected visitClassDeclaration(node: ts.ClassDeclaration): void {
 
         const { name } = node;
         if (!tsutils.hasModifier(node.modifiers, ts.SyntaxKind.ExportKeyword)) {
-            const { _identifiers } = this;
-            _identifiers.set(name, false);
+            const { _declarationsByIdentifier, _usageByIdentifier } = this;
+            _declarationsByIdentifier.set(name, node);
+            _usageByIdentifier.set(name, false);
         }
         super.visitClassDeclaration(node);
     }
@@ -56,8 +48,9 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
 
         const { name } = node;
         if (!tsutils.hasModifier(node.modifiers, ts.SyntaxKind.ExportKeyword)) {
-            const { _identifiers } = this;
-            _identifiers.set(name, false);
+            const { _declarationsByIdentifier, _usageByIdentifier } = this;
+            _declarationsByIdentifier.set(name, node);
+            _usageByIdentifier.set(name, false);
         }
         super.visitEnumDeclaration(node);
     }
@@ -66,16 +59,17 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
 
         const { name } = node;
         if (name && !tsutils.hasModifier(node.modifiers, ts.SyntaxKind.ExportKeyword)) {
-            const { _identifiers } = this;
-            _identifiers.set(name, false);
+            const { _declarationsByIdentifier, _usageByIdentifier } = this;
+            _declarationsByIdentifier.set(name, node);
+            _usageByIdentifier.set(name, false);
         }
         super.visitFunctionDeclaration(node);
     }
 
     protected visitIdentifier(node: ts.Identifier): void {
 
-        const { _identifiers } = this;
-        const isDeclaration = _identifiers.has(node);
+        const { _usageByIdentifier } = this;
+        const isDeclaration = _usageByIdentifier.has(node);
         if (!isDeclaration && !tsutils.isReassignmentTarget(node)) {
 
             const typeChecker = this.getTypeChecker();
@@ -84,9 +78,9 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
 
             declarations.forEach(declaration => {
                 const identifier = getIdentifier(declaration);
-                const isEnforced = _identifiers.has(identifier);
+                const isEnforced = _usageByIdentifier.has(identifier);
                 if (isEnforced) {
-                    _identifiers.set(identifier, true);
+                    _usageByIdentifier.set(identifier, true);
                 }
             });
         }
@@ -95,22 +89,24 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
 
     protected visitNamedImports(node: ts.NamedImports): void {
 
-        const { _identifiers } = this;
+        const { _declarationsByIdentifier, _usageByIdentifier } = this;
         node.elements.forEach(element => {
             const { name, propertyName } = element;
+            _declarationsByIdentifier.set(name, element);
+            _usageByIdentifier.set(name, false);
             if (propertyName) {
-                _identifiers.set(propertyName, true);
+                _usageByIdentifier.set(propertyName, true);
             }
-            _identifiers.set(name, false);
         });
         super.visitNamedImports(node);
     }
 
     protected visitNamespaceImport(node: ts.NamespaceImport): void {
 
-        const { _identifiers } = this;
+        const { _declarationsByIdentifier, _usageByIdentifier } = this;
         const { name } = node;
-        _identifiers.set(name, false);
+        _declarationsByIdentifier.set(name, node);
+        _usageByIdentifier.set(name, false);
         super.visitNamespaceImport(node);
     }
 
@@ -126,14 +122,32 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
     protected visitVariableStatement(node: ts.VariableStatement): void {
 
         if (!tsutils.hasModifier(node.modifiers, ts.SyntaxKind.ExportKeyword)) {
-            const { _identifiers } = this;
+            const { _declarationsByIdentifier, _usageByIdentifier } = this;
             tsutils.forEachDeclaredVariable(node.declarationList, declaration => {
                 const { name } = declaration;
-                _identifiers.set(name, false);
+                _declarationsByIdentifier.set(name, declaration);
+                _usageByIdentifier.set(name, false);
             });
         }
         super.visitVariableStatement(node);
     }
+
+    private onSourceFileEnd(): void {
+
+        const { _declarationsByIdentifier, _usageByIdentifier } = this;
+        _usageByIdentifier.forEach((used, identifier) => {
+            if (!used) {
+                const declaration = _declarationsByIdentifier.get(identifier);
+                this.addFailureAtNode(identifier, Rule.FAILURE_STRING, getFix(declaration));
+            }
+        });
+    }
+}
+
+function getFix(declaration: ts.Declaration): Lint.Fix | undefined {
+
+    // https://github.com/palantir/tslint/blob/master/src/rules/noUnusedVariableRule.ts#L192-L197
+    return undefined;
 }
 
 function getIdentifier(node: ts.Declaration): ts.Identifier {
