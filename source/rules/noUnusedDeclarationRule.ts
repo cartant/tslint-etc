@@ -32,6 +32,7 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
 
     private _declarationsByIdentifier = new Map<ts.Node, ts.Node>();
     private _scopes = [new Map<string, ts.Identifier>()];
+    private _withoutSymbols = new Set<string>();
     private _usageByIdentifier = new Map<ts.Node, boolean>();
 
     protected visitClassDeclaration(node: ts.ClassDeclaration): void {
@@ -70,21 +71,24 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
 
     protected visitIdentifier(node: ts.Identifier): void {
 
-        const { _usageByIdentifier } = this;
+        const { _usageByIdentifier, _withoutSymbols } = this;
         const isDeclaration = _usageByIdentifier.has(node);
         if (!isDeclaration && !tsutils.isReassignmentTarget(node)) {
 
             const typeChecker = this.getTypeChecker();
             const symbol = typeChecker.getSymbolAtLocation(node);
-            const declarations = symbol.getDeclarations();
-
-            declarations.forEach(declaration => {
-                const identifier = getIdentifier(declaration);
-                const isEnforced = _usageByIdentifier.has(identifier);
-                if (isEnforced) {
-                    _usageByIdentifier.set(identifier, true);
-                }
-            });
+            if (symbol) {
+                const declarations = symbol.getDeclarations();
+                declarations.forEach(declaration => {
+                    const identifier = getIdentifier(declaration);
+                    const isEnforced = _usageByIdentifier.has(identifier);
+                    if (isEnforced) {
+                        _usageByIdentifier.set(identifier, true);
+                    }
+                });
+            } else {
+                _withoutSymbols.add(node.getText());
+            }
         }
         super.visitIdentifier(node);
     }
@@ -236,9 +240,9 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
 
     private onSourceFileEnd(): void {
 
-        const { _declarationsByIdentifier, _usageByIdentifier } = this;
+        const { _declarationsByIdentifier, _usageByIdentifier, _withoutSymbols } = this;
         _usageByIdentifier.forEach((used, identifier) => {
-            if (!used) {
+            if (!used && !_withoutSymbols.has(identifier.getText())) {
                 const declaration = _declarationsByIdentifier.get(identifier);
                 const fix = this.getFix(identifier, declaration);
                 this.addFailureAtNode(identifier, Rule.FAILURE_STRING, fix);
