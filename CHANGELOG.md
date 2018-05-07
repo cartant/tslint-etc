@@ -1,3 +1,10 @@
+<a name="1.2.2"></a>
+## [1.2.2](https://github.com/cartant/tslint-etc/compare/v1.2.1...v1.2.2) (2018-05-07)
+
+## Fixes
+
+* Fixed a problem in which the `no-unused-declaration` rule throw errors when inspecting variables typed as `any`. ([b07c760](https://github.com/cartant/tslint-etc/commit/b07c760))
+
 <a name="1.2.1"></a>
 ## [1.2.1](https://github.com/cartant/tslint-etc/compare/v1.2.0...v1.2.1) (2018-05-07)
 
