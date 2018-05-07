@@ -1,3 +1,10 @@
+<a name="1.2.1"></a>
+## [1.2.1](https://github.com/cartant/tslint-etc/compare/v1.2.0...v1.2.1) (2018-05-07)
+
+## Fixes
+
+* Fixed a problem in which the `no-unused-declaration` rule did not recognise usage via object shorthand. ([cc86c2e](https://github.com/cartant/tslint-etc/commit/cc86c2e))
+
 <a name="1.2.0"></a>
 ## [1.2.0](https://github.com/cartant/tslint-etc/compare/v1.1.0...v1.2.0) (2018-05-07)
 
