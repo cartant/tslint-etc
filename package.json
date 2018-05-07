@@ -47,5 +47,5 @@
     "test:clean": "rimraf build",
     "test:tslint": "tslint --test fixtures/**/tslint.json"
   },
-  "version": "1.2.0"
+  "version": "1.2.1"
 }
