@@ -1,0 +1,10 @@
+const a = "a";
+let b = "b";
+    ~           [no-unused-declaration]
+var c = "c";
+    ~           [no-unused-declaration]
+
+b = a;
+c = a;
+
+[no-unused-declaration]: Unused declarations are forbidden

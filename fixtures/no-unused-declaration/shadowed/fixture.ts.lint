@@ -1,0 +1,10 @@
+import { b } from "./letters";
+         ~                                      [no-unused-declaration]
+const a = "a";
+      ~                                         [no-unused-declaration]
+
+export function f(a: string, b: string): void {
+    console.log(a, b);
+}
+
+[no-unused-declaration]: Unused declarations are forbidden

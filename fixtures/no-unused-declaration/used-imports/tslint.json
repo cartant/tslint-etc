@@ -1,0 +1,8 @@
+{
+  "defaultSeverity": "error",
+  "jsRules": {},
+  "rules": {
+    "no-unused-declaration": { "severity": "error" }
+  },
+  "rulesDirectory": "../../../build/rules"
+}

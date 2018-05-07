@@ -1,0 +1,11 @@
+const instance = { property: 42 };
+const array = [54];
+
+console.log(instance, array);
+
+const { property } = instance;
+        ~~~~~~~~                    [no-unused-declaration]
+const [element] = array;
+       ~~~~~~~                      [no-unused-declaration]
+
+[no-unused-declaration]: Unused declarations are forbidden

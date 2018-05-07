@@ -1,0 +1,4 @@
+enum WTF { TRUE, FALSE, FILE_NOT_FOUND }
+     ~~~                                    [no-unused-declaration]
+
+[no-unused-declaration]: Unused declarations are forbidden

@@ -1,0 +1,5 @@
+export const a = () => { throw "kaboom"; };
+                         ~~~~~~~~~~~~~~~                [throw-error]
+export const b = () => { throw new Error("kaboom"); };
+
+[throw-error]: Throwing non-Error values is forbidden

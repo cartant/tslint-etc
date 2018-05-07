@@ -1,3 +1,0 @@
-import "./module";
-
-class Person {}

@@ -1,0 +1,4 @@
+class Person {}
+      ~~~~~~    [no-unused-declaration]
+
+[no-unused-declaration]: Unused declarations are forbidden

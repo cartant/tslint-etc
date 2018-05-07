@@ -1,0 +1,6 @@
+function f (): void {}
+         ~              [no-unused-declaration]
+const g = () => {};
+      ~                 [no-unused-declaration]
+
+[no-unused-declaration]: Unused declarations are forbidden

@@ -1,0 +1,8 @@
+import { a } from "a";
+                  ~~~       [ban-imports % ("'a' matches /^a$/: Explanation for a")]
+import { b } from "b";
+import { c } from "./c";
+                  ~~~~~     [ban-imports % ("'./c' matches /(^|\\/)c$/")]
+import { d } from "./d";
+
+[ban-imports]: Import is banned: %s
