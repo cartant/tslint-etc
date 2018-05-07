@@ -1,0 +1,6 @@
+const a = "a";
+let b = "b";
+var c = "c";
+
+const d = { [a]: a, [b]: "b", ["c"]: c };
+console.log(d);
