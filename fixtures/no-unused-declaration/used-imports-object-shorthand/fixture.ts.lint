@@ -1,0 +1,4 @@
+import { a, b, c } from "./letters";
+
+const d = { a, b, c };
+console.log(d);
