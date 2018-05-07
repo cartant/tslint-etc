@@ -4,12 +4,12 @@
 
 The package includes the following rules (none of which are enabled by default):
 
-| Rule | Description | Options |
-| --- | --- | --- |
-| `ban-imports` | Disallows the use of banned imports. | [See below](#ban-imports) |
-| `no-unsafe-callback-scope` | Disallows the use of variables/properties from unsafe/outer scopes in callbacks. | None |
-| `no-unused-declaration` | Disallows unused declarations. | None |
-| `throw-error` | Enforces the use of `Error` values when throwing or rejecting. | None |
+| Rule | Description | Fixer | Options |
+| --- | --- | --- | --- |
+| `ban-imports` | Disallows the use of banned imports. | No | [See below](#ban-imports) |
+| `no-unsafe-callback-scope` | Disallows the use of variables/properties from unsafe/outer scopes in callbacks. | No | None |
+| `no-unused-declaration` | Disallows unused declarations. | Yes | None |
+| `throw-error` | Enforces the use of `Error` values when throwing or rejecting. | No | None |
 
 ### Options
 
