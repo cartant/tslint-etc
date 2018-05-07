@@ -5,3 +5,4 @@ console.log(instance, array);
 
 const { property } = instance;
 const [element] = array;
+
