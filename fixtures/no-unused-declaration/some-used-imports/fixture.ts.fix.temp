@@ -1,0 +1,6 @@
+import { b } from "./letters";
+import {
+    b as banana
+} from "./letters";
+
+console.log(b, banana);

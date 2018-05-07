@@ -7,4 +7,6 @@ import * as l from "./letters";
 import letters from "./letters";
        ~~~~~~~                          [no-unused-declaration]
 
+console.log("the end");
+
 [no-unused-declaration]: Unused declarations are forbidden

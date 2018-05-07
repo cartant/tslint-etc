@@ -106,7 +106,7 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
         const { _declarationsByIdentifier, _usageByIdentifier } = this;
         node.elements.forEach(element => {
             const { name, propertyName } = element;
-            _declarationsByIdentifier.set(name, element);
+            _declarationsByIdentifier.set(name, node);
             _usageByIdentifier.set(name, false);
             if (propertyName) {
                 _usageByIdentifier.set(propertyName, true);
@@ -139,11 +139,48 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
             const { _declarationsByIdentifier, _usageByIdentifier } = this;
             tsutils.forEachDeclaredVariable(node.declarationList, declaration => {
                 const { name } = declaration;
-                _declarationsByIdentifier.set(name, declaration);
+                _declarationsByIdentifier.set(name, node);
                 _usageByIdentifier.set(name, false);
             });
         }
         super.visitVariableStatement(node);
+    }
+
+    private getFix(identifier: ts.Node, declaration: ts.Node): Lint.Fix | undefined {
+
+        if (tsutils.isImportDeclaration(declaration)) {
+            return Lint.Replacement.deleteFromTo(
+                declaration.getFullStart(),
+                declaration.getFullStart() + declaration.getFullWidth()
+            );
+        } else if (tsutils.isNamedImports(declaration)) {
+            const { _usageByIdentifier } = this;
+            const { elements } = declaration;
+            if (elements.every(element => _usageByIdentifier.get(element.name) === false)) {
+                const importClause = declaration.parent as ts.ImportClause;
+                const importDeclaration = importClause.parent as ts.ImportDeclaration;
+                return Lint.Replacement.deleteFromTo(
+                    importDeclaration.getFullStart(),
+                    importDeclaration.getFullStart() + importDeclaration.getFullWidth()
+                );
+            }
+            const index = elements.findIndex(element => element.name === identifier);
+            const from = (index === 0) ?
+                elements[index].getFullStart() :
+                elements[index - 1].getFullStart() + elements[index - 1].getFullWidth();
+            const to = (index === 0) ?
+                elements[index + 1].getFullStart() :
+                elements[index].getFullStart() + elements[index].getFullWidth();
+            return Lint.Replacement.deleteFromTo(from, to);
+        } else if (tsutils.isNamespaceImport(declaration)) {
+            const importClause = declaration.parent as ts.ImportClause;
+            const importDeclaration = importClause.parent as ts.ImportDeclaration;
+            return Lint.Replacement.deleteFromTo(
+                importDeclaration.getFullStart(),
+                importDeclaration.getFullStart() + importDeclaration.getFullWidth()
+            );
+        }
+        return undefined;
     }
 
     private onSourceFileEnd(): void {
@@ -152,17 +189,11 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
         _usageByIdentifier.forEach((used, identifier) => {
             if (!used) {
                 const declaration = _declarationsByIdentifier.get(identifier);
-                const fix = getFix(identifier, declaration);
+                const fix = this.getFix(identifier, declaration);
                 this.addFailureAtNode(identifier, Rule.FAILURE_STRING, fix);
             }
         });
     }
-}
-
-function getFix(identifier: ts.Node, declaration: ts.Node): Lint.Fix | undefined {
-
-    // https://github.com/palantir/tslint/blob/master/src/rules/noUnusedVariableRule.ts#L192-L197
-    return undefined;
 }
 
 function getIdentifier(node: ts.Declaration): ts.Identifier {
