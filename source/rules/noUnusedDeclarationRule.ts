@@ -31,6 +31,7 @@ export class Rule extends Lint.Rules.TypedRule {
 export class Walker extends Lint.ProgramAwareRuleWalker {
 
     private _declarationsByIdentifier = new Map<ts.Node, ts.Node>();
+    private _scopes = [new Map<string, ts.Identifier>()];
     private _usageByIdentifier = new Map<ts.Node, boolean>();
 
     protected visitClassDeclaration(node: ts.ClassDeclaration): void {
@@ -63,6 +64,7 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
             _declarationsByIdentifier.set(name, node);
             _usageByIdentifier.set(name, false);
         }
+
         super.visitFunctionDeclaration(node);
     }
 
@@ -96,6 +98,7 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
                 const { _declarationsByIdentifier, _usageByIdentifier } = this;
                 _declarationsByIdentifier.set(name, node);
                 _usageByIdentifier.set(name, false);
+                this.setScopedIdentifier(name);
             }
         }
         super.visitImportDeclaration(node);
@@ -111,6 +114,7 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
             if (propertyName) {
                 _usageByIdentifier.set(propertyName, true);
             }
+            this.setScopedIdentifier(name);
         });
         super.visitNamedImports(node);
     }
@@ -121,16 +125,50 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
         const { name } = node;
         _declarationsByIdentifier.set(name, node);
         _usageByIdentifier.set(name, false);
+        this.setScopedIdentifier(name);
         super.visitNamespaceImport(node);
     }
 
     protected visitNode(node: ts.Node): void {
 
+        const isScopeBoundary = tsutils.isBlock(node) ||
+            tsutils.isArrowFunction(node) ||
+            tsutils.isConstructorDeclaration(node) ||
+            tsutils.isFunctionDeclaration(node) ||
+            tsutils.isGetAccessorDeclaration(node) ||
+            tsutils.isMethodDeclaration(node) ||
+            tsutils.isSetAccessorDeclaration(node);
+
+        const { _scopes } = this;
+        if (isScopeBoundary) {
+            _scopes.push(new Map<string, ts.Identifier>());
+        }
         super.visitNode(node);
 
+        if (isScopeBoundary) {
+            _scopes.pop();
+        }
         if (tsutils.isSourceFile(node)) {
             this.onSourceFileEnd();
         }
+    }
+
+    protected visitObjectLiteralExpression(node: ts.ObjectLiteralExpression): void {
+
+        const { _usageByIdentifier } = this;
+
+        node.properties.forEach(property => {
+            if (tsutils.isShorthandPropertyAssignment(property)) {
+                const identifier = this.getScopedIdentifier(property.name.getText());
+                if (identifier) {
+                    const isEnforced = _usageByIdentifier.has(identifier);
+                    if (isEnforced) {
+                        _usageByIdentifier.set(identifier, true);
+                    }
+                }
+            }
+        });
+        super.visitObjectLiteralExpression(node);
     }
 
     protected visitVariableStatement(node: ts.VariableStatement): void {
@@ -141,6 +179,7 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
                 const { name } = declaration;
                 _declarationsByIdentifier.set(name, node);
                 _usageByIdentifier.set(name, false);
+                this.setScopedIdentifier(name);
             });
         }
         super.visitVariableStatement(node);
@@ -183,6 +222,18 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
         return undefined;
     }
 
+    private getScopedIdentifier(name: string): ts.Node | undefined {
+
+        const { _scopes } = this;
+        for (let s = _scopes.length - 1; s >= 0; --s) {
+            const scope = _scopes[s];
+            if (scope.has(name)) {
+                return scope.get(name);
+            }
+        }
+        return undefined;
+    }
+
     private onSourceFileEnd(): void {
 
         const { _declarationsByIdentifier, _usageByIdentifier } = this;
@@ -193,6 +244,13 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
                 this.addFailureAtNode(identifier, Rule.FAILURE_STRING, fix);
             }
         });
+    }
+
+    private setScopedIdentifier(identifier: ts.Identifier): void {
+
+        const { _scopes } = this;
+        const scope = _scopes[_scopes.length - 1];
+        scope.set(identifier.getText(), identifier);
     }
 }
 

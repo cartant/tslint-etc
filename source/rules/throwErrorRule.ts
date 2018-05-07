@@ -7,8 +7,7 @@
 import * as Lint from "tslint";
 import * as ts from "typescript";
 import * as tsutils from "tsutils";
-
-import { couldBeType } from "../support/util";
+import { couldBeType } from "../support";
 
 export class Rule extends Lint.Rules.TypedRule {
 
