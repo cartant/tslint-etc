@@ -4,8 +4,15 @@ const array = [54];
 console.log(instance, array);
 
 const { property } = instance;
-        ~~~~~~~~                    [no-unused-declaration]
+        ~~~~~~~~                        [no-unused-declaration]
+const { property: renamed } = instance;
+                  ~~~~~~~               [no-unused-declaration]
 const [element] = array;
-       ~~~~~~~                      [no-unused-declaration]
+       ~~~~~~~                          [no-unused-declaration]
+
+function f({ name }: { name?: string }): void {}
+function g({ name: renamed }: { name?: string }): void {}
+
+console.log(f.toString(), g.toString());
 
 [no-unused-declaration]: Unused declarations are forbidden

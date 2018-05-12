@@ -4,6 +4,10 @@ const array = [54];
 console.log(instance, array);
 
 const { property } = instance;
+const { property: renamed } = instance;
 const [element] = array;
 
-console.log(property, element);
+function f({ name }: { name?: string }): void {}
+function g({ name: renamed }: { name?: string }): void {}
+
+console.log(property, renamed, element, f.toString(), g.toString());
