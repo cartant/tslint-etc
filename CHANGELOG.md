@@ -1,3 +1,10 @@
+<a name="1.2.3"></a>
+## [1.2.3](https://github.com/cartant/tslint-etc/compare/v1.2.2...v1.2.3) (2018-07-31)
+
+## Build
+
+* Widen TypeScript peer semver to allow for version 3.0. ([fb28cb1](https://github.com/cartant/rxjs-tslint-rules/commit/fb28cb1))
+
 <a name="1.2.2"></a>
 ## [1.2.2](https://github.com/cartant/tslint-etc/compare/v1.2.1...v1.2.2) (2018-05-07)
 
