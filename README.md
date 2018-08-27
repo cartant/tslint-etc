@@ -47,7 +47,7 @@ The package includes the following rules (none of which are enabled by default):
 | `no-unused-declaration` | Disallows unused declarations. | Yes, but [see below](#no-unused-declaration) | None |
 | `throw-error` | Enforces the use of `Error` values when throwing or rejecting. | No | None |
 
-### Options
+### Options and notes
 
 <a name="ban-imports"></a>
 
