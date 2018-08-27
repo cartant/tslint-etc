@@ -44,7 +44,7 @@ The package includes the following rules (none of which are enabled by default):
 | --- | --- | --- | --- |
 | `ban-imports` | Disallows the use of banned imports. | No | [See below](#ban-imports) |
 | `no-unsafe-callback-scope` | Disallows the use of variables/properties from unsafe/outer scopes in callbacks. | No | None |
-| `no-unused-declaration` | Disallows unused declarations. | Yes | None |
+| `no-unused-declaration` | Disallows unused declarations. | Yes, but [see below](#no-unused-declaration) | None |
 | `throw-error` | Enforces the use of `Error` values when throwing or rejecting. | No | None |
 
 ### Options
@@ -69,3 +69,11 @@ For example, to following configuration would disallow `"foo"` with an explanati
   }
 }
 ```
+
+<a name="no-unused-declaration"></a>
+
+#### no-unused-declaration
+
+This rule has a fixer. However, the fixer will only remove unused import declarations. It will not remove other kinds of declarations, as doing so could be potentially destructive.
+
+For example, having it remove a function that you've spent time writing - just because you've not yet exported or called it - would be too dispiriting, so the rule will just flag it as a failure and leave the function untouched.
