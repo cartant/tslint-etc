@@ -5,7 +5,7 @@
   },
   "dependencies": {
     "tslib": "^1.8.0",
-    "tsutils": "^2.19.1"
+    "tsutils": "^3.0.0"
   },
   "description": "More rules for TSLint",
   "devDependencies": {
