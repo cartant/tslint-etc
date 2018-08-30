@@ -1,0 +1,4 @@
+import * as React from "react";
+import { Foo } from "./foo";
+
+export const foo = <Foo>foo!</Foo>;

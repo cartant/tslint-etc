@@ -1,0 +1,6 @@
+{
+  "compilerOptions": {
+    "jsxFactory": "h",
+    "module": "commonjs"
+  }
+}

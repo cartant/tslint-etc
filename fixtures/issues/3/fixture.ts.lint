@@ -1,0 +1,2 @@
+export const h = hoisted();
+function hoisted(): number { return 42; }

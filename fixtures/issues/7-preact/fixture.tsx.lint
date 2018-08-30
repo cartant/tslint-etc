@@ -1,0 +1,4 @@
+import { h } from "preact";
+import { Foo } from "./foo";
+
+export const foo = <Foo>foo!</Foo>;
