@@ -102,6 +102,14 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
         super.visitImportDeclaration(node);
     }
 
+    protected visitJsxElement(node: ts.JsxElement): void {
+
+        const jsxFactory = this.getProgram().getCompilerOptions().jsxFactory || "React.createElement";
+        const index = jsxFactory.indexOf(".");
+        this.seen((index === -1) ? jsxFactory : jsxFactory.substring(0, index));
+        super.visitJsxElement(node);
+    }
+
     protected visitNamedImports(node: ts.NamedImports): void {
 
         node.elements.forEach(element => {
