@@ -1,2 +1,5 @@
 import { other } from "./other";
 export { other };
+
+const another = "another";
+export { another };
