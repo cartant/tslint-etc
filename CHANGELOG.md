@@ -1,3 +1,12 @@
+<a name="1.2.4"></a>
+## [1.2.3](https://github.com/cartant/tslint-etc/compare/v1.2.3...v1.2.4) (2018-09-01)
+
+## Fixes
+
+* Fixed a problem with `no-unused-declaration` false positives for exports. ([600ce3c](https://github.com/cartant/tslint-etc/commit/600ce3c))
+* Fixed a problem with `no-unused-declaration` false positives for hoisted functions. ([5d17a2b](https://github.com/cartant/tslint-etc/commit/5d17a2b))
+* Fixed a problem with `no-unused-declaration` false positives for JSX-related imports. ([a46596d](https://github.com/cartant/tslint-etc/commit/a46596d))
+
 <a name="1.2.3"></a>
 ## [1.2.3](https://github.com/cartant/tslint-etc/compare/v1.2.2...v1.2.3) (2018-07-31)
 
