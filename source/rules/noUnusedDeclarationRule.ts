@@ -33,15 +33,13 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
     private _declarationsByIdentifier = new Map<ts.Node, ts.Node>();
     private _scopes = [new Map<string, ts.Identifier>()];
     private _withoutSymbols = new Set<string>();
-    private _usageByIdentifier = new Map<ts.Node, boolean>();
+    private _usageByIdentifier = new Map<ts.Node, "declared" | "seen" | "used">();
 
     protected visitClassDeclaration(node: ts.ClassDeclaration): void {
 
         const { name } = node;
         if (!tsutils.hasModifier(node.modifiers, ts.SyntaxKind.ExportKeyword)) {
-            const { _declarationsByIdentifier, _usageByIdentifier } = this;
-            _declarationsByIdentifier.set(name, node);
-            _usageByIdentifier.set(name, false);
+            this.declared(node, name);
         }
         super.visitClassDeclaration(node);
     }
@@ -50,9 +48,7 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
 
         const { name } = node;
         if (!tsutils.hasModifier(node.modifiers, ts.SyntaxKind.ExportKeyword)) {
-            const { _declarationsByIdentifier, _usageByIdentifier } = this;
-            _declarationsByIdentifier.set(name, node);
-            _usageByIdentifier.set(name, false);
+            this.declared(node, name);
         }
         super.visitEnumDeclaration(node);
     }
@@ -61,11 +57,8 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
 
         const { name } = node;
         if (name && !tsutils.hasModifier(node.modifiers, ts.SyntaxKind.ExportKeyword)) {
-            const { _declarationsByIdentifier, _usageByIdentifier } = this;
-            _declarationsByIdentifier.set(name, node);
-            _usageByIdentifier.set(name, false);
+            this.declared(node, name);
         }
-
         super.visitFunctionDeclaration(node);
     }
 
@@ -77,7 +70,7 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
             const text = node.getText();
             _usageByIdentifier.forEach((value, key) => {
                 if (key.getText() === text) {
-                    _usageByIdentifier.set(key, true);
+                    _usageByIdentifier.set(key, "used");
                 }
             });
             return;
@@ -92,10 +85,7 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
                 const declarations = symbol.getDeclarations();
                 declarations.forEach(declaration => {
                     const identifier = getIdentifier(declaration);
-                    const isEnforced = _usageByIdentifier.has(identifier);
-                    if (isEnforced) {
-                        _usageByIdentifier.set(identifier, true);
-                    }
+                    this.seen(identifier);
                 });
             } else {
                 _withoutSymbols.add(node.getText());
@@ -110,9 +100,7 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
         if (importClause) {
             const { name } = node.importClause;
             if (name) {
-                const { _declarationsByIdentifier, _usageByIdentifier } = this;
-                _declarationsByIdentifier.set(name, node);
-                _usageByIdentifier.set(name, false);
+                this.declared(node, name);
                 this.setScopedIdentifier(name);
             }
         }
@@ -121,13 +109,11 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
 
     protected visitNamedImports(node: ts.NamedImports): void {
 
-        const { _declarationsByIdentifier, _usageByIdentifier } = this;
         node.elements.forEach(element => {
             const { name, propertyName } = element;
-            _declarationsByIdentifier.set(name, node);
-            _usageByIdentifier.set(name, false);
+            this.declared(node, name);
             if (propertyName) {
-                _usageByIdentifier.set(propertyName, true);
+                this.seen(propertyName);
             }
             this.setScopedIdentifier(name);
         });
@@ -136,10 +122,8 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
 
     protected visitNamespaceImport(node: ts.NamespaceImport): void {
 
-        const { _declarationsByIdentifier, _usageByIdentifier } = this;
         const { name } = node;
-        _declarationsByIdentifier.set(name, node);
-        _usageByIdentifier.set(name, false);
+        this.declared(node, name);
         this.setScopedIdentifier(name);
         super.visitNamespaceImport(node);
     }
@@ -170,16 +154,11 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
 
     protected visitObjectLiteralExpression(node: ts.ObjectLiteralExpression): void {
 
-        const { _usageByIdentifier } = this;
-
         node.properties.forEach(property => {
             if (tsutils.isShorthandPropertyAssignment(property)) {
                 const identifier = this.getScopedIdentifier(property.name.getText());
                 if (identifier) {
-                    const isEnforced = _usageByIdentifier.has(identifier);
-                    if (isEnforced) {
-                        _usageByIdentifier.set(identifier, true);
-                    }
+                    this.seen(identifier);
                 }
             }
         });
@@ -189,15 +168,21 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
     protected visitVariableStatement(node: ts.VariableStatement): void {
 
         if (!tsutils.hasModifier(node.modifiers, ts.SyntaxKind.ExportKeyword)) {
-            const { _declarationsByIdentifier, _usageByIdentifier } = this;
             tsutils.forEachDeclaredVariable(node.declarationList, declaration => {
                 const { name } = declaration;
-                _declarationsByIdentifier.set(name, node);
-                _usageByIdentifier.set(name, false);
+                this.declared(node, name);
                 this.setScopedIdentifier(name);
             });
         }
         super.visitVariableStatement(node);
+    }
+
+    private declared(declaration: ts.Node, name: ts.Node): void {
+
+        const { _declarationsByIdentifier, _usageByIdentifier } = this;
+        _declarationsByIdentifier.set(name, declaration);
+        const usage = _usageByIdentifier.get(name);
+        _usageByIdentifier.set(name, (usage === "seen") ? "used" : "declared");
     }
 
     private getFix(identifier: ts.Node, declaration: ts.Node): Lint.Fix | undefined {
@@ -210,7 +195,7 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
         } else if (tsutils.isNamedImports(declaration)) {
             const { _usageByIdentifier } = this;
             const { elements } = declaration;
-            if (elements.every(element => _usageByIdentifier.get(element.name) === false)) {
+            if (elements.every(element => _usageByIdentifier.get(element.name) === "declared")) {
                 const importClause = declaration.parent as ts.ImportClause;
                 const importDeclaration = importClause.parent as ts.ImportDeclaration;
                 return Lint.Replacement.deleteFromTo(
@@ -252,13 +237,20 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
     private onSourceFileEnd(): void {
 
         const { _declarationsByIdentifier, _usageByIdentifier, _withoutSymbols } = this;
-        _usageByIdentifier.forEach((used, identifier) => {
-            if (!used && !_withoutSymbols.has(identifier.getText())) {
+        _usageByIdentifier.forEach((usage, identifier) => {
+            if ((usage === "declared") && !_withoutSymbols.has(identifier.getText())) {
                 const declaration = _declarationsByIdentifier.get(identifier);
                 const fix = this.getFix(identifier, declaration);
                 this.addFailureAtNode(identifier, Rule.FAILURE_STRING, fix);
             }
         });
+    }
+
+    private seen(name: ts.Node): void {
+
+        const { _usageByIdentifier } = this;
+        const usage = _usageByIdentifier.get(name);
+        _usageByIdentifier.set(name, (usage === "declared") ? "used" : "seen");
     }
 
     private setScopedIdentifier(identifier: ts.Identifier): void {
