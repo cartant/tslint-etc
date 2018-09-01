@@ -72,6 +72,17 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
     protected visitIdentifier(node: ts.Identifier): void {
 
         const { _usageByIdentifier, _withoutSymbols } = this;
+
+        if (tsutils.isExportSpecifier(node.parent)) {
+            const text = node.getText();
+            _usageByIdentifier.forEach((value, key) => {
+                if (key.getText() === text) {
+                    _usageByIdentifier.set(key, true);
+                }
+            });
+            return;
+        }
+
         const isDeclaration = _usageByIdentifier.has(node);
         if (!isDeclaration && !tsutils.isReassignmentTarget(node)) {
 
