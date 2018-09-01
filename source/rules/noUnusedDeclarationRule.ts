@@ -67,12 +67,7 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
         const { _usageByIdentifier, _withoutSymbols } = this;
 
         if (tsutils.isExportSpecifier(node.parent)) {
-            const text = node.getText();
-            _usageByIdentifier.forEach((value, key) => {
-                if (key.getText() === text) {
-                    _usageByIdentifier.set(key, "used");
-                }
-            });
+            this.seen(node.getText());
             return;
         }
 
@@ -246,11 +241,19 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
         });
     }
 
-    private seen(name: ts.Node): void {
+    private seen(name: ts.Node | string): void {
 
         const { _usageByIdentifier } = this;
-        const usage = _usageByIdentifier.get(name);
-        _usageByIdentifier.set(name, (usage === "declared") ? "used" : "seen");
+        if (typeof name === "string") {
+            _usageByIdentifier.forEach((value, key) => {
+                if (key.getText() === name) {
+                    _usageByIdentifier.set(key, (value === "declared") ? "used" : "seen");
+                }
+            });
+        } else {
+            const usage = _usageByIdentifier.get(name);
+            _usageByIdentifier.set(name, (usage === "declared") ? "used" : "seen");
+        }
     }
 
     private setScopedIdentifier(identifier: ts.Identifier): void {
