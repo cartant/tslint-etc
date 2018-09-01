@@ -48,5 +48,5 @@
     "test:debug": "tslint --test fixtures/issues/7-react/tslint.json",
     "test:tslint": "tslint --test fixtures/**/tslint.json"
   },
-  "version": "1.2.3"
+  "version": "1.2.4"
 }
