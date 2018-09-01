@@ -45,6 +45,7 @@
     "test": "yarn run lint && yarn run test:build && yarn run test:tslint",
     "test:build": "yarn run test:clean && tsc -p tsconfig.json",
     "test:clean": "rimraf build",
+    "test:debug": "tslint --test fixtures/issues/6/tslint.json",
     "test:tslint": "tslint --test fixtures/**/tslint.json"
   },
   "version": "1.2.3"
