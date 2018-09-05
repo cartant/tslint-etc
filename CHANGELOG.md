@@ -1,5 +1,13 @@
+<a name="1.2.5"></a>
+## [1.2.5](https://github.com/cartant/tslint-etc/compare/v1.2.4...v1.2.5) (2018-09-06)
+
+## Fixes
+
+* Fixed a problem with `no-unused-declaration` false positives when using functions and object-shorthand properties. ([2dcdfac](https://github.com/cartant/tslint-etc/commit/2dcdfac))
+* Fixed a problem with `no-unused-declaration` false positives when using self-closing JSX elements. ([7948bc7](https://github.com/cartant/tslint-etc/commit/7948bc7))
+
 <a name="1.2.4"></a>
-## [1.2.3](https://github.com/cartant/tslint-etc/compare/v1.2.3...v1.2.4) (2018-09-01)
+## [1.2.4](https://github.com/cartant/tslint-etc/compare/v1.2.3...v1.2.4) (2018-09-01)
 
 ## Fixes
 
