@@ -40,6 +40,7 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
         const { name } = node;
         if (!tsutils.hasModifier(node.modifiers, ts.SyntaxKind.ExportKeyword)) {
             this.declared(node, name);
+            this.setScopedIdentifier(name);
         }
         super.visitClassDeclaration(node);
     }
@@ -49,6 +50,7 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
         const { name } = node;
         if (!tsutils.hasModifier(node.modifiers, ts.SyntaxKind.ExportKeyword)) {
             this.declared(node, name);
+            this.setScopedIdentifier(name);
         }
         super.visitEnumDeclaration(node);
     }
@@ -58,6 +60,7 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
         const { name } = node;
         if (name && !tsutils.hasModifier(node.modifiers, ts.SyntaxKind.ExportKeyword)) {
             this.declared(node, name);
+            this.setScopedIdentifier(name, true);
         }
         super.visitFunctionDeclaration(node);
     }
@@ -269,10 +272,10 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
         }
     }
 
-    private setScopedIdentifier(identifier: ts.Identifier): void {
+    private setScopedIdentifier(identifier: ts.Identifier, parent: boolean = false): void {
 
         const { _scopes } = this;
-        const scope = _scopes[_scopes.length - 1];
+        const scope = _scopes[_scopes.length - (parent ? 2 : 1)];
         scope.set(identifier.getText(), identifier);
     }
 }
