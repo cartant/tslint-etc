@@ -32,7 +32,7 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
 
     private _declarationsByIdentifier = new Map<ts.Node, ts.Node>();
     private _scopes = [new Map<string, ts.Identifier>()];
-    private _withoutSymbols = new Set<string>();
+    private _withoutDeclarations = new Set<string>();
     private _usageByIdentifier = new Map<ts.Node, "declared" | "seen" | "used">();
 
     protected visitClassDeclaration(node: ts.ClassDeclaration): void {
@@ -64,7 +64,7 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
 
     protected visitIdentifier(node: ts.Identifier): void {
 
-        const { _usageByIdentifier, _withoutSymbols } = this;
+        const { _usageByIdentifier, _withoutDeclarations } = this;
 
         if (tsutils.isExportSpecifier(node.parent)) {
             this.seen(node.getText());
@@ -74,16 +74,21 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
         const isDeclaration = _usageByIdentifier.has(node);
         if (!isDeclaration && !tsutils.isReassignmentTarget(node)) {
 
+            let hasDeclarations = false;
             const typeChecker = this.getTypeChecker();
             const symbol = typeChecker.getSymbolAtLocation(node);
             if (symbol) {
                 const declarations = symbol.getDeclarations();
-                declarations.forEach(declaration => {
-                    const identifier = getIdentifier(declaration);
-                    this.seen(identifier);
-                });
-            } else {
-                _withoutSymbols.add(node.getText());
+                if (declarations) {
+                    declarations.forEach(declaration => {
+                        const identifier = getIdentifier(declaration);
+                        this.seen(identifier);
+                    });
+                    hasDeclarations = true;
+                }
+            }
+            if (!hasDeclarations) {
+                _withoutDeclarations.add(node.getText());
             }
         }
         super.visitIdentifier(node);
@@ -239,9 +244,9 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
 
     private onSourceFileEnd(): void {
 
-        const { _declarationsByIdentifier, _usageByIdentifier, _withoutSymbols } = this;
+        const { _declarationsByIdentifier, _usageByIdentifier, _withoutDeclarations } = this;
         _usageByIdentifier.forEach((usage, identifier) => {
-            if ((usage === "declared") && !_withoutSymbols.has(identifier.getText())) {
+            if ((usage === "declared") && !_withoutDeclarations.has(identifier.getText())) {
                 const declaration = _declarationsByIdentifier.get(identifier);
                 const fix = this.getFix(identifier, declaration);
                 this.addFailureAtNode(identifier, Rule.FAILURE_STRING, fix);

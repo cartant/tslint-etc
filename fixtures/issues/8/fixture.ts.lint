@@ -1,0 +1,5 @@
+function getList<T>(resource: string, urlParams: {}): Promise<{}> {
+}
+export default {
+  getList,
+}
