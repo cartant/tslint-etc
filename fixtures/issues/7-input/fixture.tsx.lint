@@ -1,0 +1,29 @@
+import { h, SFC, SyntheticEvent } from 'preact'
+
+// maybe this is the culprit -> 'custom_modules/util' is defined via path alias within tsconfig
+import { identity } from 'custom_modules/util'
+
+type Props = {
+  checked?: boolean
+  disabled?: boolean
+  id?: string
+  name?: string
+  value?: string
+  onChange?(ev: SyntheticEvent<{}>): void
+}
+
+const Checkbox: SFC<Props> = ({ checked = false, disabled, id, name, value, onChange = identity }) => {
+  return (
+    <input
+      type="checkbox"
+      id={id}
+      name={name}
+      value={value}
+      checked={checked}
+      disabled={disabled}
+      onChange={onChange}
+    />
+  )
+}
+
+export { Checkbox }
