@@ -110,11 +110,15 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
         super.visitImportDeclaration(node);
     }
 
+    protected visitJsxSelfClosingElement(node: ts.JsxSelfClosingElement): void {
+
+        this.seenJsx();
+        super.visitJsxSelfClosingElement(node);
+    }
+
     protected visitJsxElement(node: ts.JsxElement): void {
 
-        const jsxFactory = this.getProgram().getCompilerOptions().jsxFactory || "React.createElement";
-        const index = jsxFactory.indexOf(".");
-        this.seen((index === -1) ? jsxFactory : jsxFactory.substring(0, index));
+        this.seenJsx();
         super.visitJsxElement(node);
     }
 
@@ -270,6 +274,13 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
             const usage = _usageByIdentifier.get(name);
             _usageByIdentifier.set(name, (usage === "declared") ? "used" : "seen");
         }
+    }
+
+    private seenJsx(): void {
+
+        const jsxFactory = this.getProgram().getCompilerOptions().jsxFactory || "React.createElement";
+        const index = jsxFactory.indexOf(".");
+        this.seen((index === -1) ? jsxFactory : jsxFactory.substring(0, index));
     }
 
     private setScopedIdentifier(identifier: ts.Identifier, parent: boolean = false): void {
