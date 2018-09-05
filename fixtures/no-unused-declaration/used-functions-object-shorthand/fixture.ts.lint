@@ -1,0 +1,4 @@
+function a(): void {}
+
+const b = { a };
+console.log(b);
