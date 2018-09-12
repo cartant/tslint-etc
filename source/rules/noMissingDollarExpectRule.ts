@@ -10,7 +10,7 @@ import * as ts from "typescript";
 export class Rule extends Lint.Rules.AbstractRule {
 
     public static metadata: Lint.IRuleMetadata = {
-        description: "Disallows the $ExpectType and $ExpectError dtslint expectations that are missing a $ prefix.",
+        description: "Disallows dtslint $ExpectType and $ExpectError expectations if the $ is missing.",
         options: null,
         optionsDescription: "Not configurable.",
         requiresTypeInfo: false,
