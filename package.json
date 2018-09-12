@@ -48,5 +48,5 @@
     "test:debug": "tslint --test fixtures/no-missing-dollar-expect/default/tslint.json",
     "test:tslint": "tslint --test fixtures/**/tslint.json"
   },
-  "version": "1.2.5"
+  "version": "1.2.6"
 }
