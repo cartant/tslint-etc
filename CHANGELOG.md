@@ -1,3 +1,10 @@
+<a name="1.2.6"></a>
+## [1.2.6](https://github.com/cartant/tslint-etc/compare/v1.2.5...v1.2.6) (2018-09-12)
+
+## Features
+
+* Added `no-missing-dollar-expect` for [dtslint](https://github.com/Microsoft/dtslint) expectations.
+
 <a name="1.2.5"></a>
 ## [1.2.5](https://github.com/cartant/tslint-etc/compare/v1.2.4...v1.2.5) (2018-09-06)
 
