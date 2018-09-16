@@ -2,7 +2,6 @@
  * @license Use of this source code is governed by an MIT-style license that
  * can be found in the LICENSE file at https://github.com/cartant/tslint-etc
  */
-/*tslint:disable:no-use-before-declare*/
 
 import * as Lint from "tslint";
 import * as ts from "typescript";
@@ -22,24 +21,23 @@ export class Rule extends Lint.Rules.AbstractRule {
     public static FAILURE_STRING = "Missing $";
 
     public apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
-        return this.applyWithWalker(new Walker(sourceFile, this.getOptions()));
-    }
-}
 
-class Walker extends Lint.RuleWalker {
-
-    public walk(sourceFile: ts.SourceFile): void {
+        const failures: Lint.RuleFailure[] = [];
         const text = sourceFile.getText();
         const regExp = /\/\/\s+Expect(Type|Error)/g;
         let result: RegExpExecArray;
+
         /*tslint:disable:no-conditional-assignment*/
         while (result = regExp.exec(text)) {
-            this.addFailureFromStartToEnd(
+            failures.push(new Lint.RuleFailure(
+                sourceFile,
                 result.index,
                 result.index + result[0].length,
-                Rule.FAILURE_STRING
-            );
+                Rule.FAILURE_STRING,
+                this.ruleName
+            ));
         }
         /*tslint:enable:no-conditional-assignment*/
+        return failures;
     }
 }
