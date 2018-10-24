@@ -1,0 +1,132 @@
+let a = [0, 1, 2, 3];
+
+a.fill(0);
+a.reverse();
+a.sort((x, y) => x - y);
+a.splice(0, 1);
+
+let b = a;
+let c = a.map(x => x);
+let d = a.fill(0);
+          ~~~~                                  [no-assign-mutated-array]
+let e = a.reverse();
+          ~~~~~~~                               [no-assign-mutated-array]
+let f = a.sort((x, y) => x - y);
+          ~~~~                                  [no-assign-mutated-array]
+let g = a.splice(0, 1);
+          ~~~~~~                                [no-assign-mutated-array]
+let h = a.map(x => x).fill(0);
+let i = a.map(x => x).reverse();
+let j = a.map(x => x).sort((x, y) => x - y);
+let k = a.map(x => x).splice(0, 1);
+
+d = a.fill(0);
+      ~~~~                                      [no-assign-mutated-array]
+e = a.reverse();
+      ~~~~~~~                                   [no-assign-mutated-array]
+f = a.sort((x, y) => x - y);
+      ~~~~                                      [no-assign-mutated-array]
+g = a.splice(0, 1);
+      ~~~~~~                                    [no-assign-mutated-array]
+h = a.map(x => x).fill(0);
+i = a.map(x => x).reverse();
+j = a.map(x => x).sort((x, y) => x - y);
+k = a.map(x => x).splice(0, 1);
+
+h = a.slice().fill(0);
+i = a.slice().reverse();
+j = a.slice().sort((x, y) => x - y);
+k = a.slice().splice(0, 1);
+
+h = a.slice().fill(0).fill(0);
+i = a.slice().reverse().reverse();
+j = a.slice().sort((x, y) => x - y).sort((x, y) => x - y);
+k = a.slice().splice(0, 1).splice(0, 1);
+
+h = [...a].fill(0);
+i = [...a].reverse();
+j = [...a].sort((x, y) => x - y);
+k = [...a].splice(0, 1);
+
+h = [...a].fill(0).fill(0);
+i = [...a].reverse().reverse();
+j = [...a].sort((x, y) => x - y).sort((x, y) => x - y);
+k = [...a].splice(0, 1).splice(0, 1);
+
+let l = {
+    d: a.fill(0),
+         ~~~~                                   [no-assign-mutated-array]
+    e: a.reverse(),
+         ~~~~~~~                                [no-assign-mutated-array]
+    f: a.sort((x, y) => x - y),
+         ~~~~                                   [no-assign-mutated-array]
+    g: a.splice(0, 1),
+         ~~~~~~                                 [no-assign-mutated-array]
+    h: a.map(x => x).fill(0),
+    i: a.map(x => x).reverse(),
+    j: a.map(x => x).sort((x, y) => x - y),
+    k: a.map(x => x).splice(0, 1)
+};
+
+let m = [
+    a.fill(0),
+      ~~~~                                      [no-assign-mutated-array]
+    a.reverse(),
+      ~~~~~~~                                   [no-assign-mutated-array]
+    a.sort((x, y) => x - y),
+      ~~~~                                      [no-assign-mutated-array]
+    a.splice(0, 1),
+      ~~~~~~                                    [no-assign-mutated-array]
+    a.map(x => x).fill(0),
+    a.map(x => x).reverse(),
+    a.map(x => x).sort((x, y) => x - y),
+    a.map(x => x).splice(0, 1)
+];
+
+function n(p: number[]): void {}
+
+n(a.fill(0));
+    ~~~~                                        [no-assign-mutated-array]
+n(a.reverse());
+    ~~~~~~~                                     [no-assign-mutated-array]
+n(a.sort((x, y) => x - y));
+    ~~~~                                        [no-assign-mutated-array]
+n(a.splice(0, 1));
+    ~~~~~~                                      [no-assign-mutated-array]
+n(a.map(x => x).fill(0));
+n(a.map(x => x).reverse());
+n(a.map(x => x).sort((x, y) => x - y));
+n(a.map(x => x).splice(0, 1));
+
+class Thing { contructor(p: number[]) {} }
+
+let t = new Thing(
+    a.fill(0)
+      ~~~~                                      [no-assign-mutated-array]
+);
+t = new Thing(
+    a.reverse()
+      ~~~~~~~                                   [no-assign-mutated-array]
+);
+t = new Thing(
+    a.sort((x, y) => x - y)
+      ~~~~                                      [no-assign-mutated-array]
+);
+t = new Thing(
+    a.splice(0, 1));
+      ~~~~~~                                    [no-assign-mutated-array]
+);
+t = new Thing(
+    a.map(x => x).fill(0)
+);
+t = new Thing(
+    a.map(x => x).reverse()
+);
+t = new Thing(
+    a.map(x => x).sort((x, y) => x - y)
+);
+t = new Thing(
+    a.map(x => x).splice(0, 1)
+);
+
+[no-assign-mutated-array]: Assignment of mutated arrays is forbidden

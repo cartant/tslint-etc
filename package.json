@@ -4,6 +4,7 @@
     "url": "https://github.com/cartant/tslint-etc/issues"
   },
   "dependencies": {
+    "@phenomnomnominal/tsquery": "^2.1.1",
     "tslib": "^1.8.0",
     "tsutils": "^3.0.0"
   },
@@ -45,7 +46,7 @@
     "test": "yarn run lint && yarn run test:build && yarn run test:tslint",
     "test:build": "yarn run test:clean && tsc -p tsconfig.json",
     "test:clean": "rimraf build",
-    "test:debug": "tslint --test fixtures/no-missing-dollar-expect/default/tslint.json",
+    "test:debug": "tslint --test fixtures/no-assign-mutated-array/default/tslint.json",
     "test:tslint": "tslint --test fixtures/**/tslint.json"
   },
   "version": "1.2.6"

@@ -1,0 +1,15 @@
+class Thing {
+    fill() {}
+    reverse() {}
+    sort() {}
+    splice() {}
+}
+
+const t = new Thing();
+
+t.fill();
+t.reverse();
+t.sort();
+t.splice();
+
+[no-assign-mutated-array]: Assignment of mutated arrays is forbidden
