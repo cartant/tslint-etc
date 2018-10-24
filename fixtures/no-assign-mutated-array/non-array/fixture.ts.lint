@@ -7,9 +7,9 @@ class Thing {
 
 const t = new Thing();
 
-t.fill();
-t.reverse();
-t.sort();
-t.splice();
+const a = t.fill();
+const b = t.reverse();
+const c = t.sort();
+const d = t.splice();
 
 [no-assign-mutated-array]: Assignment of mutated arrays is forbidden
