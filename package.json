@@ -4,7 +4,7 @@
     "url": "https://github.com/cartant/tslint-etc/issues"
   },
   "dependencies": {
-    "@phenomnomnominal/tsquery": "^2.1.1",
+    "@phenomnomnominal/tsquery": "^3.0.0",
     "tslib": "^1.8.0",
     "tsutils": "^3.0.0"
   },
