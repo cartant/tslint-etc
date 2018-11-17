@@ -9,8 +9,8 @@
     esquery "^1.0.1"
 
 "@types/node@^10.0.0":
-  version "10.12.6"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-10.12.6.tgz#7fc213c1b811c90fc9a3edb6206742b95d697678"
+  version "10.12.9"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-10.12.9.tgz#a07bfa74331471e1dc22a47eb72026843f7b95c8"
 
 ansi-regex@^2.0.0:
   version "2.1.1"
