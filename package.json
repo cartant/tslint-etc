@@ -49,5 +49,5 @@
     "test:debug": "tslint --test fixtures/issues/10/tslint.json",
     "test:tslint": "tslint --test fixtures/**/tslint.json"
   },
-  "version": "1.2.7"
+  "version": "1.2.8"
 }
