@@ -75,8 +75,7 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
         }
 
         const isDeclaration = _usageByIdentifier.has(node);
-        if (!isDeclaration && !tsutils.isReassignmentTarget(node)) {
-
+        if (!isDeclaration && (!tsutils.isReassignmentTarget(node) || isUnaryPrefixOrPostfix(node))) {
             let hasDeclarations = false;
             const typeChecker = this.getTypeChecker();
             const symbol = typeChecker.getSymbolAtLocation(node);
@@ -294,4 +293,10 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
 function getIdentifier(node: ts.Declaration): ts.Identifier {
 
     return node["name"];
+}
+
+function isUnaryPrefixOrPostfix(node: ts.Node): boolean {
+
+    const { parent } = node;
+    return tsutils.isPrefixUnaryExpression(parent) || tsutils.isPostfixUnaryExpression(parent);
 }
