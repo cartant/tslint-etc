@@ -1,3 +1,17 @@
+<a name="1.2.8"></a>
+## [1.2.8](https://github.com/cartant/tslint-etc/compare/v1.2.7...v1.2.8) (2018-12-14)
+
+## Fixes
+
+* Supported pre/postfix operators in the `no-unused-declaration` rule. ([788bb3a](https://github.com/cartant/tslint-etc/commit/788bb3a))
+
+<a name="1.2.7"></a>
+## [1.2.7](https://github.com/cartant/tslint-etc/compare/v1.2.6...v1.2.7) (2018-10-24)
+
+## Features
+
+* Added `no-assign-mutated-array` rule. ([c4e8504](https://github.com/cartant/tslint-etc/commit/c4e8504))
+
 <a name="1.2.6"></a>
 ## [1.2.6](https://github.com/cartant/tslint-etc/compare/v1.2.5...v1.2.6) (2018-09-12)
 
