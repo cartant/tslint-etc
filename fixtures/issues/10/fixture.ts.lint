@@ -1,0 +1,9 @@
+it('works', () => {
+    let count = 0;
+    const result = doSomething(() => count++);
+    expect(result).to.equal(0);
+});
+
+function doSomething(factory: Function) {
+    return factory();
+}
