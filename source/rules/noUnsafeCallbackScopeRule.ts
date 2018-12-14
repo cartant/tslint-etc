@@ -7,6 +7,7 @@
 import * as Lint from "tslint";
 import * as ts from "typescript";
 import * as tsutils from "tsutils";
+import { isConstDeclaration, isThis, isWithinCallExpressionExpression } from "../support/util";
 
 export class Rule extends Lint.Rules.TypedRule {
 
@@ -93,15 +94,23 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
 
         const typeChecker = this.getTypeChecker();
         const symbol = typeChecker.getSymbolAtLocation(node);
-        const [declaration] = symbol.getDeclarations();
+        if (!symbol) {
+            return false;
+        }
 
+        const declarations = symbol.getDeclarations();
+        if (!declarations || (declarations.length === 0)) {
+            return false;
+        }
+        const [declaration] = declarations;
         if (tsutils.isParameterDeclaration(declaration)) {
             return false;
         }
         if ((declaration.pos >= rootCallback.pos) && (declaration.pos < rootCallback.end)) {
             return false;
         }
-        if (tsutils.isCallExpression(node.parent)) {
+
+        if (isWithinCallExpressionExpression(node)) {
             return false;
         }
         if (tsutils.isNewExpression(node.parent)) {
@@ -109,8 +118,6 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
         }
         if (tsutils.isPropertyAccessExpression(node.parent)) {
             if (node === node.parent.name) {
-                return false;
-            } else if (tsutils.isCallExpression(node.parent.parent)) {
                 return false;
             }
             const type = typeChecker.getTypeAtLocation(node.parent.name);
@@ -125,15 +132,19 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
                 return false;
             }
         }
-
-        if (tsutils.isImportSpecifier(declaration)) {
+        if (tsutils.isTypeReferenceNode(node.parent)) {
             return false;
         }
 
+        if (isConstDeclaration(declaration)) {
+            return false;
+        }
+        if (tsutils.isImportSpecifier(declaration)) {
+            return false;
+        }
+        if (tsutils.isNamespaceImport(declaration)) {
+            return false;
+        }
         return true;
     }
-}
-
-function isThis(node: ts.Node): boolean {
-    return node.kind === ts.SyntaxKind.ThisKeyword;
 }

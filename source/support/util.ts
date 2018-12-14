@@ -5,6 +5,14 @@
 
 import * as ts from "typescript";
 import * as tsutils from "tsutils";
+import { InternalSymbolName } from "typescript";
+
+export function couldBeFunction(type: ts.Type): boolean {
+    return (type.getCallSignatures().length > 0) ||
+        couldBeType(type, "Function") ||
+        couldBeType(type, "ArrowFunction") ||
+        couldBeType(type, InternalSymbolName.Function);
+}
 
 export function couldBeType(type: ts.Type, name: string | RegExp): boolean {
 
@@ -24,10 +32,39 @@ export function couldBeType(type: ts.Type, name: string | RegExp): boolean {
     return Boolean(baseTypes) && baseTypes.some((t) => couldBeType(t, name));
 }
 
+export function isConstDeclaration(declaration: ts.Declaration): boolean {
+
+    let variableDeclarationList: ts.VariableDeclarationList | null = null;
+
+    if (tsutils.isVariableDeclaration(declaration)) {
+        if (tsutils.isVariableDeclarationList(declaration.parent)) {
+            variableDeclarationList = declaration.parent;
+        }
+    } else if (tsutils.isBindingElement(declaration)) {
+        let parent: ts.Node = declaration.parent;
+        while (tsutils.isBindingPattern(parent) || tsutils.isVariableDeclaration(parent)) {
+            parent = parent.parent;
+        }
+        if (tsutils.isVariableDeclarationList(parent)) {
+            variableDeclarationList = parent;
+        }
+    }
+
+    if (variableDeclarationList) {
+        return tsutils.getVariableDeclarationKind(variableDeclarationList) === tsutils.VariableDeclarationKind.Const;
+    }
+    return false;
+}
+
 export function isReferenceType(type: ts.Type): type is ts.TypeReference {
 
     return tsutils.isTypeFlagSet(type, ts.TypeFlags.Object) &&
         tsutils.isObjectFlagSet(type as ts.ObjectType, ts.ObjectFlags.Reference);
+}
+
+export function isThis(node: ts.Node): boolean {
+
+    return node.kind === ts.SyntaxKind.ThisKeyword;
 }
 
 export function isType(type: ts.Type, name: string | RegExp): boolean {
@@ -43,4 +80,14 @@ export function isType(type: ts.Type, name: string | RegExp): boolean {
 export function isUnionType(type: ts.Type): type is ts.UnionType {
 
     return tsutils.isTypeFlagSet(type, ts.TypeFlags.Union);
+}
+
+export function isWithinCallExpressionExpression(node: ts.Node): boolean {
+
+    let parent = node.parent;
+    while (parent && tsutils.isPropertyAccessExpression(parent)) {
+        node = parent;
+        parent = node.parent;
+    }
+    return parent && tsutils.isCallExpression(parent) && (node === parent.expression);
 }
