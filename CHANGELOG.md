@@ -1,3 +1,10 @@
+<a name="1.2.9"></a>
+## [1.2.9](https://github.com/cartant/tslint-etc/compare/v1.2.8...v1.2.9) (2018-12-15)
+
+## Fixes
+
+* Apply fixes - from `rxjs-tslint-rules` - to `no-unsafe-callback-scope` rule. ([956d7fd](https://github.com/cartant/tslint-etc/commit/956d7fd))
+
 <a name="1.2.8"></a>
 ## [1.2.8](https://github.com/cartant/tslint-etc/compare/v1.2.7...v1.2.8) (2018-12-14)
 
