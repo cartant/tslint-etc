@@ -7,7 +7,7 @@
 import * as Lint from "tslint";
 import * as ts from "typescript";
 import * as tsutils from "tsutils";
-import { isConstDeclaration, isThis, isWithinCallExpressionExpression } from "../support/util";
+import { isConstDeclaration, isInstanceofCtor, isThis, isWithinCallExpressionExpression } from "../support/util";
 
 export class Rule extends Lint.Rules.TypedRule {
 
@@ -91,6 +91,10 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
         const leafCallback = callbackStack[callbackStack.length - 1];
         const leafOperator = callbackMap.get(leafCallback);
         const rootCallback = callbackStack[0];
+
+        if (isInstanceofCtor(node)) {
+            return false;
+        }
 
         const typeChecker = this.getTypeChecker();
         const symbol = typeChecker.getSymbolAtLocation(node);
