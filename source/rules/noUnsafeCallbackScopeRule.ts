@@ -7,7 +7,14 @@
 import * as Lint from "tslint";
 import * as ts from "typescript";
 import * as tsutils from "tsutils";
-import { isConstDeclaration, isInstanceofCtor, isThis, isWithinCallExpressionExpression } from "../support/util";
+import {
+    findDeclaration,
+    isConstDeclaration,
+    isInstanceofCtor,
+    isThis,
+    isWithinCallExpressionExpression,
+    isWithinParameterDeclaration
+} from "../support/util";
 
 export class Rule extends Lint.Rules.TypedRule {
 
@@ -97,17 +104,8 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
         }
 
         const typeChecker = this.getTypeChecker();
-        const symbol = typeChecker.getSymbolAtLocation(node);
-        if (!symbol) {
-            return false;
-        }
-
-        const declarations = symbol.getDeclarations();
-        if (!declarations || (declarations.length === 0)) {
-            return false;
-        }
-        const [declaration] = declarations;
-        if (tsutils.isParameterDeclaration(declaration)) {
+        const declaration = findDeclaration(node, typeChecker);
+        if (!declaration || isWithinParameterDeclaration(declaration)) {
             return false;
         }
         if ((declaration.pos >= rootCallback.pos) && (declaration.pos < rootCallback.end)) {
@@ -121,7 +119,18 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
             return false;
         }
         if (tsutils.isPropertyAccessExpression(node.parent)) {
-            if (node === node.parent.name) {
+            if (tsutils.isClassDeclaration(declaration)) {
+                const nameDeclaration = findDeclaration(node.parent.name, typeChecker);
+                if (!nameDeclaration) {
+                    return false;
+                }
+                if (tsutils.hasModifier(nameDeclaration.modifiers, ts.SyntaxKind.ReadonlyKeyword)) {
+                    return false;
+                }
+                return true;
+            } else if (isThis(node)) {
+                return true;
+            } else if (node === node.parent.name) {
                 return false;
             }
             const type = typeChecker.getTypeAtLocation(node.parent.name);

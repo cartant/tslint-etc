@@ -32,6 +32,20 @@ export function couldBeType(type: ts.Type, name: string | RegExp): boolean {
     return Boolean(baseTypes) && baseTypes.some((t) => couldBeType(t, name));
 }
 
+export function findDeclaration(node: ts.Node, typeChecker: ts.TypeChecker): ts.Declaration | undefined {
+
+    const symbol = typeChecker.getSymbolAtLocation(node);
+    if (!symbol) {
+        return undefined;
+    }
+    const declarations = symbol.getDeclarations();
+    if (!declarations || (declarations.length === 0)) {
+        return undefined;
+    }
+    const [declaration] = declarations;
+    return declaration;
+}
+
 export function isConstDeclaration(declaration: ts.Declaration): boolean {
 
     let variableDeclarationList: ts.VariableDeclarationList | null = null;
@@ -98,4 +112,14 @@ export function isWithinCallExpressionExpression(node: ts.Node): boolean {
         parent = node.parent;
     }
     return parent && tsutils.isCallExpression(parent) && (node === parent.expression);
+}
+
+export function isWithinParameterDeclaration(node: ts.Node): boolean {
+
+    if (tsutils.isParameterDeclaration(node)) {
+        return true;
+    }
+    return tsutils.isBindingElement(node) &&
+        tsutils.isBindingPattern(node.parent) &&
+        tsutils.isParameterDeclaration(node.parent.parent);
 }

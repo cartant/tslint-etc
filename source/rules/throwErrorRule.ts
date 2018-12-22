@@ -7,7 +7,7 @@
 import * as Lint from "tslint";
 import * as ts from "typescript";
 import * as tsutils from "tsutils";
-import { couldBeType } from "../support";
+import { couldBeType, findDeclaration } from "../support";
 
 export class Rule extends Lint.Rules.TypedRule {
 
@@ -69,10 +69,8 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
             }
         } else if (tsutils.isIdentifier(expression)) {
 
-            const symbol = typeChecker.getSymbolAtLocation(expression);
-            const [declaration] = symbol.getDeclarations();
-
-            if (this._rejects.has(declaration) && !couldBeType(typeChecker.getTypeAtLocation(argument), "Error")) {
+            const declaration = findDeclaration(expression, typeChecker);
+            if (declaration && this._rejects.has(declaration) && !couldBeType(typeChecker.getTypeAtLocation(argument), "Error")) {
                 this.addFailureAtNode(node, Rule.FAILURE_STRING);
             }
         }
