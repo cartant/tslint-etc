@@ -1,3 +1,10 @@
+<a name="1.2.11"></a>
+## [1.2.11](https://github.com/cartant/tslint-etc/compare/v1.2.10...v1.2.11) (2018-12-22)
+
+## Fixes
+
+* `no-unsafe-callback-scope` rule now supports readonly, static class properties and parameter destructuring. ([85f0801](https://github.com/cartant/tslint-etc/commit/85f0801))
+
 <a name="1.2.10"></a>
 ## [1.2.10](https://github.com/cartant/tslint-etc/compare/v1.2.9...v1.2.10) (2018-12-21)
 
