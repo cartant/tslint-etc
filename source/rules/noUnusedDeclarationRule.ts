@@ -57,8 +57,8 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
 
     protected visitFunctionDeclaration(node: ts.FunctionDeclaration): void {
 
-        const { name } = node;
-        if (name && !tsutils.hasModifier(node.modifiers, ts.SyntaxKind.ExportKeyword)) {
+        const { body, name } = node;
+        if (body && name && !tsutils.hasModifier(node.modifiers, ts.SyntaxKind.ExportKeyword)) {
             this.declared(node, name);
             this.setScopedIdentifier(name, true);
         }
