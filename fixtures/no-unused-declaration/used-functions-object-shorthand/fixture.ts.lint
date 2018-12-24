@@ -1,4 +1,10 @@
 function a(): void {}
 
-const b = { a };
-console.log(b);
+function b(x: string): void;
+function b(x: number, y: number): void;
+function b(...args: any[]): void {}
+
+const c = { a, b, d };
+console.log(c);
+
+function d(): void {}
