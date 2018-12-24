@@ -1,3 +1,11 @@
+<a name="1.2.12"></a>
+## [1.2.12](https://github.com/cartant/tslint-etc/compare/v1.2.11...v1.2.12) (2018-12-24)
+
+## Fixes
+
+* The `no-unused-declaration` rule now supports overload signatures. ([a9fd1d8](https://github.com/cartant/tslint-etc/commit/a9fd1d8))
+* The `no-unused-declaration` rule now supports hoisting functions into object shorthand. ([2bc3eb9](https://github.com/cartant/tslint-etc/commit/2bc3eb9))
+
 <a name="1.2.11"></a>
 ## [1.2.11](https://github.com/cartant/tslint-etc/compare/v1.2.10...v1.2.11) (2018-12-22)
 
