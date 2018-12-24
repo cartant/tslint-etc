@@ -170,9 +170,12 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
 
         node.properties.forEach(property => {
             if (tsutils.isShorthandPropertyAssignment(property)) {
-                const identifier = this.getScopedIdentifier(property.name.getText());
+                const text = property.name.getText();
+                const identifier = this.getScopedIdentifier(text);
                 if (identifier) {
                     this.seen(identifier);
+                } else {
+                    this._withoutDeclarations.add(text);
                 }
             }
         });
