@@ -1,3 +1,10 @@
+<a name="1.3.0"></a>
+## [1.3.0](https://github.com/cartant/tslint-etc/compare/v1.2.12...v1.3.0) (2019-02-15)
+
+## Features
+
+* The options to the `no-unused-declaration` rule. ([e592d9d](https://github.com/cartant/tslint-etc/commit/e592d9d))
+
 <a name="1.2.12"></a>
 ## [1.2.12](https://github.com/cartant/tslint-etc/compare/v1.2.11...v1.2.12) (2018-12-24)
 
