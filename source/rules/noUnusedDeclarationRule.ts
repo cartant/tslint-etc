@@ -12,8 +12,17 @@ export class Rule extends Lint.Rules.TypedRule {
 
     public static metadata: Lint.IRuleMetadata = {
         description: "Disallows used declarations.",
-        options: null,
-        optionsDescription: "Not configurable.",
+        options: {
+            properties: {
+                declarations: { type: "boolean" },
+                imports: { type: "boolean" }
+            },
+            type: "object"
+        },
+        optionsDescription: Lint.Utils.dedent`
+            An optional object with optional \`imports\` and \`declarations\` properties.
+            The properties are booleans and determine whether or unused imports or declarations are allowed.
+            The properties default to \`true\`.`,
         requiresTypeInfo: true,
         ruleName: "no-unused-declaration",
         type: "functionality",
@@ -34,33 +43,53 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
     private _scopes = [new Map<string, ts.Identifier>()];
     private _withoutDeclarations = new Set<string>();
     private _usageByIdentifier = new Map<ts.Node, "declared" | "seen" | "used">();
+    private _validate = {
+        declarations: true,
+        imports: true
+    };
+
+    constructor(sourceFile: ts.SourceFile, rawOptions: Lint.IOptions, program: ts.Program) {
+
+        super(sourceFile, rawOptions, program);
+
+        const [options] = this.getOptions();
+        if (options) {
+            this._validate = { ...this._validate, ...options };
+        }
+    }
 
     protected visitClassDeclaration(node: ts.ClassDeclaration): void {
 
-        const { name } = node;
-        if (!tsutils.hasModifier(node.modifiers, ts.SyntaxKind.ExportKeyword)) {
-            this.declared(node, name);
-            this.setScopedIdentifier(name);
+        if (this._validate.declarations) {
+            const { name } = node;
+            if (!tsutils.hasModifier(node.modifiers, ts.SyntaxKind.ExportKeyword)) {
+                this.declared(node, name);
+                this.setScopedIdentifier(name);
+            }
         }
         super.visitClassDeclaration(node);
     }
 
     protected visitEnumDeclaration(node: ts.EnumDeclaration): void {
 
-        const { name } = node;
-        if (!tsutils.hasModifier(node.modifiers, ts.SyntaxKind.ExportKeyword)) {
-            this.declared(node, name);
-            this.setScopedIdentifier(name);
+        if (this._validate.declarations) {
+            const { name } = node;
+            if (!tsutils.hasModifier(node.modifiers, ts.SyntaxKind.ExportKeyword)) {
+                this.declared(node, name);
+                this.setScopedIdentifier(name);
+            }
         }
         super.visitEnumDeclaration(node);
     }
 
     protected visitFunctionDeclaration(node: ts.FunctionDeclaration): void {
 
-        const { body, name } = node;
-        if (body && name && !tsutils.hasModifier(node.modifiers, ts.SyntaxKind.ExportKeyword)) {
-            this.declared(node, name);
-            this.setScopedIdentifier(name, true);
+        if (this._validate.declarations) {
+            const { body, name } = node;
+            if (body && name && !tsutils.hasModifier(node.modifiers, ts.SyntaxKind.ExportKeyword)) {
+                this.declared(node, name);
+                this.setScopedIdentifier(name, true);
+            }
         }
         super.visitFunctionDeclaration(node);
     }
@@ -99,7 +128,7 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
     protected visitImportDeclaration(node: ts.ImportDeclaration): void {
 
         const { importClause } = node;
-        if (importClause) {
+        if (this._validate.imports && importClause) {
             const { name } = node.importClause;
             if (name) {
                 this.declared(node, name);
@@ -123,22 +152,26 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
 
     protected visitNamedImports(node: ts.NamedImports): void {
 
-        node.elements.forEach(element => {
-            const { name, propertyName } = element;
-            this.declared(node, name);
-            if (propertyName) {
-                this.seen(propertyName);
-            }
-            this.setScopedIdentifier(name);
-        });
+        if (this._validate.imports) {
+            node.elements.forEach(element => {
+                const { name, propertyName } = element;
+                this.declared(node, name);
+                if (propertyName) {
+                    this.seen(propertyName);
+                }
+                this.setScopedIdentifier(name);
+            });
+        }
         super.visitNamedImports(node);
     }
 
     protected visitNamespaceImport(node: ts.NamespaceImport): void {
 
-        const { name } = node;
-        this.declared(node, name);
-        this.setScopedIdentifier(name);
+        if (this._validate.imports) {
+            const { name } = node;
+            this.declared(node, name);
+            this.setScopedIdentifier(name);
+        }
         super.visitNamespaceImport(node);
     }
 
@@ -168,28 +201,32 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
 
     protected visitObjectLiteralExpression(node: ts.ObjectLiteralExpression): void {
 
-        node.properties.forEach(property => {
-            if (tsutils.isShorthandPropertyAssignment(property)) {
-                const text = property.name.getText();
-                const identifier = this.getScopedIdentifier(text);
-                if (identifier) {
-                    this.seen(identifier);
-                } else {
-                    this._withoutDeclarations.add(text);
+        if (this._validate.declarations) {
+            node.properties.forEach(property => {
+                if (tsutils.isShorthandPropertyAssignment(property)) {
+                    const text = property.name.getText();
+                    const identifier = this.getScopedIdentifier(text);
+                    if (identifier) {
+                        this.seen(identifier);
+                    } else {
+                        this._withoutDeclarations.add(text);
+                    }
                 }
-            }
-        });
+            });
+        }
         super.visitObjectLiteralExpression(node);
     }
 
     protected visitVariableStatement(node: ts.VariableStatement): void {
 
-        if (!tsutils.hasModifier(node.modifiers, ts.SyntaxKind.ExportKeyword)) {
-            tsutils.forEachDeclaredVariable(node.declarationList, declaration => {
-                const { name } = declaration;
-                this.declared(node, name);
-                this.setScopedIdentifier(name);
-            });
+        if (this._validate.declarations) {
+            if (!tsutils.hasModifier(node.modifiers, ts.SyntaxKind.ExportKeyword)) {
+                tsutils.forEachDeclaredVariable(node.declarationList, declaration => {
+                    const { name } = declaration;
+                    this.declared(node, name);
+                    this.setScopedIdentifier(name);
+                });
+            }
         }
         super.visitVariableStatement(node);
     }

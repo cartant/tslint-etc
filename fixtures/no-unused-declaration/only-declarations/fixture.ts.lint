@@ -1,0 +1,13 @@
+import { a } from "./letters";
+import { a as alias } from "./letters";
+import * as l from "./letters";
+import letters from "./letters";
+
+const x = "x";
+      ~                                     [no-unused-declaration]
+const [y] = ["y"];
+       ~                                    [no-unused-declaration]
+const { z } = { z: "z" };
+        ~                                   [no-unused-declaration]
+
+[no-unused-declaration]: Unused declarations are forbidden
