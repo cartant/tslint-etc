@@ -46,7 +46,7 @@ The package includes the following rules (none of which are enabled by default):
 | `no-assign-mutated-array` | Disallows the assignment of returned, mutated arrays. Useful for those times you forget that `sort` and `reverse` mutate the array upon which they are called. | No | None |
 | `no-missing-dollar-expect` | Disallows [dtslint](https://github.com/Microsoft/dtslint) $ExpectType and $ExpectError expectations if the $ is missing. | No | None |
 | `no-unsafe-callback-scope` | Disallows the use of variables/properties from unsafe/outer scopes in callbacks. | No | None |
-| `no-unused-declaration` | Disallows unused declarations. | Yes, but [see below](#no-unused-declaration) | None |
+| `no-unused-declaration` | Disallows unused declarations. | Yes, but [see below](#no-unused-declaration) | [See below](#no-unused-declaration) |
 | `throw-error` | Enforces the use of `Error` values when throwing or rejecting. | No | None |
 
 ### Options and notes
@@ -79,3 +79,19 @@ For example, to following configuration would disallow `"foo"` with an explanati
 This rule has a fixer. However, the fixer will only remove unused import declarations. It will not remove other kinds of declarations, as doing so could be potentially destructive.
 
 For example, having it remove a function that you've spent time writing - just because you've not yet exported or called it - would be too dispiriting, so the rule will just flag it as a failure and leave the function untouched.
+
+The rule takes an optional object with optional `imports` and `declarations` properties. The properties are booleans and determine whether or unused imports or declarations are allowed. The properties default to `true`.
+
+For example:
+
+```json
+"rules": {
+  "no-unused-declarations": {
+    "options": [{
+      "declarations": true,
+      "imports": true
+    }],
+    "severity": "error"
+  }
+}
+```
