@@ -1,3 +1,10 @@
+<a name="1.2.13"></a>
+## [1.2.13](https://github.com/cartant/tslint-etc/compare/v1.2.12...v1.2.13) (2019-02-23)
+
+## Changes
+
+* Replaced `util.ts` with `tsutils-etc`.
+
 <a name="1.2.12"></a>
 ## [1.2.12](https://github.com/cartant/tslint-etc/compare/v1.2.11...v1.2.12) (2018-12-24)
 
