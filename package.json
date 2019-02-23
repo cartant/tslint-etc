@@ -6,7 +6,8 @@
   "dependencies": {
     "@phenomnomnominal/tsquery": "^3.0.0",
     "tslib": "^1.8.0",
-    "tsutils": "^3.0.0"
+    "tsutils": "^3.0.0",
+    "tsutils-etc": "^1.0.0"
   },
   "description": "More rules for TSLint",
   "devDependencies": {
