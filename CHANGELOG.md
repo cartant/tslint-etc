@@ -1,3 +1,10 @@
+<a name="1.3.2"></a>
+## [1.3.2](https://github.com/cartant/tslint-etc/compare/v1.3.1...v1.3.2) (2019-02-25)
+
+## Fixes
+
+* Allow throwing and rethrowing `any`. ([6146d14](https://github.com/cartant/tslint-etc/commit/6146d14))
+
 <a name="1.3.1"></a>
 ## [1.3.1](https://github.com/cartant/tslint-etc/compare/v1.3.0...v1.3.1) (2019-02-23)
 
