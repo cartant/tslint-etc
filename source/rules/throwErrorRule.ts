@@ -7,7 +7,7 @@
 import * as Lint from "tslint";
 import * as ts from "typescript";
 import * as tsutils from "tsutils";
-import { couldBeType, findDeclaration } from "../support";
+import { couldBeType, findDeclaration, isAny } from "../support";
 
 export class Rule extends Lint.Rules.TypedRule {
 
@@ -63,15 +63,27 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
             const type = typeChecker.getTypeAtLocation(expression.expression);
 
             if ((name === "reject") && couldBePromise(type)) {
-                if (!argument || !couldBeType(typeChecker.getTypeAtLocation(argument), "Error")) {
+                let fail = true;
+                if (argument) {
+                    const argumentType = typeChecker.getTypeAtLocation(argument);
+                    fail = !(isAny(argumentType) || couldBeType(argumentType, "Error"));
+                }
+                if (fail) {
                     this.addFailureAtNode(node, Rule.FAILURE_STRING);
                 }
             }
         } else if (tsutils.isIdentifier(expression)) {
 
             const declaration = findDeclaration(expression, typeChecker);
-            if (declaration && this._rejects.has(declaration) && !couldBeType(typeChecker.getTypeAtLocation(argument), "Error")) {
-                this.addFailureAtNode(node, Rule.FAILURE_STRING);
+            if (declaration && this._rejects.has(declaration)) {
+                let fail = true;
+                if (argument) {
+                    const argumentType = typeChecker.getTypeAtLocation(argument);
+                    fail = !(isAny(argumentType) || couldBeType(argumentType, "Error"));
+                }
+                if (fail) {
+                    this.addFailureAtNode(node, Rule.FAILURE_STRING);
+                }
             }
         }
 
@@ -121,7 +133,7 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
         const typeChecker = this.getTypeChecker();
         const type = typeChecker.getTypeAtLocation(node.expression);
 
-        if (!couldBeType(type, "Error")) {
+        if (!isAny(type) && !couldBeType(type, "Error")) {
             this.addFailureAtNode(node, Rule.FAILURE_STRING);
         }
 

@@ -2,4 +2,14 @@ export const a = () => { throw "kaboom"; };
                          ~~~~~~~~~~~~~~~                [throw-error]
 export const b = () => { throw new Error("kaboom"); };
 
+try {
+    throw new Error("kaboom");
+} catch (error: any) {
+    throw error;
+}
+
+function throwError(error: any): never {
+    throw error;
+}
+
 [throw-error]: Throwing non-Error values is forbidden
