@@ -50,5 +50,5 @@
     "test:debug": "tslint --test fixtures/no-unused-declaration/used-functions-object-shorthand/tslint.json",
     "test:tslint": "tslint --test fixtures/**/tslint.json"
   },
-  "version": "1.3.1"
+  "version": "1.3.2"
 }
