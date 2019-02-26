@@ -86,7 +86,7 @@ For example:
 
 ```json
 "rules": {
-  "no-unused-declarations": {
+  "no-unused-declaration": {
     "options": [{
       "declarations": true,
       "imports": true
