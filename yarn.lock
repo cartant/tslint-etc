@@ -10,9 +10,9 @@
     esquery "^1.0.1"
 
 "@types/node@^10.0.0":
-  version "10.12.27"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-10.12.27.tgz#eb3843f15d0ba0986cc7e4d734d2ee8b50709ef8"
-  integrity sha512-e9wgeY6gaY21on3ve0xAjgBVjGDWq/xUteK0ujsE53bUoxycMkqfnkUgMt6ffZtykZ5X12Mg3T7Pw4TRCObDKg==
+  version "10.12.29"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-10.12.29.tgz#c2c8d2d27bb55649fbafe8ea1731658421f38acf"
+  integrity sha512-J/tnbnj8HcsBgCe2apZbdUpQ7hs4d7oZNTYA5bekWdP0sr2NGsOpI/HRdDroEi209tEvTcTtxhD0FfED3DhEcw==
 
 ansi-regex@^2.0.0:
   version "2.1.1"
@@ -187,9 +187,9 @@ js-tokens@^3.0.2:
   integrity sha1-mGbfOVECEw449/mWvOtlRDIJwls=
 
 js-yaml@^3.7.0:
-  version "3.12.1"
-  resolved "https://registry.yarnpkg.com/js-yaml/-/js-yaml-3.12.1.tgz#295c8632a18a23e054cf5c9d3cecafe678167600"
-  integrity sha512-um46hB9wNOKlwkHgiuyEVAybXBjwFUV0Z/RaHJblRd9DXltue9FTYvzCr9ErQrK9Adz5MU4gHWVaNUfdmrC8qA==
+  version "3.12.2"
+  resolved "https://registry.yarnpkg.com/js-yaml/-/js-yaml-3.12.2.tgz#ef1d067c5a9d9cb65bd72f285b5d8105c77f14fc"
+  integrity sha512-QHn/Lh/7HhZ/Twc7vJYQTkjuCa0kaCcDcjK5Zlk2rvnUpy7DxMJ23+Jc2dcyvltwQVg1nygAVlB2oRDFHoRS5Q==
   dependencies:
     argparse "^1.0.7"
     esprima "^4.0.0"
@@ -279,9 +279,9 @@ tslib@^1.8.0, tslib@^1.8.1:
   integrity sha512-4krF8scpejhaOgqzBEcGM7yDIEfi0/8+8zDRZhNZZ2kjmHJ4hv3zCbQWxoJGz1iw5U0Jl0nma13xzHXcncMavQ==
 
 tslint@^5.1.0:
-  version "5.13.0"
-  resolved "https://registry.yarnpkg.com/tslint/-/tslint-5.13.0.tgz#239a2357c36b620d72d86744754b6fc088a25359"
-  integrity sha512-ECOOQRxXCYnUUePG5h/+Z1Zouobk3KFpIHA9aKBB/nnMxs97S1JJPDGt5J4cGm1y9U9VmVlfboOxA8n1kSNzGw==
+  version "5.13.1"
+  resolved "https://registry.yarnpkg.com/tslint/-/tslint-5.13.1.tgz#fbc0541c425647a33cd9108ce4fd4cd18d7904ed"
+  integrity sha512-fplQqb2miLbcPhyHoMV4FU9PtNRbgmm/zI5d3SZwwmJQM6V0eodju+hplpyfhLWpmwrDNfNYU57uYRb8s0zZoQ==
   dependencies:
     babel-code-frame "^6.22.0"
     builtin-modules "^1.1.1"
