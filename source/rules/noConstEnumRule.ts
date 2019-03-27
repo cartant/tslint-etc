@@ -7,7 +7,7 @@ import * as Lint from "tslint";
 import * as ts from "typescript";
 import { tsquery } from "@phenomnomnominal/tsquery";
 
-export class Rule extends Lint.Rules.TypedRule {
+export class Rule extends Lint.Rules.AbstractRule {
 
     public static metadata: Lint.IRuleMetadata = {
         description: "Disallows the use of const enums.",
@@ -21,7 +21,7 @@ export class Rule extends Lint.Rules.TypedRule {
 
     public static FAILURE_STRING = "const enum is forbidden";
 
-    public applyWithProgram(sourceFile: ts.SourceFile, program: ts.Program): Lint.RuleFailure[] {
+    public apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
         const failures: Lint.RuleFailure[] = [];
         const constKeywords = tsquery(
             sourceFile,
