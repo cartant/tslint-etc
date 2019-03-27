@@ -8,6 +8,8 @@ The package includes the following rules (none of which are enabled by default):
 | --- | --- | --- | --- |
 | `ban-imports` | Disallows the use of banned imports. | No | [See below](#ban-imports) |
 | `no-assign-mutated-array` | Disallows the assignment of returned, mutated arrays. Useful for those times you forget that `sort` and `reverse` mutate the array upon which they are called. | No | None |
+| `no-const-enum` | Disallows the use of `const enum`. Constant enums are not compatible with isolated modules. | No | None |
+| `no-enum` | Disallows the use of `enum`. | No | None |
 | `no-missing-dollar-expect` | Disallows [dtslint](https://github.com/Microsoft/dtslint) $ExpectType and $ExpectError expectations if the $ is missing. | No | None |
 | `no-unsafe-callback-scope` | Disallows the use of variables/properties from unsafe/outer scopes in callbacks. | No | None |
 | `no-unused-declaration` | Disallows unused declarations. | Yes, but [see below](#no-unused-declaration) | [See below](#no-unused-declaration) |
