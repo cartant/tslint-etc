@@ -1,0 +1,6 @@
+const enum Foo { FOO = "F" };
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~    [no-enum]
+enum Bar { BAR = "B" };
+~~~~~~~~~~~~~~~~~~~~~~          [no-enum]
+
+[no-enum]: enum is forbidden
