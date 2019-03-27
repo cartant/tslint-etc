@@ -1,3 +1,10 @@
+<a name="1.4.1"></a>
+## [1.4.1](https://github.com/cartant/tslint-etc/compare/v1.4.0...v1.4.1) (2019-03-27)
+
+## Fixes
+
+* Don't use typed rules for `no-enum` and `no-const-enum`. ([58ac299](https://github.com/cartant/tslint-etc/commit/58ac299))
+
 <a name="1.4.0"></a>
 ## [1.4.0](https://github.com/cartant/tslint-etc/compare/v1.3.2...v1.4.0) (2019-03-27)
 
