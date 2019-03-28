@@ -332,7 +332,9 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
 
 function getIdentifier(node: ts.Declaration): ts.Identifier {
 
-    return node["name"];
+    return tsutils.isIdentifier(node)
+        ? node
+        : node["name"];
 }
 
 function isUnaryPrefixOrPostfix(node: ts.Node): boolean {
