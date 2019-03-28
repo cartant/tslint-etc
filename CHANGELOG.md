@@ -1,3 +1,10 @@
+<a name="1.4.2"></a>
+## [1.4.2](https://github.com/cartant/tslint-etc/compare/v1.4.1...v1.4.2) (2019-03-29)
+
+## Fixes
+
+* Fix a problem with `no-unused-declaration` and `defaultProps`. ([2235987](https://github.com/cartant/tslint-etc/commit/2235987))
+
 <a name="1.4.1"></a>
 ## [1.4.1](https://github.com/cartant/tslint-etc/compare/v1.4.0...v1.4.1) (2019-03-27)
 
