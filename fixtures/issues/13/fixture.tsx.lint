@@ -1,0 +1,20 @@
+import * as React from "react";
+
+export const HeaderButton = (props: IHeaderButtonProps) => {
+  return (
+    <TouchableOpacity
+      {...props}
+    >
+      <RText
+        style={{
+          color: props.disabled ? "gray" : "black",
+          ...props.textStyle,
+        }}
+      >
+        {props.content}
+      </RText>
+    </TouchableOpacity>
+  );
+};
+
+HeaderButton.defaultProps = { disabled: false };
