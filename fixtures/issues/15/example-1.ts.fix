@@ -1,0 +1,7 @@
+import * as dotenv from "dotenv";
+import * as Hapi from "hapi";
+import * as path from "path";
+dotenv.config({ path: path.join(__dirname, "../.env") });
+import "./arrayIncludesShim";
+const server = new Hapi.Server();
+

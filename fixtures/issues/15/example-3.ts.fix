@@ -1,0 +1,8 @@
+import * as dotenv from "dotenv";
+import * as Hapi from "hapi";
+import * as path from "path";
+dotenv.config({ path: path.join(__dirname, "../.env") });
+// Just import the module to run the code inside and create global Array shim
+import "./arrayIncludesShim";
+const server = new Hapi.Server();
+

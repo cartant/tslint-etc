@@ -1,12 +1,24 @@
 import { a } from "./letters";
          ~                              [no-unused-declaration]
-import { a as alias } from "./letters";
+import { b } from "./letters";
+import { c, d } from "./letters";
+         ~                              [no-unused-declaration]
+            ~                           [no-unused-declaration]
+import { a as anise } from "./letters";
               ~~~~~                     [no-unused-declaration]
+import { b as basil } from "./letters";
+import {
+    c as carrot,
+         ~~~~~~                         [no-unused-declaration]
+    d as dill
+         ~~~~                           [no-unused-declaration]
+} from "./letters";
 import * as l from "./letters";
             ~                           [no-unused-declaration]
 import letters from "./letters";
        ~~~~~~~                          [no-unused-declaration]
 
+console.log(b, basil);
 console.log("the end");
 
 [no-unused-declaration]: Unused declarations are forbidden

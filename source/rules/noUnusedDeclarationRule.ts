@@ -41,6 +41,7 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
 
     private _associationsByIdentifier = new Map<ts.Node, ts.Node[]>();
     private _declarationsByIdentifier = new Map<ts.Node, ts.Node>();
+    private _deletes = new Set<ts.Node>();
     private _scopes = [new Map<string, ts.Identifier>()];
     private _withoutDeclarations = new Set<string>();
     private _usageByIdentifier = new Map<ts.Node, "declared" | "seen" | "used">();
@@ -258,7 +259,9 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
 
     private getFix(identifier: ts.Node, declaration: ts.Node): Lint.Fix | undefined {
 
+        const { _deletes } = this;
         if (tsutils.isImportDeclaration(declaration)) {
+            _deletes.add(declaration);
             return Lint.Replacement.deleteFromTo(
                 declaration.getFullStart(),
                 declaration.getFullStart() + declaration.getFullWidth()
@@ -269,6 +272,10 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
             if (elements.every(element => _usageByIdentifier.get(element.name) === "declared")) {
                 const importClause = declaration.parent as ts.ImportClause;
                 const importDeclaration = importClause.parent as ts.ImportDeclaration;
+                if (_deletes.has(importDeclaration)) {
+                    return undefined;
+                }
+                _deletes.add(importDeclaration);
                 return Lint.Replacement.deleteFromTo(
                     importDeclaration.getFullStart(),
                     importDeclaration.getFullStart() + importDeclaration.getFullWidth()
@@ -285,6 +292,7 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
         } else if (tsutils.isNamespaceImport(declaration)) {
             const importClause = declaration.parent as ts.ImportClause;
             const importDeclaration = importClause.parent as ts.ImportDeclaration;
+            _deletes.add(importDeclaration);
             return Lint.Replacement.deleteFromTo(
                 importDeclaration.getFullStart(),
                 importDeclaration.getFullStart() + importDeclaration.getFullWidth()

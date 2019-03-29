@@ -1,4 +1,7 @@
 
+import { b } from "./letters";
+import { b as basil } from "./letters";
 
+console.log(b, basil);
 console.log("the end");
 
