@@ -50,5 +50,5 @@
     "test:debug": "tslint --test fixtures/no-unused-declaration/unused-imports/tslint.json",
     "test:tslint": "tslint --test fixtures/**/tslint.json"
   },
-  "version": "1.4.3"
+  "version": "1.4.4"
 }
