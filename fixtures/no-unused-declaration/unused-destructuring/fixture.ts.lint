@@ -15,4 +15,10 @@ function g({ name: renamed }: { name?: string }): void {}
 
 console.log(f.toString(), g.toString());
 
+const { a, b, ...rest } = { a: 1, b: 2, c: 3 };
+           ~                            [no-unused-declaration]
+                 ~~~~                   [no-unused-declaration]
+
+console.log(a);
+
 [no-unused-declaration]: Unused declarations are forbidden

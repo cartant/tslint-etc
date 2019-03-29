@@ -12,3 +12,7 @@ function g({ name: renamed }: { name?: string }): void {}
 
 console.log(f.toString(), g.toString());
 
+const { a, b, ...rest } = { a: 1, b: 2, c: 3 };
+
+console.log(a);
+

@@ -39,6 +39,7 @@ export class Rule extends Lint.Rules.TypedRule {
 
 export class Walker extends Lint.ProgramAwareRuleWalker {
 
+    private _associationsByIdentifier = new Map<ts.Node, ts.Node[]>();
     private _declarationsByIdentifier = new Map<ts.Node, ts.Node>();
     private _scopes = [new Map<string, ts.Identifier>()];
     private _withoutDeclarations = new Set<string>();
@@ -100,6 +101,10 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
 
         if (tsutils.isExportSpecifier(node.parent)) {
             this.seen(node.getText());
+            return;
+        }
+
+        if (tsutils.isPropertyAssignment(node.parent) && (node === node.parent.name)) {
             return;
         }
 
@@ -221,14 +226,26 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
 
         if (this._validate.declarations) {
             if (!tsutils.hasModifier(node.modifiers, ts.SyntaxKind.ExportKeyword)) {
+                const names: ts.Identifier[] = [];
                 tsutils.forEachDeclaredVariable(node.declarationList, declaration => {
                     const { name } = declaration;
+                    if (tsutils.isBindingElement(declaration) && declaration.dotDotDotToken) {
+                        this.associate(name, names);
+                    } else {
+                        names.push(name);
+                    }
                     this.declared(node, name);
                     this.setScopedIdentifier(name);
                 });
             }
         }
         super.visitVariableStatement(node);
+    }
+
+    private associate(name: ts.Node, names: ts.Node[]): void {
+
+        const { _associationsByIdentifier } = this;
+        _associationsByIdentifier.set(name, names);
     }
 
     private declared(declaration: ts.Node, name: ts.Node): void {
@@ -302,16 +319,24 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
 
     private seen(name: ts.Node | string): void {
 
-        const { _usageByIdentifier } = this;
+        const { _associationsByIdentifier, _usageByIdentifier } = this;
         if (typeof name === "string") {
             _usageByIdentifier.forEach((value, key) => {
                 if (key.getText() === name) {
                     _usageByIdentifier.set(key, (value === "declared") ? "used" : "seen");
+                    const associatedNames = _associationsByIdentifier.get(key);
+                    if (associatedNames) {
+                        associatedNames.forEach(associatedName => this.seen(associatedName));
+                    }
                 }
             });
         } else {
             const usage = _usageByIdentifier.get(name);
             _usageByIdentifier.set(name, (usage === "declared") ? "used" : "seen");
+            const associatedNames = _associationsByIdentifier.get(name);
+            if (associatedNames) {
+                associatedNames.forEach(associatedName => this.seen(associatedName));
+            }
         }
     }
 
