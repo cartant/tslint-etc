@@ -1,3 +1,10 @@
+<a name="1.4.4"></a>
+## [1.4.4](https://github.com/cartant/tslint-etc/compare/v1.4.3...v1.4.4) (2019-03-30)
+
+## Fixes
+
+* Don't delete imports more than once when fixing `no-unused-declaration` failures. ([a8b634d](https://github.com/cartant/tslint-etc/commit/a8b634d))
+
 <a name="1.4.3"></a>
 ## [1.4.3](https://github.com/cartant/tslint-etc/compare/v1.4.2...v1.4.3) (2019-03-29)
 
