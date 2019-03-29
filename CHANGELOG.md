@@ -1,3 +1,10 @@
+<a name="1.4.3"></a>
+## [1.4.3](https://github.com/cartant/tslint-etc/compare/v1.4.2...v1.4.3) (2019-03-29)
+
+## Fixes
+
+* Allow removal of props via destructing with `no-unused-declaration` enabled. ([e0699a7](https://github.com/cartant/tslint-etc/commit/e0699a7))
+
 <a name="1.4.2"></a>
 ## [1.4.2](https://github.com/cartant/tslint-etc/compare/v1.4.1...v1.4.2) (2019-03-29)
 
