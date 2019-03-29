@@ -50,5 +50,5 @@
     "test:debug": "tslint --test fixtures/no-unused-declaration/used-destructuring/tslint.json",
     "test:tslint": "tslint --test fixtures/**/tslint.json"
   },
-  "version": "1.4.2"
+  "version": "1.4.3"
 }
