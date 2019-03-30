@@ -50,5 +50,5 @@
     "test:debug": "tslint --test fixtures/no-const-enum/local/tslint.json",
     "test:tslint": "tslint --test fixtures/**/tslint.json"
   },
-  "version": "1.4.4"
+  "version": "1.5.0"
 }
