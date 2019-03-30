@@ -1,3 +1,10 @@
+<a name="1.5.0"></a>
+## [1.5.0](https://github.com/cartant/tslint-etc/compare/v1.4.4...v1.5.0) (2019-03-31)
+
+## Features
+
+* Add an `allowLocal` option to the `no-const-enum` rule. ([1637c8d](https://github.com/cartant/tslint-etc/commit/1637c8d))
+
 <a name="1.4.4"></a>
 ## [1.4.4](https://github.com/cartant/tslint-etc/compare/v1.4.3...v1.4.4) (2019-03-30)
 
