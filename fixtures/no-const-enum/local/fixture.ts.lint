@@ -1,0 +1,7 @@
+export const enum Foo { FOO = "F" };
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~     [no-const-enum]
+export enum Boo { BOO = "B" };
+enum Goo { GOO = "G" };
+const enum Moo { MOO = "M" };
+
+[no-const-enum]: const enum is forbidden

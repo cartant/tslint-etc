@@ -1,0 +1,13 @@
+{
+  "defaultSeverity": "error",
+  "jsRules": {},
+  "rules": {
+    "no-const-enum": {
+      "options": [{
+        "allowLocal": true
+      }],
+      "severity": "error"
+    }
+  },
+  "rulesDirectory": "../../../build/rules"
+}
