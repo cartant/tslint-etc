@@ -144,6 +144,18 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
         super.visitImportDeclaration(node);
     }
 
+    protected visitInterfaceDeclaration(node: ts.InterfaceDeclaration): void {
+
+        if (this._validate.declarations) {
+            const { name } = node;
+            if (!tsutils.hasModifier(node.modifiers, ts.SyntaxKind.ExportKeyword)) {
+                this.declared(node, name);
+                this.setScopedIdentifier(name);
+            }
+        }
+        super.visitInterfaceDeclaration(node);
+    }
+
     protected visitJsxSelfClosingElement(node: ts.JsxSelfClosingElement): void {
 
         this.seenJsx();
@@ -221,6 +233,18 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
             });
         }
         super.visitObjectLiteralExpression(node);
+    }
+
+    protected visitTypeAliasDeclaration(node: ts.TypeAliasDeclaration): void {
+
+        if (this._validate.declarations) {
+            const { name } = node;
+            if (!tsutils.hasModifier(node.modifiers, ts.SyntaxKind.ExportKeyword)) {
+                this.declared(node, name);
+                this.setScopedIdentifier(name);
+            }
+        }
+        super.visitTypeAliasDeclaration(node);
     }
 
     protected visitVariableStatement(node: ts.VariableStatement): void {

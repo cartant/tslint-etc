@@ -1,2 +1,3 @@
-class Person {}
+interface SomeInterface {}
+type SomeType = {};
 
