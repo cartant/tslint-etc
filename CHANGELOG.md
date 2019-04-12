@@ -1,3 +1,10 @@
+<a name="1.5.1"></a>
+## [1.5.1](https://github.com/cartant/tslint-etc/compare/v1.5.0...v1.5.1) (2019-04-13)
+
+## Fixes
+
+* Support interfaces and type aliases in the `no-unused-declaration` rule. ([bdc71ba](https://github.com/cartant/tslint-etc/commit/bdc71ba))
+
 <a name="1.5.0"></a>
 ## [1.5.0](https://github.com/cartant/tslint-etc/compare/v1.4.4...v1.5.0) (2019-03-31)
 
