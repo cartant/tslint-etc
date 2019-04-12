@@ -1,0 +1,7 @@
+interface SomeInterface {}
+type SomeType = {};
+
+declare const a: SomeInterface;
+declare const b: SomeType;
+
+console.log(a, b);

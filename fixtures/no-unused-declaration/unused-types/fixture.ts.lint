@@ -1,0 +1,6 @@
+interface SomeInterface {}
+          ~~~~~~~~~~~~~     [no-unused-declaration]
+type SomeType = {};
+     ~~~~~~~~               [no-unused-declaration]
+
+[no-unused-declaration]: Unused declarations are forbidden
