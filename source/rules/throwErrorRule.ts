@@ -10,137 +10,136 @@ import * as tsutils from "tsutils";
 import { couldBeType, findDeclaration, isAny } from "../support";
 
 export class Rule extends Lint.Rules.TypedRule {
+  public static metadata: Lint.IRuleMetadata = {
+    description:
+      "Enforces the use of `Error` values when throwing or rejecting.",
+    options: null,
+    optionsDescription: "Not configurable.",
+    requiresTypeInfo: true,
+    ruleName: "throw-error",
+    type: "functionality",
+    typescriptOnly: true
+  };
 
-    public static metadata: Lint.IRuleMetadata = {
-        description: "Enforces the use of `Error` values when throwing or rejecting.",
-        options: null,
-        optionsDescription: "Not configurable.",
-        requiresTypeInfo: true,
-        ruleName: "throw-error",
-        type: "functionality",
-        typescriptOnly: true
-    };
+  public static FAILURE_STRING = "Throwing non-Error values is forbidden";
 
-    public static FAILURE_STRING = "Throwing non-Error values is forbidden";
-
-    public applyWithProgram(sourceFile: ts.SourceFile, program: ts.Program): Lint.RuleFailure[] {
-
-        return this.applyWithWalker(new Walker(sourceFile, this.getOptions(), program));
-    }
+  public applyWithProgram(
+    sourceFile: ts.SourceFile,
+    program: ts.Program
+  ): Lint.RuleFailure[] {
+    return this.applyWithWalker(
+      new Walker(sourceFile, this.getOptions(), program)
+    );
+  }
 }
 
 export class Walker extends Lint.ProgramAwareRuleWalker {
+  private _callbacks = new Map<ts.Node, boolean>();
+  private _rejects = new Map<ts.Node, boolean>();
 
-    private _callbacks = new Map<ts.Node, boolean>();
-    private _rejects = new Map<ts.Node, boolean>();
+  protected visitArrowFunction(node: ts.ArrowFunction): void {
+    let reject: ts.Node | undefined = undefined;
 
-    protected visitArrowFunction(node: ts.ArrowFunction): void {
-
-        let reject: ts.Node | undefined = undefined;
-
-        if (this._callbacks.has(node)) {
-            [, reject] = node.parameters;
-        }
-
-        if (reject) {
-            this._rejects.set(reject, true);
-        }
-        super.visitArrowFunction(node);
-
-        if (reject) {
-            this._rejects.delete(reject);
-        }
+    if (this._callbacks.has(node)) {
+      [, reject] = node.parameters;
     }
 
-    protected visitCallExpression(node: ts.CallExpression): void {
+    if (reject) {
+      this._rejects.set(reject, true);
+    }
+    super.visitArrowFunction(node);
 
-        const { arguments: [argument], expression } = node;
-        const typeChecker = this.getTypeChecker();
+    if (reject) {
+      this._rejects.delete(reject);
+    }
+  }
 
-        if (tsutils.isPropertyAccessExpression(expression)) {
+  protected visitCallExpression(node: ts.CallExpression): void {
+    const {
+      arguments: [argument],
+      expression
+    } = node;
+    const typeChecker = this.getTypeChecker();
 
-            const name = expression.name.getText();
-            const type = typeChecker.getTypeAtLocation(expression.expression);
+    if (tsutils.isPropertyAccessExpression(expression)) {
+      const name = expression.name.getText();
+      const type = typeChecker.getTypeAtLocation(expression.expression);
 
-            if ((name === "reject") && couldBePromise(type)) {
-                let fail = true;
-                if (argument) {
-                    const argumentType = typeChecker.getTypeAtLocation(argument);
-                    fail = !(isAny(argumentType) || couldBeType(argumentType, "Error"));
-                }
-                if (fail) {
-                    this.addFailureAtNode(node, Rule.FAILURE_STRING);
-                }
-            }
-        } else if (tsutils.isIdentifier(expression)) {
-
-            const declaration = findDeclaration(expression, typeChecker);
-            if (declaration && this._rejects.has(declaration)) {
-                let fail = true;
-                if (argument) {
-                    const argumentType = typeChecker.getTypeAtLocation(argument);
-                    fail = !(isAny(argumentType) || couldBeType(argumentType, "Error"));
-                }
-                if (fail) {
-                    this.addFailureAtNode(node, Rule.FAILURE_STRING);
-                }
-            }
+      if (name === "reject" && couldBePromise(type)) {
+        let fail = true;
+        if (argument) {
+          const argumentType = typeChecker.getTypeAtLocation(argument);
+          fail = !(isAny(argumentType) || couldBeType(argumentType, "Error"));
         }
-
-        super.visitCallExpression(node);
+        if (fail) {
+          this.addFailureAtNode(node, Rule.FAILURE_STRING);
+        }
+      }
+    } else if (tsutils.isIdentifier(expression)) {
+      const declaration = findDeclaration(expression, typeChecker);
+      if (declaration && this._rejects.has(declaration)) {
+        let fail = true;
+        if (argument) {
+          const argumentType = typeChecker.getTypeAtLocation(argument);
+          fail = !(isAny(argumentType) || couldBeType(argumentType, "Error"));
+        }
+        if (fail) {
+          this.addFailureAtNode(node, Rule.FAILURE_STRING);
+        }
+      }
     }
 
-    protected visitFunctionExpression(node: ts.FunctionExpression): void {
+    super.visitCallExpression(node);
+  }
 
-        let reject: ts.Node | undefined = undefined;
+  protected visitFunctionExpression(node: ts.FunctionExpression): void {
+    let reject: ts.Node | undefined = undefined;
 
-        if (this._callbacks.has(node)) {
-            [, reject] = node.parameters;
-        }
-
-        if (reject) {
-            this._rejects.set(reject, true);
-        }
-        super.visitFunctionExpression(node);
-
-        if (reject) {
-            this._rejects.delete(reject);
-        }
+    if (this._callbacks.has(node)) {
+      [, reject] = node.parameters;
     }
 
-    protected visitNewExpression(node: ts.NewExpression): void {
+    if (reject) {
+      this._rejects.set(reject, true);
+    }
+    super.visitFunctionExpression(node);
 
-        const typeChecker = this.getTypeChecker();
-        const type = typeChecker.getTypeAtLocation(node.expression);
+    if (reject) {
+      this._rejects.delete(reject);
+    }
+  }
 
-        let callback: ts.Node | undefined = undefined;
-        if (couldBePromise(type)) {
-            [callback] = node.arguments;
-        }
+  protected visitNewExpression(node: ts.NewExpression): void {
+    const typeChecker = this.getTypeChecker();
+    const type = typeChecker.getTypeAtLocation(node.expression);
 
-        if (callback) {
-            this._callbacks.set(callback, true);
-        }
-        super.visitNewExpression(node);
-
-        if (callback) {
-            this._callbacks.delete(callback);
-        }
+    let callback: ts.Node | undefined = undefined;
+    if (couldBePromise(type)) {
+      [callback] = node.arguments;
     }
 
-    protected visitThrowStatement(node: ts.ThrowStatement): void {
-
-        const typeChecker = this.getTypeChecker();
-        const type = typeChecker.getTypeAtLocation(node.expression);
-
-        if (!isAny(type) && !couldBeType(type, "Error")) {
-            this.addFailureAtNode(node, Rule.FAILURE_STRING);
-        }
-
-        super.visitThrowStatement(node);
+    if (callback) {
+      this._callbacks.set(callback, true);
     }
+    super.visitNewExpression(node);
+
+    if (callback) {
+      this._callbacks.delete(callback);
+    }
+  }
+
+  protected visitThrowStatement(node: ts.ThrowStatement): void {
+    const typeChecker = this.getTypeChecker();
+    const type = typeChecker.getTypeAtLocation(node.expression);
+
+    if (!isAny(type) && !couldBeType(type, "Error")) {
+      this.addFailureAtNode(node, Rule.FAILURE_STRING);
+    }
+
+    super.visitThrowStatement(node);
+  }
 }
 
 function couldBePromise(type: ts.Type): boolean {
-    return couldBeType(type, /^Promise/);
+  return couldBeType(type, /^Promise/);
 }

@@ -8,156 +8,167 @@ import * as Lint from "tslint";
 import * as ts from "typescript";
 import * as tsutils from "tsutils";
 import {
-    findDeclaration,
-    isConstDeclaration,
-    isInstanceofCtor,
-    isThis,
-    isWithinCallExpressionExpression,
-    isWithinParameterDeclaration
+  findDeclaration,
+  isConstDeclaration,
+  isInstanceofCtor,
+  isThis,
+  isWithinCallExpressionExpression,
+  isWithinParameterDeclaration
 } from "../support/util";
 
 export class Rule extends Lint.Rules.TypedRule {
+  public static metadata: Lint.IRuleMetadata = {
+    description:
+      "Disallows the use of variables/properties from unsafe/outer scopes in callbacks.",
+    options: null,
+    optionsDescription: "Not configurable.",
+    requiresTypeInfo: true,
+    ruleName: "no-unsafe-callback-scope",
+    type: "functionality",
+    typescriptOnly: true
+  };
 
-    public static metadata: Lint.IRuleMetadata = {
-        description: "Disallows the use of variables/properties from unsafe/outer scopes in callbacks.",
-        options: null,
-        optionsDescription: "Not configurable.",
-        requiresTypeInfo: true,
-        ruleName: "no-unsafe-callback-scope",
-        type: "functionality",
-        typescriptOnly: true
-    };
+  public static FAILURE_STRING = "Unsafe scopes are forbidden";
 
-    public static FAILURE_STRING = "Unsafe scopes are forbidden";
-
-    public applyWithProgram(sourceFile: ts.SourceFile, program: ts.Program): Lint.RuleFailure[] {
-
-        return this.applyWithWalker(new Walker(sourceFile, this.getOptions(), program));
-    }
+  public applyWithProgram(
+    sourceFile: ts.SourceFile,
+    program: ts.Program
+  ): Lint.RuleFailure[] {
+    return this.applyWithWalker(
+      new Walker(sourceFile, this.getOptions(), program)
+    );
+  }
 }
 
 export class Walker extends Lint.ProgramAwareRuleWalker {
+  private callbackMap: Map<ts.Node, string> = new Map<ts.Node, string>();
+  private callbackStack: (ts.ArrowFunction | ts.FunctionExpression)[] = [];
 
-    private callbackMap: Map<ts.Node, string> = new Map<ts.Node, string>();
-    private callbackStack: (ts.ArrowFunction | ts.FunctionExpression)[] = [];
+  protected visitArrowFunction(node: ts.ArrowFunction): void {
+    if (this.callbackMap.has(node)) {
+      this.callbackStack.push(node);
+      super.visitArrowFunction(node);
+      this.callbackStack.pop();
+    } else {
+      super.visitArrowFunction(node);
+    }
+  }
 
-    protected visitArrowFunction(node: ts.ArrowFunction): void {
+  protected visitCallExpression(node: ts.CallExpression): void {
+    const { arguments: args, expression } = node;
+    let name: string;
 
-        if (this.callbackMap.has(node)) {
-            this.callbackStack.push(node);
-            super.visitArrowFunction(node);
-            this.callbackStack.pop();
-        } else {
-            super.visitArrowFunction(node);
-        }
+    if (tsutils.isIdentifier(expression)) {
+      name = expression.getText();
+    } else if (tsutils.isPropertyAccessExpression(expression)) {
+      const { name: propertyName } = expression;
+      name = propertyName.getText();
     }
 
-    protected visitCallExpression(node: ts.CallExpression): void {
+    const callbacks = args.filter(
+      arg => tsutils.isArrowFunction(arg) || tsutils.isFunctionExpression(arg)
+    );
+    callbacks.forEach(callback => this.callbackMap.set(callback, name));
+    super.visitCallExpression(node);
+    callbacks.forEach(callback => this.callbackMap.delete(callback));
+  }
 
-        const { arguments: args, expression } = node;
-        let name: string;
+  protected visitFunctionExpression(node: ts.FunctionExpression): void {
+    if (this.callbackMap.has(node)) {
+      this.callbackStack.push(node);
+      super.visitFunctionExpression(node);
+      this.callbackStack.pop();
+    } else {
+      super.visitFunctionExpression(node);
+    }
+  }
 
-        if (tsutils.isIdentifier(expression)) {
-            name = expression.getText();
-        } else if (tsutils.isPropertyAccessExpression(expression)) {
-            const { name: propertyName } = expression;
-            name = propertyName.getText();
-        }
+  protected visitNode(node: ts.Node): void {
+    if (this.callbackStack.length) {
+      const validateNode = tsutils.isIdentifier(node) || isThis(node);
+      if (validateNode && this.isUnsafe(node)) {
+        this.addFailureAtNode(node, Rule.FAILURE_STRING);
+      }
+    }
+    super.visitNode(node);
+  }
 
-        const callbacks = args.filter(arg => tsutils.isArrowFunction(arg) || tsutils.isFunctionExpression(arg));
-        callbacks.forEach(callback => this.callbackMap.set(callback, name));
-        super.visitCallExpression(node);
-        callbacks.forEach(callback => this.callbackMap.delete(callback));
+  private isUnsafe(node: ts.Node): boolean {
+    const { callbackMap, callbackStack } = this;
+    const leafCallback = callbackStack[callbackStack.length - 1];
+    const leafOperator = callbackMap.get(leafCallback);
+    const rootCallback = callbackStack[0];
+
+    if (isInstanceofCtor(node)) {
+      return false;
     }
 
-    protected visitFunctionExpression(node: ts.FunctionExpression): void {
-
-        if (this.callbackMap.has(node)) {
-            this.callbackStack.push(node);
-            super.visitFunctionExpression(node);
-            this.callbackStack.pop();
-        } else {
-            super.visitFunctionExpression(node);
-        }
+    const typeChecker = this.getTypeChecker();
+    const declaration = findDeclaration(node, typeChecker);
+    if (!declaration || isWithinParameterDeclaration(declaration)) {
+      return false;
+    }
+    if (
+      declaration.pos >= rootCallback.pos &&
+      declaration.pos < rootCallback.end
+    ) {
+      return false;
     }
 
-    protected visitNode(node: ts.Node): void {
-
-        if (this.callbackStack.length) {
-            const validateNode = tsutils.isIdentifier(node) || isThis(node);
-            if (validateNode && this.isUnsafe(node)) {
-                this.addFailureAtNode(node, Rule.FAILURE_STRING);
-            }
-        }
-        super.visitNode(node);
+    if (isWithinCallExpressionExpression(node)) {
+      return false;
     }
-
-    private isUnsafe(node: ts.Node): boolean {
-
-        const { callbackMap, callbackStack } = this;
-        const leafCallback = callbackStack[callbackStack.length - 1];
-        const leafOperator = callbackMap.get(leafCallback);
-        const rootCallback = callbackStack[0];
-
-        if (isInstanceofCtor(node)) {
-            return false;
+    if (tsutils.isNewExpression(node.parent)) {
+      return false;
+    }
+    if (tsutils.isPropertyAccessExpression(node.parent)) {
+      if (tsutils.isClassDeclaration(declaration)) {
+        const nameDeclaration = findDeclaration(node.parent.name, typeChecker);
+        if (!nameDeclaration) {
+          return false;
         }
-
-        const typeChecker = this.getTypeChecker();
-        const declaration = findDeclaration(node, typeChecker);
-        if (!declaration || isWithinParameterDeclaration(declaration)) {
-            return false;
-        }
-        if ((declaration.pos >= rootCallback.pos) && (declaration.pos < rootCallback.end)) {
-            return false;
-        }
-
-        if (isWithinCallExpressionExpression(node)) {
-            return false;
-        }
-        if (tsutils.isNewExpression(node.parent)) {
-            return false;
-        }
-        if (tsutils.isPropertyAccessExpression(node.parent)) {
-            if (tsutils.isClassDeclaration(declaration)) {
-                const nameDeclaration = findDeclaration(node.parent.name, typeChecker);
-                if (!nameDeclaration) {
-                    return false;
-                }
-                if (tsutils.hasModifier(nameDeclaration.modifiers, ts.SyntaxKind.ReadonlyKeyword)) {
-                    return false;
-                }
-                return true;
-            } else if (isThis(node)) {
-                return true;
-            } else if (node === node.parent.name) {
-                return false;
-            }
-            const type = typeChecker.getTypeAtLocation(node.parent.name);
-            /*tslint:disable-next-line:no-bitwise*/
-            if ((type.flags & ts.TypeFlags.EnumLiteral) !== 0) {
-                return false;
-            }
-        }
-
-        if (tsutils.isVariableDeclarationList(declaration.parent)) {
-            if (tsutils.getVariableDeclarationKind(declaration.parent) === tsutils.VariableDeclarationKind.Const) {
-                return false;
-            }
-        }
-        if (tsutils.isTypeReferenceNode(node.parent)) {
-            return false;
-        }
-
-        if (isConstDeclaration(declaration)) {
-            return false;
-        }
-        if (tsutils.isImportSpecifier(declaration)) {
-            return false;
-        }
-        if (tsutils.isNamespaceImport(declaration)) {
-            return false;
+        if (
+          tsutils.hasModifier(
+            nameDeclaration.modifiers,
+            ts.SyntaxKind.ReadonlyKeyword
+          )
+        ) {
+          return false;
         }
         return true;
+      } else if (isThis(node)) {
+        return true;
+      } else if (node === node.parent.name) {
+        return false;
+      }
+      const type = typeChecker.getTypeAtLocation(node.parent.name);
+      /*tslint:disable-next-line:no-bitwise*/
+      if ((type.flags & ts.TypeFlags.EnumLiteral) !== 0) {
+        return false;
+      }
     }
+
+    if (tsutils.isVariableDeclarationList(declaration.parent)) {
+      if (
+        tsutils.getVariableDeclarationKind(declaration.parent) ===
+        tsutils.VariableDeclarationKind.Const
+      ) {
+        return false;
+      }
+    }
+    if (tsutils.isTypeReferenceNode(node.parent)) {
+      return false;
+    }
+
+    if (isConstDeclaration(declaration)) {
+      return false;
+    }
+    if (tsutils.isImportSpecifier(declaration)) {
+      return false;
+    }
+    if (tsutils.isNamespaceImport(declaration)) {
+      return false;
+    }
+    return true;
+  }
 }
