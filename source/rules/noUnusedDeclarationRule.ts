@@ -225,19 +225,17 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
   protected visitObjectLiteralExpression(
     node: ts.ObjectLiteralExpression
   ): void {
-    if (this._validate.declarations) {
-      node.properties.forEach(property => {
-        if (tsutils.isShorthandPropertyAssignment(property)) {
-          const text = property.name.getText();
-          const identifier = this.getScopedIdentifier(text);
-          if (identifier) {
-            this.seen(identifier);
-          } else {
-            this._withoutDeclarations.add(text);
-          }
+    node.properties.forEach(property => {
+      if (tsutils.isShorthandPropertyAssignment(property)) {
+        const text = property.name.getText();
+        const identifier = this.getScopedIdentifier(text);
+        if (identifier) {
+          this.seen(identifier);
+        } else {
+          this._withoutDeclarations.add(text);
         }
-      });
-    }
+      }
+    });
     super.visitObjectLiteralExpression(node);
   }
 

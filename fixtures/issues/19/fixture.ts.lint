@@ -1,7 +1,9 @@
-import bit from "./bit";
+import bit, { bot, but } from "./bit";
 
 const infoWrapper = {
-  bit
+  bit,
+  bot,
+  but: but
 };
 
 export default infoWrapper;
