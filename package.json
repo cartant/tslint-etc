@@ -27,7 +27,10 @@
   ],
   "license": "MIT",
   "lint-staged": {
-    "*.{js,ts}": ["prettier --write", "git add"]
+    "*.{js,ts}": [
+      "prettier --write",
+      "git add"
+    ]
   },
   "main": "./index.js",
   "name": "tslint-etc",
