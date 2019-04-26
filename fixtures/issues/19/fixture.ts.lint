@@ -1,0 +1,7 @@
+import bit from "./bit";
+
+const infoWrapper = {
+  bit
+};
+
+export default infoWrapper;
