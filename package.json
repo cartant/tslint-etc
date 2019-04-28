@@ -20,6 +20,11 @@
     "typescript": "~3.4.1"
   },
   "homepage": "https://github.com/cartant/tslint-etc",
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
   "keywords": [
     "lint",
     "rules",
