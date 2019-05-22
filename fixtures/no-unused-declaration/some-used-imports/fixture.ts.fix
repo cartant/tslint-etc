@@ -3,5 +3,8 @@ import {
     b as banana
 } from "./letters";
 
-console.log(b, banana);
+import d from "./letters";
+import f from "./letters";
+
+console.log(b, banana, d, f);
 

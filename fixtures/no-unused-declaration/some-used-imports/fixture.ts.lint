@@ -1,14 +1,19 @@
 import { a, b, c } from "./letters";
-         ~                              [no-unused-declaration]
-               ~                        [no-unused-declaration]
+         ~                                  [no-unused-declaration]
+               ~                            [no-unused-declaration]
 import {
     a as apple,
-         ~~~~~                          [no-unused-declaration]
+         ~~~~~                              [no-unused-declaration]
     b as banana,
     c as cherry
-         ~~~~~~                         [no-unused-declaration]
+         ~~~~~~                             [no-unused-declaration]
 } from "./letters";
 
-console.log(b, banana);
+import d, { e } from "./letters";
+            ~                               [no-unused-declaration]
+import f, { g as grape } from "./letters";
+                 ~~~~~                      [no-unused-declaration]
+
+console.log(b, banana, d, f);
 
 [no-unused-declaration]: Unused declarations are forbidden
