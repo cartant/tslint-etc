@@ -1,3 +1,10 @@
+<a name="1.5.3"></a>
+## [1.5.3](https://github.com/cartant/tslint-etc/compare/v1.5.2...v1.5.3) (2019-05-22)
+
+## Fixes
+
+* Fix `no-unused-declaration` fixer for situations in which default and named imports are (un)used together - see [#21](https://github.com/cartant/tslint-etc/issues/21). ([a68d3c0](https://github.com/cartant/tslint-etc/commit/a68d3c0))
+
 <a name="1.5.2"></a>
 ## [1.5.2](https://github.com/cartant/tslint-etc/compare/v1.5.1...v1.5.2) (2019-04-26)
 
