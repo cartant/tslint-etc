@@ -308,6 +308,14 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
         if (_deletes.has(importDeclaration)) {
           return undefined;
         }
+        const { name } = importClause;
+        if (name && this.used(name)) {
+          _deletes.add(declaration);
+          return Lint.Replacement.deleteFromTo(
+            name.getFullStart() + name.getFullWidth(),
+            declaration.getFullStart() + declaration.getFullWidth()
+          );
+        }
         _deletes.add(importDeclaration);
         return Lint.Replacement.deleteFromTo(
           importDeclaration.getFullStart(),
@@ -405,6 +413,18 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
     const { _scopes } = this;
     const scope = _scopes[_scopes.length - (parent ? 2 : 1)];
     scope.set(identifier.getText(), identifier);
+  }
+
+  private used(name: ts.Node | string): boolean {
+    const { _usageByIdentifier } = this;
+    const text = typeof name === "string" ? name : name.getText();
+    let used = false;
+    _usageByIdentifier.forEach((usage, identifier) => {
+      if (usage === "used" && identifier.getText() === text) {
+        used = true;
+      }
+    });
+    return used;
   }
 }
 

@@ -9,11 +9,18 @@ import {
          ~~~~~~                             [no-unused-declaration]
 } from "./letters";
 
-import d, { e } from "./letters";
+import t, { d } from "./letters";
             ~                               [no-unused-declaration]
-import f, { g as grape } from "./letters";
+import u, { e as egg } from "./letters";
+                 ~~~                        [no-unused-declaration]
+
+import v, { f } from "./letters";
+       ~                                    [no-unused-declaration]
+            ~                               [no-unused-declaration]
+import w, { g as grape } from "./letters";
+       ~                                    [no-unused-declaration]
                  ~~~~~                      [no-unused-declaration]
 
-console.log(b, banana, d, f);
+console.log(b, banana, t, u);
 
 [no-unused-declaration]: Unused declarations are forbidden
