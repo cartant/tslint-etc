@@ -20,7 +20,7 @@ export class Rule extends Lint.Rules.TypedRule {
     },
     optionsDescription: Lint.Utils.dedent`
             An optional object with optional \`imports\` and \`declarations\` properties.
-            The properties are booleans and determine whether or unused imports or declarations are allowed.
+            The properties are booleans and determine whether or not unused imports or declarations are allowed.
             The properties default to \`true\`.`,
     requiresTypeInfo: true,
     ruleName: "no-unused-declaration",
