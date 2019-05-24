@@ -101,7 +101,7 @@ This rule has a fixer. However, the fixer will only remove unused import declara
 
 For example, having it remove a function that you've spent time writing - just because you've not yet exported or called it - would be too dispiriting, so the rule will just flag it as a failure and leave the function untouched.
 
-The rule takes an optional object with optional `imports` and `declarations` properties. The properties are booleans and determine whether or unused imports or declarations are allowed. The properties default to `true`.
+The rule takes an optional object with optional `imports` and `declarations` properties. The properties are booleans and determine whether or not unused imports or declarations are allowed. The properties default to `true`.
 
 For example:
 
