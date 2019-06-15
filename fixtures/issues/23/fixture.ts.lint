@@ -13,3 +13,5 @@ const routes: Routes = [
   exports: [RouterModule]
 })
 export class AppRoutingModule {}
+
+[no-unsafe-callback-scope]: Unsafe scopes are forbidden

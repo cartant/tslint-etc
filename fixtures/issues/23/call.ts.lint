@@ -1,0 +1,6 @@
+let outer = new Date();
+const unsafe = [new Date()].map(date => outer.getTime());
+                                        ~~~~~             [no-unsafe-callback-scope]
+const safe = [new Date()].map(date => date.getTime());
+
+[no-unsafe-callback-scope]: Unsafe scopes are forbidden
