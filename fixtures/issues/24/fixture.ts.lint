@@ -1,0 +1,6 @@
+const mapped = [1].map(value => {
+  console.log(value);
+  return value;
+});
+
+[no-unsafe-callback-scope]: Unsafe scopes are forbidden
