@@ -11,7 +11,7 @@ The package includes the following rules (none of which are enabled by default):
 | `no-const-enum` | Disallows the use of `const enum`. Constant enums are not compatible with isolated modules. | No | [See below](#no-const-enum) |
 | `no-enum` | Disallows the use of `enum`. | No | None |
 | `no-missing-dollar-expect` | Disallows [dtslint](https://github.com/Microsoft/dtslint) $ExpectType and $ExpectError expectations if the $ is missing. | No | None |
-| `no-unsafe-callback-scope` | Disallows the use of variables/properties from unsafe/outer scopes in callbacks. | No | None |
+| `no-unsafe-callback-scope` | Disallows the use of variables/properties from unsafe/outer scopes in callbacks. | No | [See below](#no-unsafe-callback-scope) |
 | `no-unused-declaration` | Disallows unused declarations. | Yes, but [see below](#no-unused-declaration) | [See below](#no-unused-declaration) |
 | `throw-error` | Enforces the use of `Error` values when throwing or rejecting. | No | None |
 
@@ -51,6 +51,33 @@ For example, to following configuration would local (i.e. non-exported) const en
   "no-const-enum": {
     "options": [{
       "allowLocal": true
+    }],
+    "severity": "error"
+  }
+}
+```
+
+<a name="no-unsafe-callback-scope"></a>
+
+#### no-unsafe-callback-scope
+
+This rule takes an optional object with optional `allowMethods`, `allowParameters` and `allowProperties` properties.
+
+If the `allowMethods` option is `true`, calling methods via `this` is allowed.
+
+If the `allowParameters` option is `true`, referencing function parameters from outer scopes is allowed.
+
+If the `allowProperties` option is `true`, accessing properties via `this` is allowed.`,
+
+The following options are equivalent to the rule's default configuration:
+
+```json
+"rules": {
+  "no-unsafe-callback-scope": {
+    "options": [{
+      "allowMethods": true,
+      "allowParameters": true,
+      "allowProperties": false
     }],
     "severity": "error"
   }
