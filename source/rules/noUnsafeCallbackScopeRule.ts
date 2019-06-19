@@ -7,6 +7,7 @@
 import * as Lint from "tslint";
 import * as ts from "typescript";
 import * as tsutils from "tsutils";
+import { ScopeWalker } from "../support/scope-walker";
 import {
   findDeclaration,
   isConstDeclaration,
@@ -16,12 +17,25 @@ import {
   isWithinParameterDeclaration
 } from "../support/util";
 
+const knownGlobalRegExp = /^(Array|BigInt|Date|Intl|JSON|Math|Number|Object|Promise|Proxy|Reflect|String|Symbol)$/;
+
 export class Rule extends Lint.Rules.TypedRule {
   public static metadata: Lint.IRuleMetadata = {
     description:
       "Disallows the use of variables/properties from unsafe/outer scopes in callbacks.",
-    options: null,
-    optionsDescription: "Not configurable.",
+    options: {
+      properties: {
+        allowMethods: { type: "boolean" },
+        allowParameters: { type: "boolean" },
+        allowProperties: { type: "boolean" }
+      },
+      type: "object"
+    },
+    optionsDescription: Lint.Utils.dedent`
+      An optional object with optional \`allowDo\`, \`allowParameters\` and \`allowTap\` properties all of which default to \`true\`.
+      If the \`allowParameters\` option is \`true\`, referencing function parameters from outer scopes is allowed.
+      If the \`allowMethods\` option is \`true\`, calling methods via \`this\` is allowed.
+      If the \`allowProperties\` option is \`true\`, accessing properties via \`this\` is allowed.`,
     requiresTypeInfo: true,
     ruleName: "no-unsafe-callback-scope",
     type: "functionality",
@@ -40,201 +54,10 @@ export class Rule extends Lint.Rules.TypedRule {
   }
 }
 
-export class Walker extends Lint.ProgramAwareRuleWalker {
-  private callbackMap: Map<ts.Node, string> = new Map<ts.Node, string>();
-  private callbackStack: (ts.ArrowFunction | ts.FunctionExpression)[] = [];
-
-  protected visitArrowFunction(node: ts.ArrowFunction): void {
-    if (this.callbackMap.has(node)) {
-      this.callbackStack.push(node);
-      super.visitArrowFunction(node);
-      this.callbackStack.pop();
-    } else {
-      super.visitArrowFunction(node);
-    }
-  }
-
-  protected visitCallExpression(node: ts.CallExpression): void {
-    const { arguments: args, expression } = node;
-    let name: string;
-
-    if (tsutils.isIdentifier(expression)) {
-      name = expression.getText();
-    } else if (tsutils.isPropertyAccessExpression(expression)) {
-      const { name: propertyName } = expression;
-      name = propertyName.getText();
-    }
-
-    const callbacks = args.filter(
-      arg => tsutils.isArrowFunction(arg) || tsutils.isFunctionExpression(arg)
-    );
-    callbacks.forEach(callback => this.callbackMap.set(callback, name));
-    super.visitCallExpression(node);
-    callbacks.forEach(callback => this.callbackMap.delete(callback));
-  }
-
-  protected visitFunctionExpression(node: ts.FunctionExpression): void {
-    if (this.callbackMap.has(node)) {
-      this.callbackStack.push(node);
-      super.visitFunctionExpression(node);
-      this.callbackStack.pop();
-    } else {
-      super.visitFunctionExpression(node);
-    }
-  }
-
-  protected visitNode(node: ts.Node): void {
-    if (this.callbackStack.length) {
-      const validateNode = tsutils.isIdentifier(node) || isThis(node);
-      if (validateNode && this.isUnsafe(node)) {
-        this.addFailureAtNode(node, Rule.FAILURE_STRING);
-      }
-    }
-    super.visitNode(node);
-  }
-
-  private isUnsafe(node: ts.Node): boolean {
-    const { callbackMap, callbackStack } = this;
-    const leafCallback = callbackStack[callbackStack.length - 1];
-    const leafOperator = callbackMap.get(leafCallback);
-    const rootCallback = callbackStack[0];
-
-    if (isInstanceofCtor(node)) {
-      return false;
-    }
-
-    const typeChecker = this.getTypeChecker();
-    const declaration = findDeclaration(node, typeChecker);
-    if (!declaration || isWithinParameterDeclaration(declaration)) {
-      return false;
-    }
-    if (
-      declaration.pos >= rootCallback.pos &&
-      declaration.pos < rootCallback.end
-    ) {
-      return false;
-    }
-
-    if (isWithinCallExpressionExpression(node)) {
-      return false;
-    }
-    if (tsutils.isNewExpression(node.parent)) {
-      return false;
-    }
-    if (tsutils.isPropertyAccessExpression(node.parent)) {
-      if (tsutils.isClassDeclaration(declaration)) {
-        const nameDeclaration = findDeclaration(node.parent.name, typeChecker);
-        if (!nameDeclaration) {
-          return false;
-        }
-        if (
-          tsutils.hasModifier(
-            nameDeclaration.modifiers,
-            ts.SyntaxKind.ReadonlyKeyword
-          )
-        ) {
-          return false;
-        }
-        return true;
-      } else if (isThis(node)) {
-        return true;
-      } else if (node === node.parent.name) {
-        return false;
-      }
-      const type = typeChecker.getTypeAtLocation(node.parent.name);
-      /*tslint:disable-next-line:no-bitwise*/
-      if ((type.flags & ts.TypeFlags.EnumLiteral) !== 0) {
-        return false;
-      }
-    }
-
-    if (tsutils.isVariableDeclarationList(declaration.parent)) {
-      if (
-        tsutils.getVariableDeclarationKind(declaration.parent) ===
-        tsutils.VariableDeclarationKind.Const
-      ) {
-        return false;
-      }
-    }
-    if (tsutils.isTypeReferenceNode(node.parent)) {
-      return false;
-    }
-
-    if (isConstDeclaration(declaration)) {
-      return false;
-    }
-    if (tsutils.isImportSpecifier(declaration)) {
-      return false;
-    }
-    if (tsutils.isNamespaceImport(declaration)) {
-      return false;
-    }
-    return true;
-  }
-}
-/*
-import * as Lint from "tslint";
-import * as tsutils from "tsutils";
-import * as ts from "typescript";
-import { ScopeWalker } from "../support/scope-walker";
-import {
-  findDeclaration,
-  isConstDeclaration,
-  isInstanceofCtor,
-  isThis,
-  isWithinCallExpressionExpression,
-  isWithinParameterDeclaration
-} from "../support/util";
-
-const knownGlobalRegExp = /^(Array|BigInt|Date|Intl|JSON|Math|Number|Object|Promise|Proxy|Reflect|String|Symbol)$/;
-
-export class Rule extends Lint.Rules.TypedRule {
-  public static metadata: Lint.IRuleMetadata = {
-    description:
-      "Disallows the use of variables/properties from unsafe/outer scopes in operator callbacks.",
-    options: {
-      properties: {
-        allowDo: { type: "boolean" },
-        allowMethods: { type: "boolean" },
-        allowParameters: { type: "boolean" },
-        allowProperties: { type: "boolean" },
-        allowSubscribe: { type: "boolean" },
-        allowTap: { type: "boolean" }
-      },
-      type: "object"
-    },
-    optionsDescription: Lint.Utils.dedent`
-      An optional object with optional \`allowDo\`, \`allowParameters\` and \`allowTap\` properties all of which default to \`true\`.
-      If the \`allowDo\` and \`allowTap\` options are \`true\`, the rule is not applied within \`do\` and \`tap\` operators respectively.
-      If the \`allowParameters\` option is \`true\`, referencing function parameters from outer scopes is allowed.
-      If the \`allowMethods\` option is \`true\`, calling methods via \`this\` is allowed.
-      If the \`allowProperties\` option is \`true\`, accessing properties via \`this\` is allowed.
-      If the \`allowSubscribe\` option is \`true\`, the rule is not applied within \`subscribe\` callbacks.`,
-    requiresTypeInfo: true,
-    ruleName: "rxjs-no-unsafe-scopes",
-    type: "functionality",
-    typescriptOnly: true
-  };
-
-  public static FAILURE_STRING = "Unsafe scopes are forbidden";
-
-  public applyWithProgram(
-    sourceFile: ts.SourceFile,
-    program: ts.Program
-  ): Lint.RuleFailure[] {
-    return this.applyWithWalker(
-      new Walker(sourceFile, this.getOptions(), program)
-    );
-  }
-}
-
 class Walker extends ScopeWalker {
-  private allowDo = true;
   private allowMethods = true;
   private allowParameters = true;
   private allowProperties = false;
-  private allowSubscribe = true;
-  private allowTap = true;
 
   constructor(
     sourceFile: ts.SourceFile,
@@ -245,8 +68,6 @@ class Walker extends ScopeWalker {
 
     const [options] = this.getOptions();
     if (options) {
-      this.allowDo =
-        options.allowDo !== undefined ? options.allowDo : this.allowDo;
       this.allowMethods =
         options.allowMethods !== undefined
           ? options.allowMethods
@@ -259,14 +80,7 @@ class Walker extends ScopeWalker {
         options.allowProperties !== undefined
           ? options.allowProperties
           : this.allowProperties;
-      this.allowSubscribe =
-        options.allowSubscribe !== undefined
-          ? options.allowSubscribe
-          : this.allowSubscribe;
-      this.allowTap =
-        options.allowTap !== undefined ? options.allowTap : this.allowTap;
     }
-    this.knownNames = this.allowSubscribe ? {} : { subscribe: true };
   }
 
   protected visitNode(node: ts.Node): void {
@@ -288,13 +102,6 @@ class Walker extends ScopeWalker {
     const leafOperator = callbackMap.get(leafCallback);
     const rootCallback = callbackStack[0];
     const typeChecker = this.getTypeChecker();
-
-    if (this.allowDo && leafOperator === "do") {
-      return undefined;
-    }
-    if (this.allowTap && leafOperator === "tap") {
-      return undefined;
-    }
 
     if (tsutils.isPropertyAccessExpression(node.parent)) {
       if (!isPropertyAccessExpressionLeaf(node)) {
@@ -438,4 +245,3 @@ function isPropertyAccessExpressionLeaf(node: ts.Node): boolean {
   }
   return !tsutils.isPropertyAccessExpression(parent.parent);
 }
-*/
