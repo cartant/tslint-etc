@@ -1,3 +1,10 @@
+<a name="1.5.4"></a>
+## [1.5.4](https://github.com/cartant/tslint-etc/compare/v1.5.3...v1.5.4) (2019-06-192)
+
+## Fixes
+
+* Fixed problems with `no-unsafe-callback-scope` and property-access expressions. ([93d5fc0](https://github.com/cartant/rxjs-tslint-rules/commit/93d5fc0))
+
 <a name="1.5.3"></a>
 ## [1.5.3](https://github.com/cartant/tslint-etc/compare/v1.5.2...v1.5.3) (2019-05-22)
 
