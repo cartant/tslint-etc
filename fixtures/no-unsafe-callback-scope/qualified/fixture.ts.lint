@@ -1,0 +1,7 @@
+import * as thing from "./thing";
+
+const result = [thing.value].map(
+  (value: thing.Value) => value
+);
+
+[no-unsafe-callback-scope]: Unsafe scopes are forbidden
