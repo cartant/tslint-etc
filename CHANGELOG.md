@@ -1,3 +1,10 @@
+<a name="1.5.6"></a>
+## [1.5.6](https://github.com/cartant/tslint-etc/compare/v1.5.5...v1.5.6) (2019-06-28)
+
+## Fixes
+
+* Ignore qualified names in `no-unsafe-callback-scope`. ([0a92549](https://github.com/cartant/rxjs-tslint-rules/commit/0a92549))
+
 <a name="1.5.5"></a>
 ## [1.5.5](https://github.com/cartant/tslint-etc/compare/v1.5.4...v1.5.5) (2019-06-19)
 
