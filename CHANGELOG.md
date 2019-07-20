@@ -1,3 +1,10 @@
+<a name="1.6.0"></a>
+## [1.6.0](https://github.com/cartant/tslint-etc/compare/v1.5.6...v1.6.0) (2019-07-20)
+
+## Features
+
+* Add an `ignored` option to `no-unused-declaration`. ([8f83c76](https://github.com/cartant/rxjs-tslint-rules/commit/8f83c76))
+
 <a name="1.5.6"></a>
 ## [1.5.6](https://github.com/cartant/tslint-etc/compare/v1.5.5...v1.5.6) (2019-06-28)
 
