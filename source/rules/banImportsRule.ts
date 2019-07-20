@@ -15,8 +15,8 @@ export class Rule extends Lint.Rules.AbstractRule {
       type: "object"
     },
     optionsDescription: Lint.Utils.dedent`
-            An object containing keys that are regular expressions
-            and values that are either booleans or strings containing the explanation for the ban.`,
+      An object containing keys that are regular expressions
+      and values that are either booleans or strings containing the explanation for the ban.`,
     requiresTypeInfo: false,
     ruleName: "ban-imports",
     type: "functionality",

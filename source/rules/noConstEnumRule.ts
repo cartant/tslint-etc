@@ -18,8 +18,8 @@ export class Rule extends Lint.Rules.AbstractRule {
       type: "object"
     },
     optionsDescription: Lint.Utils.dedent`
-            An optional object with an optional \`allowLocal\` property - which defaults to \`false\`.
-            If \`allowLocal\` is \`true\`, only exported const enums are forbidden.`,
+      An optional object with an optional \`allowLocal\` property - which defaults to \`false\`.
+      If \`allowLocal\` is \`true\`, only exported const enums are forbidden.`,
     requiresTypeInfo: false,
     ruleName: "no-const-enum",
     type: "functionality",
