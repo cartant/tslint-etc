@@ -14,14 +14,17 @@ export class Rule extends Lint.Rules.TypedRule {
     options: {
       properties: {
         declarations: { type: "boolean" },
+        ignored: { type: "object" },
         imports: { type: "boolean" }
       },
       type: "object"
     },
     optionsDescription: Lint.Utils.dedent`
-            An optional object with optional \`imports\` and \`declarations\` properties.
-            The properties are booleans and determine whether or not unused imports or declarations are allowed.
-            The properties default to \`true\`.`,
+      An optional object with optional \`imports\`, \`declarations\` and \`ignored\` properties.
+      The \`imports\` and \`declarations\` properties are booleans and determine whether or not unused imports or declarations are allowed.
+      They default to \`true\`.
+      The \`ignored\` property is an object containing keys that are regular expressions
+      and values that are booleans - indicating whether or not matches are ignored.`,
     requiresTypeInfo: true,
     ruleName: "no-unused-declaration",
     type: "functionality",
@@ -44,6 +47,7 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
   private _associationsByIdentifier = new Map<ts.Node, ts.Node[]>();
   private _declarationsByIdentifier = new Map<ts.Node, ts.Node>();
   private _deletes = new Set<ts.Node>();
+  private _ignored: RegExp[] = [];
   private _scopes = [new Map<string, ts.Identifier>()];
   private _withoutDeclarations = new Set<string>();
   private _usageByIdentifier = new Map<ts.Node, "declared" | "seen" | "used">();
@@ -61,6 +65,11 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
 
     const [options] = this.getOptions();
     if (options) {
+      Object.entries(options.ignored || {}).forEach(([key, value]) => {
+        if (value !== false) {
+          this._ignored.push(new RegExp(key));
+        }
+      });
       this._validate = { ...this._validate, ...options };
     }
   }
@@ -363,6 +372,9 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
       _withoutDeclarations
     } = this;
     _usageByIdentifier.forEach((usage, identifier) => {
+      if (this._ignored.some(regExp => regExp.test(identifier.getText()))) {
+        return;
+      }
       if (
         usage === "declared" &&
         !_withoutDeclarations.has(identifier.getText())

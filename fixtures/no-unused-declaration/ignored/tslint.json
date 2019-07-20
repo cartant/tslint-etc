@@ -1,0 +1,15 @@
+{
+  "defaultSeverity": "error",
+  "jsRules": {},
+  "rules": {
+    "no-unused-declaration": {
+      "options": [{
+        "ignored": {
+          "jsx": true
+        }
+      }],
+      "severity": "error"
+    }
+  },
+  "rulesDirectory": "../../../build/rules"
+}
