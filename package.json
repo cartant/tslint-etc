@@ -64,5 +64,5 @@
     "test:debug": "tslint --test fixtures/no-unused-declaration/ignored/tslint.json",
     "test:tslint": "tslint --test fixtures/**/tslint.json"
   },
-  "version": "1.5.6"
+  "version": "1.6.0"
 }
