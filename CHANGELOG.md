@@ -3,28 +3,28 @@
 
 ## Features
 
-* Add an `ignored` option to `no-unused-declaration`. ([8f83c76](https://github.com/cartant/rxjs-tslint-rules/commit/8f83c76))
+* Add an `ignored` option to `no-unused-declaration`. ([8f83c76](https://github.com/cartant/tslint-etc/commit/8f83c76))
 
 <a name="1.5.6"></a>
 ## [1.5.6](https://github.com/cartant/tslint-etc/compare/v1.5.5...v1.5.6) (2019-06-28)
 
 ## Fixes
 
-* Ignore qualified names in `no-unsafe-callback-scope`. ([0a92549](https://github.com/cartant/rxjs-tslint-rules/commit/0a92549))
+* Ignore qualified names in `no-unsafe-callback-scope`. ([0a92549](https://github.com/cartant/tslint-etc/commit/0a92549))
 
 <a name="1.5.5"></a>
 ## [1.5.5](https://github.com/cartant/tslint-etc/compare/v1.5.4...v1.5.5) (2019-06-19)
 
 ## Fixes
 
-* Add `console` to the `no-unsafe-callback-scope` whitelist. ([a4a766a](https://github.com/cartant/rxjs-tslint-rules/commit/a4a766a))
+* Add `console` to the `no-unsafe-callback-scope` whitelist. ([a4a766a](https://github.com/cartant/tslint-etc/commit/a4a766a))
 
 <a name="1.5.4"></a>
 ## [1.5.4](https://github.com/cartant/tslint-etc/compare/v1.5.3...v1.5.4) (2019-06-19)
 
 ## Fixes
 
-* Fixed problems with `no-unsafe-callback-scope` and property-access expressions. ([93d5fc0](https://github.com/cartant/rxjs-tslint-rules/commit/93d5fc0))
+* Fixed problems with `no-unsafe-callback-scope` and property-access expressions. ([93d5fc0](https://github.com/cartant/tslint-etc/commit/93d5fc0))
 
 <a name="1.5.3"></a>
 ## [1.5.3](https://github.com/cartant/tslint-etc/compare/v1.5.2...v1.5.3) (2019-05-22)
@@ -182,7 +182,7 @@
 
 ## Build
 
-* Widen TypeScript peer semver to allow for version 3.0. ([fb28cb1](https://github.com/cartant/rxjs-tslint-rules/commit/fb28cb1))
+* Widen TypeScript peer semver to allow for version 3.0. ([fb28cb1](https://github.com/cartant/tslint-etc/commit/fb28cb1))
 
 <a name="1.2.2"></a>
 ## [1.2.2](https://github.com/cartant/tslint-etc/compare/v1.2.1...v1.2.2) (2018-05-07)
