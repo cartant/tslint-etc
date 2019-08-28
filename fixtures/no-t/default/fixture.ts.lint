@@ -1,0 +1,5 @@
+type Valid<Value> = { value: Value };
+type Invalid<T> = { value: T };
+             ~                        [no-t]
+
+[no-t]: Single-character type parameters are forbidden
