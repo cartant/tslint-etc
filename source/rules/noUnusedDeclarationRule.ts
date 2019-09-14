@@ -10,7 +10,7 @@ import * as tsutils from "tsutils";
 
 export class Rule extends Lint.Rules.TypedRule {
   public static metadata: Lint.IRuleMetadata = {
-    description: "Disallows used declarations.",
+    description: "Disallows unused declarations.",
     options: {
       properties: {
         declarations: { type: "boolean" },
