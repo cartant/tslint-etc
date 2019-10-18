@@ -7,7 +7,6 @@
 [![dependency status](https://img.shields.io/david/cartant/tslint-etc.svg)](https://david-dm.org/cartant/tslint-etc)
 [![devDependency Status](https://img.shields.io/david/dev/cartant/tslint-etc.svg)](https://david-dm.org/cartant/tslint-etc#info=devDependencies)
 [![peerDependency Status](https://img.shields.io/david/peer/cartant/tslint-etc.svg)](https://david-dm.org/cartant/tslint-etc#info=peerDependencies)
-[![Greenkeeper badge](https://badges.greenkeeper.io/cartant/tslint-etc.svg)](https://greenkeeper.io/)
 
 ### What is it?
 
