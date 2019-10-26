@@ -301,7 +301,7 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
     if (tsutils.isImportDeclaration(declaration)) {
       _deletes.add(declaration);
       return Lint.Replacement.deleteFromTo(
-        declaration.getFullStart(),
+        getStart(declaration),
         declaration.getFullStart() + declaration.getFullWidth()
       );
     } else if (tsutils.isNamedImports(declaration)) {
@@ -327,7 +327,7 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
         }
         _deletes.add(importDeclaration);
         return Lint.Replacement.deleteFromTo(
-          importDeclaration.getFullStart(),
+          getStart(importDeclaration),
           importDeclaration.getFullStart() + importDeclaration.getFullWidth()
         );
       }
@@ -347,11 +347,17 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
       const importDeclaration = importClause.parent as ts.ImportDeclaration;
       _deletes.add(importDeclaration);
       return Lint.Replacement.deleteFromTo(
-        importDeclaration.getFullStart(),
+        getStart(importDeclaration),
         importDeclaration.getFullStart() + importDeclaration.getFullWidth()
       );
     }
     return undefined;
+
+    function getStart(importDeclaration: ts.ImportDeclaration): number {
+      // If the full-start position is zero, use the (non-full) start in case
+      // as the first import might be preceeded by a copyright comment, etc.
+      return importDeclaration.getFullStart() || importDeclaration.getStart();
+    }
   }
 
   private getScopedIdentifier(name: string): ts.Node | undefined {

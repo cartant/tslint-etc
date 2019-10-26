@@ -1,5 +1,5 @@
 /**
- * @copyright Copyright abc
+ * @copyright Copyright someone sometime
  */
 
 import { Subject } from "rxjs";

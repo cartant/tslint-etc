@@ -1,0 +1,8 @@
+/**
+ * @copyright Copyright someone sometime
+ */
+
+import nope from "rxjs";
+       ~~~~               [no-unused-declaration]
+
+[no-unused-declaration]: Unused declarations are forbidden
