@@ -1,9 +1,23 @@
-<a name="1.6.1"></a>
-## [1.6.1](https://github.com/cartant/tslint-etc/compare/v1.6.0...v1.6.1) (2019-10-26)
+<a name="1.7.1"></a>
+## [1.7.1](https://github.com/cartant/tslint-etc/compare/v1.7.0...v1.7.1) (2019-10-28)
 
 ### Fixes
 
 * Don't delete a file's leading comment when removing the first unused import. ([6b3beba](https://github.com/cartant/tslint-etc/commit/6b3beba))
+
+<a name="1.7.0"></a>
+## [1.7.0](https://github.com/cartant/tslint-etc/compare/v1.6.0...v1.7.0) (2019-08-28)
+
+### Features
+
+* Add `no-t` rule. ([41a1b34](https://github.com/cartant/tslint-etc/commit/41a1b34))
+
+<a name="1.6.1"></a>
+## [1.6.1](https://github.com/cartant/tslint-etc/compare/v1.6.0...v1.6.1) (2019-10-26)
+
+### Notes
+
+* Published by accident. This should have been `1.7.1`.
 
 <a name="1.6.0"></a>
 ## [1.6.0](https://github.com/cartant/tslint-etc/compare/v1.5.6...v1.6.0) (2019-07-20)
