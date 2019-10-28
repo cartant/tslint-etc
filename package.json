@@ -64,5 +64,5 @@
     "test:debug": "tslint --test fixtures/issues/34/tslint.json",
     "test:tslint": "tslint --test fixtures/**/tslint.json"
   },
-  "version": "1.6.1"
+  "version": "1.7.1"
 }
