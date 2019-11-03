@@ -8,6 +8,7 @@ import { Rule as NoDtslintTypoRule } from "./noDtslintTypoRule";
 
 export class Rule extends NoDtslintTypoRule {
   public static metadata: Lint.IRuleMetadata = {
+    deprecationMessage: "Use the no-dtslint-type rule instead.",
     description:
       "Disallows dtslint $ExpectType and $ExpectError expectations if the $ is missing.",
     options: null,
