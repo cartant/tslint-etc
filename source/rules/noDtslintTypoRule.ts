@@ -38,7 +38,7 @@ export class Rule extends Lint.Rules.AbstractRule {
           const [, expectation] = match;
           const pos = statement.end + trailing.indexOf(expectation);
           const end = pos + expectation.length;
-          if (/^(\$\s)?Expect/.test(expectation)) {
+          if (/^(\$\s+)?Expect/.test(expectation)) {
             failures.push(
               new Lint.RuleFailure(
                 sourceFile,
@@ -48,6 +48,9 @@ export class Rule extends Lint.Rules.AbstractRule {
                 this.ruleName
               )
             );
+            return;
+          }
+          if (!/^\$Expect/.test(expectation)) {
             return;
           }
           if (
@@ -66,10 +69,10 @@ export class Rule extends Lint.Rules.AbstractRule {
             );
             return;
           }
-          if (
-            /^\$ExpectType/.test(expectation) &&
-            !/^\$ExpectType\s+[\(\w)_]/.test(expectation)
-          ) {
+          if (!/^\$ExpectType/.test(expectation)) {
+            return;
+          }
+          if (!/^\$ExpectType\s+[\(\w)_]/.test(expectation)) {
             failures.push(
               new Lint.RuleFailure(
                 sourceFile,
