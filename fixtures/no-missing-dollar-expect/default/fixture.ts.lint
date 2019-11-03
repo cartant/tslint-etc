@@ -1,10 +1,10 @@
 it("should be tested", () => {
   const a = "a"; // $ExpectType string
   const b = "b"; // ExpectType string
-                 ~~~~~~~~~~~~~                [no-missing-dollar-expect]
+                    ~~~~~~~~~~~~~~~~~       [no-missing-dollar-expect]
   const c: number = "c"; // $ExpectError
   const d: number = "d"; // ExpectError
-                         ~~~~~~~~~~~~~~       [no-missing-dollar-expect]
+                            ~~~~~~~~~~~     [no-missing-dollar-expect]
 });
 
-[no-missing-dollar-expect]: Missing $
+[no-missing-dollar-expect]: Typo in dtslint expectation
