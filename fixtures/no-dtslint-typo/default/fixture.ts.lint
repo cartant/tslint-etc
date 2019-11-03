@@ -1,0 +1,44 @@
+it("should detect missing $", () => {
+  const a = "a"; // ExpectType string
+                    ~~~~~~~~~~~~~~~~~         [no-dtslint-typo]
+  const b: string = 0xb; // ExpectError
+                            ~~~~~~~~~~~       [no-dtslint-typo]
+  const c = "c"; // ExpectDeprecation
+                    ~~~~~~~~~~~~~~~~~         [no-dtslint-typo]
+  const d = "d"; // ExpectNoDeprecation
+                    ~~~~~~~~~~~~~~~~~~~       [no-dtslint-typo]
+});
+
+it("should detect mispelled expectations", () => {
+  const a = "a"; // $ExpectTyp string
+                    ~~~~~~~~~~~~~~~~~         [no-dtslint-typo]
+  const b: string = 0xb; // $ExpectErr
+                            ~~~~~~~~~~        [no-dtslint-typo]
+  const c = "c"; // $ExpectDeprcation
+                    ~~~~~~~~~~~~~~~~~         [no-dtslint-typo]
+  const d = "d"; // $ExpectNoDeprcation
+                    ~~~~~~~~~~~~~~~~~~~       [no-dtslint-typo]
+});
+
+it("should detect spaces", () => {
+  const a = "a"; // $Expect Type string
+                    ~~~~~~~~~~~~~~~~~~~       [no-dtslint-typo]
+  const b: string = 0xb; // $Expect Error
+                            ~~~~~~~~~~~~~     [no-dtslint-typo]
+  const c = "c"; // $Expect Deprecation
+                    ~~~~~~~~~~~~~~~~~~~       [no-dtslint-typo]
+  const d = "d"; // $Expect No Deprecation
+                    ~~~~~~~~~~~~~~~~~~~~~~    [no-dtslint-typo]
+});
+
+it("should detect a missing type", () => {
+  const a = "a"; // $ExpectType
+                    ~~~~~~~~~~~               [no-dtslint-typo]
+});
+
+it("should detect type arguments without a type", () => {
+  const a = "a"; // $ExpectType<string>
+                    ~~~~~~~~~~~~~~~~~~~       [no-dtslint-typo]
+});
+
+[no-dtslint-typo]: Typo in dtslint expectation
