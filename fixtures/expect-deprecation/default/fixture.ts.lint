@@ -1,0 +1,27 @@
+/** @deprecated */
+function deprecated(): number { return 42; }
+function undeprecated(): number { return 54; }
+
+it("should error on non-deprecated calls", () => {
+  const result = undeprecated(); // $ExpectDeprecation
+                                    ~~~~~~~~~~~~~~~~~~  [No deprecation found]
+  undeprecated(); // $ExpectDeprecation
+                     ~~~~~~~~~~~~~~~~~~                 [No deprecation found]
+});
+
+it("should not error on deprecated calls", () => {
+  const result = deprecated(); // $ExpectDeprecation
+  deprecated(); // $ExpectDeprecation
+});
+
+it("should error on deprecated calls", () => {
+  const result = deprecated(); // $ExpectNoDeprecation
+                                  ~~~~~~~~~~~~~~~~~~~~  [Deprecation found]
+  deprecated(); // $ExpectNoDeprecation
+                   ~~~~~~~~~~~~~~~~~~~~                 [Deprecation found]
+});
+
+it("should not error on non-deprecated calls", () => {
+  const result = undeprecated(); // $ExpectNoDeprecation
+  undeprecated(); // $ExpectNoDeprecation
+});

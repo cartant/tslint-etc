@@ -3,4 +3,5 @@
  * can be found in the LICENSE file at https://github.com/cartant/tslint-etc
  */
 
+export * from "./tslint-deprecation";
 export * from "./util";
