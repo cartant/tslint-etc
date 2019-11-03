@@ -7,7 +7,7 @@
 import * as Lint from "tslint";
 import * as ts from "typescript";
 import * as tsutils from "tsutils";
-import { ScopeWalker } from "../support/scope-walker";
+import { ScopeWalker } from "../support";
 import {
   findDeclaration,
   isConstDeclaration,
