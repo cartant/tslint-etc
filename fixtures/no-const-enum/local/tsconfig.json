@@ -1,8 +1,5 @@
 {
-  "defaultSeverity": "error",
-  "jsRules": {},
-  "rules": {
-    "throw-error": { "severity": "error" }
-  },
-  "rulesDirectory": "../../../build/rules"
+  "compilerOptions": {
+    "module": "commonjs"
+  }
 }
