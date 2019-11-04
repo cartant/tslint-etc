@@ -1,3 +1,10 @@
+<a name="1.9.2"></a>
+## [1.9.2](https://github.com/cartant/tslint-etc/compare/v1.9.1...v1.9.2) (2019-11-05)
+
+### Fix
+
+* Use a more relaxed RegExp in `no-dtslint-typo`. ([50b4fac](https://github.com/cartant/tslint-etc/commit/50b4fac))
+
 <a name="1.9.1"></a>
 ## [1.9.1](https://github.com/cartant/tslint-etc/compare/v1.9.0...v1.9.1) (2019-11-04)
 
