@@ -67,7 +67,13 @@ export class Rule extends Lint.Rules.TypedRule {
     lintProgram: Program
   ): Lint.RuleFailure[] {
     return this.applyWithFunction(sourceFile, ctx =>
-      walk(ctx, lintProgram, TsType, "local", /*nextHigherVersion*/ undefined)
+      walk(
+        ctx,
+        lintProgram,
+        TsType,
+        TsType.version,
+        /*nextHigherVersion*/ undefined
+      )
     );
   }
 }
