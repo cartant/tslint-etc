@@ -1,3 +1,10 @@
+<a name="1.9.1"></a>
+## [1.9.1](https://github.com/cartant/tslint-etc/compare/v1.9.0...v1.9.1) (2019-11-04)
+
+### Fix
+
+* Pass the actual version of the local `typescript` package in the `expect-type` rule. ([19a35c2](https://github.com/cartant/tslint-etc/commit/19a35c2))
+
 <a name="1.9.0"></a>
 ## [1.9.0](https://github.com/cartant/tslint-etc/compare/v1.8.0...v1.9.0) (2019-11-04)
 
