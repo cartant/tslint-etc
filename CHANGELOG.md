@@ -1,3 +1,10 @@
+<a name="1.9.0"></a>
+## [1.9.0](https://github.com/cartant/tslint-etc/compare/v1.8.0...v1.9.0) (2019-11-04)
+
+### Features
+
+* Add the `expect-type` rule (from [dtslint](https://github.com/Microsoft/dtslint)). ([81a2554](https://github.com/cartant/tslint-etc/commit/81a2554))
+
 <a name="1.8.0"></a>
 ## [1.8.0](https://github.com/cartant/tslint-etc/compare/v1.7.1...v1.8.0) (2019-11-04)
 
