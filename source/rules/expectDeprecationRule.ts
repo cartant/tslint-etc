@@ -11,7 +11,7 @@ import { getDeprecation } from "../support";
 export class Rule extends Lint.Rules.TypedRule {
   public static metadata: Lint.IRuleMetadata = {
     description:
-      "Asserts expressions with $ExpectDeprecation and $ExpectNoDeprecation.",
+      "Asserts deprecations with $ExpectDeprecation and $ExpectNoDeprecation.",
     options: null,
     optionsDescription: "Not configurable.",
     requiresTypeInfo: true,
