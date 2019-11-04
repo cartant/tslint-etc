@@ -1,3 +1,15 @@
+<a name="1.8.0"></a>
+## [1.8.0](https://github.com/cartant/tslint-etc/compare/v1.7.1...v1.8.0) (2019-11-04)
+
+### Features
+
+* Add the `expect-deprecation` rule. ([92488a4](https://github.com/cartant/tslint-etc/commit/92488a4))
+* Add the `no-dtslint-typo` rule. ([df1d697](https://github.com/cartant/tslint-etc/commit/df1d697))
+
+### Changes
+
+* Deprecate the `no-missing-dollar-expect` rule. ([8300eb5](https://github.com/cartant/tslint-etc/commit/8300eb5))
+
 <a name="1.7.1"></a>
 ## [1.7.1](https://github.com/cartant/tslint-etc/compare/v1.7.0...v1.7.1) (2019-10-28)
 
