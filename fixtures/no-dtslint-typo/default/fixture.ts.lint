@@ -41,4 +41,12 @@ it("should detect type arguments without a type", () => {
                     ~~~~~~~~~~~~~~~~~~~       [no-dtslint-typo]
 });
 
+it("should not effect type-related false positives", () => {
+  const a = "42"; // $ExpectType string
+  const b: [string, number] = ["42", 42]; // $ExpectType [string, number]
+  const c: (string | number)[] = ["42", 42]; // $ExpectType (string | number)[]
+  interface T { answer: number };
+  const t: T = { answer: 42 };  // $ExpectType T
+});
+
 [no-dtslint-typo]: Typo in dtslint expectation

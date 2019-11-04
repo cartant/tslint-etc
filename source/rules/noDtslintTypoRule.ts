@@ -72,7 +72,7 @@ export class Rule extends Lint.Rules.AbstractRule {
           if (!/^\$ExpectType/.test(expectation)) {
             return;
           }
-          if (!/^\$ExpectType\s+[\(\w)_]/.test(expectation)) {
+          if (!/^\$ExpectType\s+[^\s]/.test(expectation)) {
             failures.push(
               new Lint.RuleFailure(
                 sourceFile,
