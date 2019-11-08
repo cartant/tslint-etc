@@ -1,12 +1,25 @@
 /** @deprecated */
 function deprecated(): number { return 42; }
+
 function undeprecated(): number { return 54; }
+
+function overloaded(value: false): boolean;
+/** @deprecated */
+function overloaded(value: true): boolean;
+function overloaded(value: boolean): boolean { return value; }
 
 it("should error on non-deprecated calls", () => {
   const result = undeprecated(); // $ExpectDeprecation
-                                    ~~~~~~~~~~~~~~~~~~  [No deprecation found]
+                                    ~~~~~~~~~~~~~~~~~~      [No deprecation found]
   undeprecated(); // $ExpectDeprecation
-                     ~~~~~~~~~~~~~~~~~~                 [No deprecation found]
+                     ~~~~~~~~~~~~~~~~~~                     [No deprecation found]
+});
+
+it("should error on non-deprecated, overloaded calls", () => {
+  const result = overloaded(false); // $ExpectDeprecation
+                                       ~~~~~~~~~~~~~~~~~~   [No deprecation found]
+  overloaded(false); // $ExpectDeprecation
+                        ~~~~~~~~~~~~~~~~~~                  [No deprecation found]
 });
 
 it("should not error on deprecated calls", () => {
@@ -14,14 +27,31 @@ it("should not error on deprecated calls", () => {
   deprecated(); // $ExpectDeprecation
 });
 
+it("should not error on deprecated, overloaded calls", () => {
+  const result = overloaded(true); // $ExpectDeprecation
+  overloaded(true); // $ExpectDeprecation
+});
+
 it("should error on deprecated calls", () => {
   const result = deprecated(); // $ExpectNoDeprecation
-                                  ~~~~~~~~~~~~~~~~~~~~  [Deprecation found]
+                                  ~~~~~~~~~~~~~~~~~~~~      [Deprecation found]
   deprecated(); // $ExpectNoDeprecation
-                   ~~~~~~~~~~~~~~~~~~~~                 [Deprecation found]
+                   ~~~~~~~~~~~~~~~~~~~~                     [Deprecation found]
+});
+
+it("should error on deprecated, overloaded calls", () => {
+  const result = overloaded(true); // $ExpectNoDeprecation
+                                      ~~~~~~~~~~~~~~~~~~~~  [Deprecation found]
+  overloaded(true); // $ExpectNoDeprecation
+                       ~~~~~~~~~~~~~~~~~~~~                 [Deprecation found]
 });
 
 it("should not error on non-deprecated calls", () => {
   const result = undeprecated(); // $ExpectNoDeprecation
   undeprecated(); // $ExpectNoDeprecation
+});
+
+it("should not error on non-deprecated, overloaded calls", () => {
+  const result = overloaded(false); // $ExpectNoDeprecation
+  overloaded(false); // $ExpectNoDeprecation
 });
