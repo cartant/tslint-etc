@@ -1,0 +1,5 @@
+type Valid<TValue> = { value: TValue };
+type Invalid<Value> = { value: Value };
+             ~~~~~                      [no-t % ("T")]
+
+[no-t]: Type parameters without the prefix "%s" are forbidden
