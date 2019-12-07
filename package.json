@@ -64,5 +64,5 @@
     "test:debug": "tslint --test fixtures/no-t/prefix/tslint.json",
     "test:tslint": "tslint --test fixtures/**/tslint.json"
   },
-  "version": "1.9.2"
+  "version": "1.10.0"
 }
