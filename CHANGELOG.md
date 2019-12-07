@@ -1,3 +1,10 @@
+<a name="1.10.0"></a>
+## [1.10.0](https://github.com/cartant/tslint-etc/compare/v1.9.2...v1.10.0) (2019-12-07)
+
+### Features
+
+* Add a `prefix` option to the `no-t` rule. ([fd63c43](https://github.com/cartant/tslint-etc/commit/fd63c43))
+
 <a name="1.9.2"></a>
 ## [1.9.2](https://github.com/cartant/tslint-etc/compare/v1.9.1...v1.9.2) (2019-11-05)
 
