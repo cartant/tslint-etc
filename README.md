@@ -45,7 +45,7 @@ The package includes the following rules (none of which are enabled by default):
 | `expect-deprecation` | Asserts deprecations with `$ExpectDeprecation` and `$ExpectNoDeprecation`. | No | None |
 | `expect-type` | Asserts types with `$ExpectType` and presence of errors with `$ExpectError`. | No | None |
 | `no-assign-mutated-array` | Disallows the assignment of returned, mutated arrays. Useful for those times you forget that `sort` and `reverse` mutate the array upon which they are called. | No | None |
-| `no-const-enum` | Disallows the use of `const enum`. Constant enums are not compatible with isolated modules. | No | [See below](#no-const-enum) |
+| `no-const-enum` | Disallows the use of `const enum`. Constant enums are [not compatible with isolated modules](https://ncjamieson.com/dont-export-const-enums/). | No | [See below](#no-const-enum) |
 | `no-dtslint-typo` | Disallows [dtslint](https://github.com/Microsoft/dtslint)-like expectations that have typographical errors. | No | None |
 | `no-enum` | Disallows the use of `enum`. | No | None |
 | `no-t` | Disallows single-character type parameters. | No | None |
