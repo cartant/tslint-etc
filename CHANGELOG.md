@@ -1,3 +1,10 @@
+<a name="1.10.1"></a>
+## [1.10.1](https://github.com/cartant/tslint-etc/compare/v1.10.0...v1.10.1) (2020-02-29)
+
+### Fixes
+
+* Widen `tslint` peer dependency. ([23b03d1](https://github.com/cartant/tslint-etc/commit/23b03d1))
+
 <a name="1.10.0"></a>
 ## [1.10.0](https://github.com/cartant/tslint-etc/compare/v1.9.2...v1.10.0) (2019-12-07)
 
