@@ -43,7 +43,7 @@ export class Rule extends Lint.Rules.TypedRule {
     options: null,
     type: "functionality",
     typescriptOnly: true,
-    requiresTypeInfo: true
+    requiresTypeInfo: true,
   };
   /* tslint:enable:object-literal-sort-keys */
 
@@ -66,7 +66,7 @@ export class Rule extends Lint.Rules.TypedRule {
     sourceFile: SourceFile,
     lintProgram: Program
   ): Lint.RuleFailure[] {
-    return this.applyWithFunction(sourceFile, ctx =>
+    return this.applyWithFunction(sourceFile, (ctx) =>
       walk(
         ctx,
         lintProgram,
@@ -106,8 +106,8 @@ function createProgram(configFile: string, ts: typeof TsType): Program {
   const parseConfigHost: TsType.ParseConfigHost = {
     fileExists: existsSync,
     readDirectory: ts.sys.readDirectory,
-    readFile: file => readFileSync(file, "utf8"),
-    useCaseSensitiveFileNames: true
+    readFile: (file) => readFileSync(file, "utf8"),
+    useCaseSensitiveFileNames: true,
   };
   const parsed = ts.parseJsonConfigFileContent(
     config,
@@ -399,7 +399,7 @@ function getExpectTypeFailures(
       if (
         !expected
           .split(/\s*\|\|\s*/)
-          .some(s => actual === s || matchReadonlyArray(actual, s))
+          .some((s) => actual === s || matchReadonlyArray(actual, s))
       ) {
         unmetExpectations.push({ node, expected, actual });
       }
@@ -419,7 +419,7 @@ function getNodeForExpectType(
   if (node.kind === ts.SyntaxKind.VariableStatement) {
     // ts2.0 doesn't have `isVariableStatement`
     const {
-      declarationList: { declarations }
+      declarationList: { declarations },
     } = node as TsType.VariableStatement;
     if (declarations.length === 1) {
       const { initializer } = declarations[0];

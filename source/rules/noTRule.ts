@@ -12,9 +12,9 @@ export class Rule extends Lint.Rules.AbstractRule {
     description: "Disallows single-character type parameters.",
     options: {
       properties: {
-        prefix: { type: "string" }
+        prefix: { type: "string" },
       },
-      type: "object"
+      type: "object",
     },
     optionsDescription: Lint.Utils.dedent`
       An optional object with an optional \`prefix\` property.
@@ -22,7 +22,7 @@ export class Rule extends Lint.Rules.AbstractRule {
     requiresTypeInfo: false,
     ruleName: "no-t",
     type: "style",
-    typescriptOnly: true
+    typescriptOnly: true,
   };
 
   public static FAILURE_STRING =
@@ -40,7 +40,7 @@ export class Rule extends Lint.Rules.AbstractRule {
       sourceFile,
       "TypeParameter > Identifier[name=/^.$/]"
     ) as ts.Identifier[];
-    identifiers.forEach(identifier => {
+    identifiers.forEach((identifier) => {
       failures.push(
         new Lint.RuleFailure(
           sourceFile,
@@ -60,7 +60,7 @@ export class Rule extends Lint.Rules.AbstractRule {
         sourceFile,
         "TypeParameter > Identifier[name=/^.{2,}$/]"
       ) as ts.Identifier[];
-      identifiers.forEach(identifier => {
+      identifiers.forEach((identifier) => {
         const { text } = identifier;
         if (text.indexOf(prefix) !== 0) {
           failures.push(

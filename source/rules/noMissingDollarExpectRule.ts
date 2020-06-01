@@ -16,6 +16,6 @@ export class Rule extends NoDtslintTypoRule {
     requiresTypeInfo: false,
     ruleName: "no-missing-dollar-expect",
     type: "functionality",
-    typescriptOnly: false
+    typescriptOnly: false,
   };
 }

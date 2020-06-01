@@ -34,11 +34,11 @@ export class ScopeWalker extends Lint.ProgramAwareRuleWalker {
     }
 
     const callbacks = args.filter(
-      arg => tsutils.isArrowFunction(arg) || tsutils.isFunctionExpression(arg)
+      (arg) => tsutils.isArrowFunction(arg) || tsutils.isFunctionExpression(arg)
     );
-    callbacks.forEach(callback => this.callbackMap.set(callback, name));
+    callbacks.forEach((callback) => this.callbackMap.set(callback, name));
     super.visitCallExpression(node);
-    callbacks.forEach(callback => this.callbackMap.delete(callback));
+    callbacks.forEach((callback) => this.callbackMap.delete(callback));
   }
 
   protected visitFunctionExpression(node: ts.FunctionExpression): void {

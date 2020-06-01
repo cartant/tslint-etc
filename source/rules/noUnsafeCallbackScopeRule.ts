@@ -14,7 +14,7 @@ import {
   isInstanceofCtor,
   isThis,
   isWithinCallExpressionExpression,
-  isWithinParameterDeclaration
+  isWithinParameterDeclaration,
 } from "../support/util";
 
 const knownGlobalRegExp = /^(Array|BigInt|Date|Intl|JSON|Math|Number|Object|Promise|Proxy|Reflect|String|Symbol|console)$/;
@@ -27,9 +27,9 @@ export class Rule extends Lint.Rules.TypedRule {
       properties: {
         allowMethods: { type: "boolean" },
         allowParameters: { type: "boolean" },
-        allowProperties: { type: "boolean" }
+        allowProperties: { type: "boolean" },
       },
-      type: "object"
+      type: "object",
     },
     optionsDescription: Lint.Utils.dedent`
       An optional object with optional \`allowDo\`, \`allowParameters\` and \`allowTap\` properties all of which default to \`true\`.
@@ -39,7 +39,7 @@ export class Rule extends Lint.Rules.TypedRule {
     requiresTypeInfo: true,
     ruleName: "no-unsafe-callback-scope",
     type: "functionality",
-    typescriptOnly: true
+    typescriptOnly: true,
   };
 
   public static FAILURE_STRING = "Unsafe scopes are forbidden";

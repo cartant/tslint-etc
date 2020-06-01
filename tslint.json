@@ -142,13 +142,7 @@
     "semicolon": { "severity": "error" },
     "strict-boolean-expressions": { "severity": "off" },
     "switch-default": { "severity": "error" },
-    "trailing-comma": {
-      "options": [{
-        "multiline": "never",
-        "singleline": "never"
-      }],
-      "severity": "error"
-    },
+    "trailing-comma": { "severity": "off" },
     "triple-equals": { "severity": "error" },
     "typedef": {
       "options": [

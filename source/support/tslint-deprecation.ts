@@ -48,8 +48,9 @@ export function isDeclaration(identifier: ts.Identifier): boolean {
     case ts.SyntaxKind.PropertyAssignment:
       return (
         (parent as ts.PropertyAssignment).name === identifier &&
-        !tsutils.isReassignmentTarget(identifier.parent
-          .parent as ts.ObjectLiteralExpression)
+        !tsutils.isReassignmentTarget(
+          identifier.parent.parent as ts.ObjectLiteralExpression
+        )
       );
     case ts.SyntaxKind.BindingElement:
       // return true for `b` in `const {a: b} = obj"`

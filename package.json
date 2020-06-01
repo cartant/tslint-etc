@@ -14,7 +14,7 @@
     "@types/node": "^14.0.0",
     "husky": "^4.0.0",
     "lint-staged": "^10.0.0",
-    "prettier": "^1.17.0",
+    "prettier": "^2.0.0",
     "rimraf": "^3.0.0",
     "tslint": "^6.0.0",
     "typescript": "~3.9.2"
@@ -58,6 +58,8 @@
     "dist:clean": "rimraf dist",
     "lint": "tslint --project tsconfig.json source/**/*.ts",
     "prepublishOnly": "yarn run test && yarn run dist",
+    "prettier": "prettier --write \"./source/**/*.{js,json,ts}\"",
+    "prettier:ci": "prettier --check \"./source/**/*.{js,json,ts}\"",
     "test": "yarn run lint && yarn run test:build && yarn run test:tslint",
     "test:build": "yarn run test:clean && tsc -p tsconfig.json",
     "test:clean": "rimraf build",

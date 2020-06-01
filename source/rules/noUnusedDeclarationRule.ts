@@ -15,9 +15,9 @@ export class Rule extends Lint.Rules.TypedRule {
       properties: {
         declarations: { type: "boolean" },
         ignored: { type: "object" },
-        imports: { type: "boolean" }
+        imports: { type: "boolean" },
       },
-      type: "object"
+      type: "object",
     },
     optionsDescription: Lint.Utils.dedent`
       An optional object with optional \`imports\`, \`declarations\` and \`ignored\` properties.
@@ -28,7 +28,7 @@ export class Rule extends Lint.Rules.TypedRule {
     requiresTypeInfo: true,
     ruleName: "no-unused-declaration",
     type: "functionality",
-    typescriptOnly: true
+    typescriptOnly: true,
   };
 
   public static FAILURE_STRING = "Unused declarations are forbidden";
@@ -53,7 +53,7 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
   private _usageByIdentifier = new Map<ts.Node, "declared" | "seen" | "used">();
   private _validate = {
     declarations: true,
-    imports: true
+    imports: true,
   };
 
   constructor(
@@ -137,7 +137,7 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
       if (symbol) {
         const declarations = symbol.getDeclarations();
         if (declarations) {
-          declarations.forEach(declaration => {
+          declarations.forEach((declaration) => {
             const identifier = getIdentifier(declaration);
             this.seen(identifier);
           });
@@ -186,7 +186,7 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
 
   protected visitNamedImports(node: ts.NamedImports): void {
     if (this._validate.imports) {
-      node.elements.forEach(element => {
+      node.elements.forEach((element) => {
         const { name, propertyName } = element;
         this.declared(node, name);
         if (propertyName) {
@@ -234,7 +234,7 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
   protected visitObjectLiteralExpression(
     node: ts.ObjectLiteralExpression
   ): void {
-    node.properties.forEach(property => {
+    node.properties.forEach((property) => {
       if (tsutils.isShorthandPropertyAssignment(property)) {
         const text = property.name.getText();
         const identifier = this.getScopedIdentifier(text);
@@ -263,7 +263,7 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
     if (this._validate.declarations) {
       if (!tsutils.hasModifier(node.modifiers, ts.SyntaxKind.ExportKeyword)) {
         const names: ts.Identifier[] = [];
-        tsutils.forEachDeclaredVariable(node.declarationList, declaration => {
+        tsutils.forEachDeclaredVariable(node.declarationList, (declaration) => {
           const { name } = declaration;
           if (
             tsutils.isBindingElement(declaration) &&
@@ -309,7 +309,7 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
       const { elements } = declaration;
       if (
         elements.every(
-          element => _usageByIdentifier.get(element.name) === "declared"
+          (element) => _usageByIdentifier.get(element.name) === "declared"
         )
       ) {
         const importClause = declaration.parent as ts.ImportClause;
@@ -331,7 +331,9 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
           importDeclaration.getFullStart() + importDeclaration.getFullWidth()
         );
       }
-      const index = elements.findIndex(element => element.name === identifier);
+      const index = elements.findIndex(
+        (element) => element.name === identifier
+      );
       const from =
         index === 0
           ? elements[index].getFullStart()
@@ -375,10 +377,10 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
     const {
       _declarationsByIdentifier,
       _usageByIdentifier,
-      _withoutDeclarations
+      _withoutDeclarations,
     } = this;
     _usageByIdentifier.forEach((usage, identifier) => {
-      if (this._ignored.some(regExp => regExp.test(identifier.getText()))) {
+      if (this._ignored.some((regExp) => regExp.test(identifier.getText()))) {
         return;
       }
       if (
@@ -400,7 +402,7 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
           _usageByIdentifier.set(key, value === "declared" ? "used" : "seen");
           const associatedNames = _associationsByIdentifier.get(key);
           if (associatedNames) {
-            associatedNames.forEach(associatedName =>
+            associatedNames.forEach((associatedName) =>
               this.seen(associatedName)
             );
           }
@@ -411,7 +413,7 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
       _usageByIdentifier.set(name, usage === "declared" ? "used" : "seen");
       const associatedNames = _associationsByIdentifier.get(name);
       if (associatedNames) {
-        associatedNames.forEach(associatedName => this.seen(associatedName));
+        associatedNames.forEach((associatedName) => this.seen(associatedName));
       }
     }
   }

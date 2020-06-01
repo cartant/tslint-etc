@@ -12,7 +12,7 @@ export class Rule extends Lint.Rules.AbstractRule {
   public static metadata: Lint.IRuleMetadata = {
     description: "Disallows the use of banned imports.",
     options: {
-      type: "object"
+      type: "object",
     },
     optionsDescription: Lint.Utils.dedent`
       An object containing keys that are regular expressions
@@ -20,7 +20,7 @@ export class Rule extends Lint.Rules.AbstractRule {
     requiresTypeInfo: false,
     ruleName: "ban-imports",
     type: "functionality",
-    typescriptOnly: false
+    typescriptOnly: false,
   };
 
   public static FAILURE_STRING = "Import is banned";
@@ -42,7 +42,7 @@ class Walker extends Lint.RuleWalker {
         if (value !== false) {
           this._bans.push({
             explanation: typeof value === "string" ? value : "",
-            regExp: new RegExp(key)
+            regExp: new RegExp(key),
           });
         }
       });

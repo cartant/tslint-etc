@@ -13,9 +13,9 @@ export class Rule extends Lint.Rules.AbstractRule {
     description: "Disallows the use of const enums.",
     options: {
       properties: {
-        allowLocal: { type: "boolean" }
+        allowLocal: { type: "boolean" },
       },
-      type: "object"
+      type: "object",
     },
     optionsDescription: Lint.Utils.dedent`
       An optional object with an optional \`allowLocal\` property - which defaults to \`false\`.
@@ -23,7 +23,7 @@ export class Rule extends Lint.Rules.AbstractRule {
     requiresTypeInfo: false,
     ruleName: "no-const-enum",
     type: "functionality",
-    typescriptOnly: true
+    typescriptOnly: true,
   };
 
   public static FAILURE_STRING = "const enum is forbidden";

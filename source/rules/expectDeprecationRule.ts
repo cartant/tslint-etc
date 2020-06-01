@@ -17,7 +17,7 @@ export class Rule extends Lint.Rules.TypedRule {
     requiresTypeInfo: true,
     ruleName: "expect-deprecation",
     type: "functionality",
-    typescriptOnly: true
+    typescriptOnly: true,
   };
 
   public applyWithProgram(
@@ -31,7 +31,7 @@ export class Rule extends Lint.Rules.TypedRule {
       sourceFile,
       `CallExpression[expression.text="it"] ExpressionStatement, CallExpression[expression.text="it"] VariableStatement`
     ) as (ts.ExpressionStatement | ts.VariableStatement)[];
-    statements.forEach(statement => {
+    statements.forEach((statement) => {
       const index = sourceFile.text.indexOf("\n", statement.end);
       if (index !== -1) {
         const trailing = sourceFile.text.substring(statement.end, index);
@@ -44,7 +44,8 @@ export class Rule extends Lint.Rules.TypedRule {
             "Identifier"
           ) as ts.Identifier[];
           const found = idendtifers.some(
-            idendtifer => getDeprecation(idendtifer, typeChecker) !== undefined
+            (idendtifer) =>
+              getDeprecation(idendtifer, typeChecker) !== undefined
           );
           const [, expectation] = match;
           const pos = statement.end + trailing.indexOf(expectation);

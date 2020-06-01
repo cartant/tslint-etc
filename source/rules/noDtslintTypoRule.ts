@@ -17,7 +17,7 @@ export class Rule extends Lint.Rules.AbstractRule {
     requiresTypeInfo: false,
     ruleName: "no-dtslint-typo",
     type: "functionality",
-    typescriptOnly: true
+    typescriptOnly: true,
   };
 
   public static FAILURE_STRING = "Typo in dtslint expectation";
@@ -29,7 +29,7 @@ export class Rule extends Lint.Rules.AbstractRule {
       sourceFile,
       `CallExpression[expression.text="it"] ExpressionStatement, CallExpression[expression.text="it"] VariableStatement`
     ) as (ts.ExpressionStatement | ts.VariableStatement)[];
-    statements.forEach(statement => {
+    statements.forEach((statement) => {
       const index = sourceFile.text.indexOf("\n", statement.end);
       if (index !== -1) {
         const trailing = sourceFile.text.substring(statement.end, index);
