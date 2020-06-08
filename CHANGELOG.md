@@ -1,3 +1,10 @@
+<a name="1.11.0"></a>
+## [1.11.0](https://github.com/cartant/tslint-etc/compare/v1.10.1...v1.11.0) (2020-06-08)
+
+### Features
+
+* Support `ImportEqualsDeclaration` nodes in the `no-unused-dependency` rule. ([db44d74](https://github.com/cartant/tslint-etc/commit/db44d74))
+
 <a name="1.10.1"></a>
 ## [1.10.1](https://github.com/cartant/tslint-etc/compare/v1.10.0...v1.10.1) (2020-02-29)
 
