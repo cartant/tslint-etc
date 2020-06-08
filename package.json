@@ -32,7 +32,9 @@
   ],
   "license": "MIT",
   "lint-staged": {
-    "*.{js,ts}": ["prettier --write"]
+    "*.{js,ts}": [
+      "prettier --write"
+    ]
   },
   "main": "./index.js",
   "name": "tslint-etc",
@@ -63,5 +65,5 @@
     "test:debug": "tslint --test fixtures/no-unused-declaration/unused-require-imports/tslint.json",
     "test:tslint": "tslint --test fixtures/**/tslint.json"
   },
-  "version": "1.10.1"
+  "version": "1.11.0"
 }
