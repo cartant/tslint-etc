@@ -1,0 +1,24 @@
+import { a } = require("./letters");
+         ~                              [no-unused-declaration]
+import { b } = require("./letters");
+import { c, d } = require("./letters");
+         ~                              [no-unused-declaration]
+            ~                           [no-unused-declaration]
+import { a as anise } = require("./letters");
+              ~~~~~                     [no-unused-declaration]
+import { b as basil } = require("./letters");
+import {
+    c as carrot,
+         ~~~~~~                         [no-unused-declaration]
+    d as dill
+         ~~~~                           [no-unused-declaration]
+} = require("./letters");
+import * as l = require("./letters");
+            ~                           [no-unused-declaration]
+import letters = require("./letters");
+       ~~~~~~~                          [no-unused-declaration]
+
+console.log(b, basil);
+console.log("the end");
+
+[no-unused-declaration]: Unused declarations are forbidden

@@ -1,0 +1,7 @@
+
+import { b } = require("./letters");
+import { b as basil } = require("./letters");
+
+console.log(b, basil);
+console.log("the end");
+

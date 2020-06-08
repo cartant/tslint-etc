@@ -163,6 +163,17 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
     super.visitImportDeclaration(node);
   }
 
+  protected visitImportEqualsDeclaration(
+    node: ts.ImportEqualsDeclaration
+  ): void {
+    const { name } = node;
+    if (this._validate.imports && name) {
+      this.declared(node, name);
+      this.setScopedIdentifier(name);
+    }
+    super.visitImportEqualsDeclaration(node);
+  }
+
   protected visitInterfaceDeclaration(node: ts.InterfaceDeclaration): void {
     if (this._validate.declarations) {
       const { name } = node;
@@ -298,7 +309,10 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
     declaration: ts.Node
   ): Lint.Fix | undefined {
     const { _deletes } = this;
-    if (tsutils.isImportDeclaration(declaration)) {
+    if (
+      tsutils.isImportDeclaration(declaration) ||
+      tsutils.isImportEqualsDeclaration(declaration)
+    ) {
       _deletes.add(declaration);
       return Lint.Replacement.deleteFromTo(
         getStart(declaration),
@@ -355,7 +369,9 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
     }
     return undefined;
 
-    function getStart(importDeclaration: ts.ImportDeclaration): number {
+    function getStart(
+      importDeclaration: ts.ImportDeclaration | ts.ImportEqualsDeclaration
+    ): number {
       // If the full-start position is zero, use the (non-full) start in case
       // as the first import might be preceeded by a copyright comment, etc.
       return importDeclaration.getFullStart() || importDeclaration.getStart();
