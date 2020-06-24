@@ -1,3 +1,10 @@
+<a name="1.11.1"></a>
+## [1.11.1](https://github.com/cartant/tslint-etc/compare/v1.11.0...v1.11.1) (2020-06-24)
+
+### Changes
+
+* Don't distribute the `yarn.lock` file.
+
 <a name="1.11.0"></a>
 ## [1.11.0](https://github.com/cartant/tslint-etc/compare/v1.10.1...v1.11.0) (2020-06-08)
 
