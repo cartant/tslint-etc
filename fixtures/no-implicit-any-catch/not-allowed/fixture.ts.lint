@@ -1,0 +1,58 @@
+Promise.reject("Kaboom!").catch(
+  (error: unknown) => console.error(error)
+);
+Promise.reject("Kaboom!").catch(
+  function (error: unknown) { console.error(error); }
+);
+
+Promise.reject("Kaboom!").then(
+  () => {},
+  (error: unknown) => console.error(error)
+);
+Promise.reject("Kaboom!").then(
+  function () {},
+  function (error: unknown) { console.error(error); }
+);
+
+Promise.reject("Kaboom!").catch(
+  (error) => console.error(error)
+   ~~~~~ [implicitAny]
+);
+Promise.reject("Kaboom!").catch(
+  function (error) { console.error(error); }
+            ~~~~~ [implicitAny]
+);
+
+Promise.reject("Kaboom!").catch(
+  (error: any) => console.error(error)
+   ~~~~~~~~~~ [explicitAny]
+);
+Promise.reject("Kaboom!").catch(
+  function (error: any) { console.error(error); }
+            ~~~~~~~~~~ [explicitAny]
+);
+
+Promise.reject("Kaboom!").then(
+  () => {},
+  (error) => console.error(error)
+   ~~~~~ [implicitAny]
+);
+Promise.reject("Kaboom!").then(
+  function () {},
+  function (error) { console.error(error); }
+            ~~~~~ [implicitAny]
+);
+
+Promise.reject("Kaboom!").then(
+  () => {},
+  (error: any) => console.error(error)
+   ~~~~~~~~~~ [explicitAny]
+);
+Promise.reject("Kaboom!").then(
+  function () {},
+  function (error: any) { console.error(error); }
+            ~~~~~~~~~~ [explicitAny]
+);
+
+[explicitAny]: Explicit any in promise rejection
+[implicitAny]: Implicit any in promise rejection

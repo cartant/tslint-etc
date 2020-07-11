@@ -1,0 +1,48 @@
+Promise.reject("Kaboom!").catch(
+  (error: unknown) => console.error(error)
+);
+Promise.reject("Kaboom!").catch(
+  function (error: unknown) { console.error(error); }
+);
+
+Promise.reject("Kaboom!").then(
+  () => {},
+  (error: unknown) => console.error(error)
+);
+Promise.reject("Kaboom!").then(
+  function () {},
+  function (error: unknown) { console.error(error); }
+);
+
+Promise.reject("Kaboom!").catch(
+  (error: unknown) => console.error(error)
+);
+Promise.reject("Kaboom!").catch(
+  function (error: unknown) { console.error(error); }
+);
+
+Promise.reject("Kaboom!").catch(
+  (error: unknown) => console.error(error)
+);
+Promise.reject("Kaboom!").catch(
+  function (error: unknown) { console.error(error); }
+);
+
+Promise.reject("Kaboom!").then(
+  () => {},
+  (error: unknown) => console.error(error)
+);
+Promise.reject("Kaboom!").then(
+  function () {},
+  function (error: unknown) { console.error(error); }
+);
+
+Promise.reject("Kaboom!").then(
+  () => {},
+  (error: unknown) => console.error(error)
+);
+Promise.reject("Kaboom!").then(
+  function () {},
+  function (error: unknown) { console.error(error); }
+);
+
