@@ -48,6 +48,7 @@ The package includes the following rules (none of which are enabled by default):
 | `no-const-enum` | Disallows the use of `const enum`. Constant enums are [not compatible with isolated modules](https://ncjamieson.com/dont-export-const-enums/). | No | [See below](#no-const-enum) |
 | `no-dtslint-typo` | Disallows [dtslint](https://github.com/Microsoft/dtslint)-like expectations that have typographical errors. | No | None |
 | `no-enum` | Disallows the use of `enum`. | No | None |
+| `no-implicit-any-catch` | Like the [`no-implicit-any-catch` rule](https://github.com/typescript-eslint/typescript-eslint/pull/2202) in `@typescript-eslint/eslint-plugin`, but for `Promise` rejections, too. | |
 | `no-t` | Disallows single-character type parameters. | No | None |
 | `no-unsafe-callback-scope` | Disallows the use of variables/properties from unsafe/outer scopes in callbacks. | No | [See below](#no-unsafe-callback-scope) |
 | `no-unused-declaration` | Disallows unused declarations. | Yes, but [see below](#no-unused-declaration) | [See below](#no-unused-declaration) |
