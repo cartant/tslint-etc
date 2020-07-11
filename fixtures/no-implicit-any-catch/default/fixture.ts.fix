@@ -1,3 +1,7 @@
+try {} catch (error: unknown) {}
+try {} catch (error: unknown) {}
+try {} catch (error: unknown) {}
+
 Promise.reject("Kaboom!").catch(
   (error: unknown) => console.error(error)
 );

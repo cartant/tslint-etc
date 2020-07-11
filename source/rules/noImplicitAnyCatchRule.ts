@@ -11,7 +11,7 @@ export class Rule extends Lint.Rules.TypedRule {
   public static metadata: Lint.IRuleMetadata = {
     deprecationMessage: undefined,
     description:
-      "Disallows implicit `any` error parameters in promise rejections.",
+      "Disallows implicit `any` errors in catch clauses and promise rejections.",
     options: {
       properties: {
         allowExplicitAny: { type: "boolean" },
@@ -26,8 +26,8 @@ export class Rule extends Lint.Rules.TypedRule {
     typescriptOnly: true,
   };
 
-  public static EXPLICIT_ANY = "Explicit any in promise rejection";
-  public static IMPLICIT_ANY = "Implicit any in promise rejection";
+  public static EXPLICIT_ANY = "Explicit any";
+  public static IMPLICIT_ANY = "Implicit any";
 
   public applyWithProgram(
     sourceFile: ts.SourceFile,
@@ -46,7 +46,6 @@ export class Rule extends Lint.Rules.TypedRule {
       sourceFile,
       `CallExpression[expression.name.text=/^(catch|then)$/]`
     ) as ts.CallExpression[];
-
     callExpressions.forEach((callExpression) => {
       const { expression } = callExpression;
       if (!ts.isPropertyAccessExpression(expression)) {
@@ -61,39 +60,66 @@ export class Rule extends Lint.Rules.TypedRule {
       }
       if (ts.isArrowFunction(arg) || ts.isFunctionExpression(arg)) {
         const [parameter] = arg.parameters;
-        if (parameter.type) {
-          if (
-            parameter.type.kind === ts.SyntaxKind.AnyKeyword &&
-            !allowExplicitAny
-          ) {
-            failures.push(
-              new Lint.RuleFailure(
-                sourceFile,
-                parameter.getStart(),
-                parameter.getStart() + parameter.getWidth(),
-                Rule.EXPLICIT_ANY,
-                this.ruleName,
-                Lint.Replacement.replaceNode(parameter.type, "unknown")
-              )
-            );
-          }
-        } else {
-          failures.push(
-            new Lint.RuleFailure(
-              sourceFile,
-              parameter.getStart(),
-              parameter.getStart() + parameter.getWidth(),
-              Rule.IMPLICIT_ANY,
-              this.ruleName,
-              Lint.Replacement.appendText(
-                parameter.getStart() + parameter.getWidth(),
-                ": unknown"
-              )
-            )
+        if (parameter) {
+          this.checkErrorNode(
+            sourceFile,
+            failures,
+            allowExplicitAny,
+            parameter
           );
         }
       }
     });
+
+    const catchClauses = tsquery(sourceFile, `CatchClause`) as ts.CatchClause[];
+    catchClauses.forEach((catchClause) => {
+      const { variableDeclaration } = catchClause;
+      if (variableDeclaration) {
+        this.checkErrorNode(
+          sourceFile,
+          failures,
+          allowExplicitAny,
+          variableDeclaration
+        );
+      }
+    });
+
     return failures;
+  }
+
+  private checkErrorNode(
+    sourceFile: ts.SourceFile,
+    failures: Lint.RuleFailure[],
+    allowExplicitAny: boolean,
+    node: ts.ParameterDeclaration | ts.VariableDeclaration
+  ): void {
+    if (node.type) {
+      if (node.type.kind === ts.SyntaxKind.AnyKeyword && !allowExplicitAny) {
+        failures.push(
+          new Lint.RuleFailure(
+            sourceFile,
+            node.getStart(),
+            node.getStart() + node.getWidth(),
+            Rule.EXPLICIT_ANY,
+            this.ruleName,
+            Lint.Replacement.replaceNode(node.type, "unknown")
+          )
+        );
+      }
+    } else {
+      failures.push(
+        new Lint.RuleFailure(
+          sourceFile,
+          node.getStart(),
+          node.getStart() + node.getWidth(),
+          Rule.IMPLICIT_ANY,
+          this.ruleName,
+          Lint.Replacement.appendText(
+            node.getStart() + node.getWidth(),
+            ": unknown"
+          )
+        )
+      );
+    }
   }
 }

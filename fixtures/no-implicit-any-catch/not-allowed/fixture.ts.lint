@@ -1,3 +1,9 @@
+try {} catch (error: unknown) {}
+try {} catch (error) {}
+              ~~~~~ [implicitAny]
+try {} catch (error: any) {}
+              ~~~~~~~~~~ [explicitAny]
+
 Promise.reject("Kaboom!").catch(
   (error: unknown) => console.error(error)
 );
@@ -54,5 +60,5 @@ Promise.reject("Kaboom!").then(
             ~~~~~~~~~~ [explicitAny]
 );
 
-[explicitAny]: Explicit any in promise rejection
-[implicitAny]: Implicit any in promise rejection
+[explicitAny]: Explicit any
+[implicitAny]: Implicit any
