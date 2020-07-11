@@ -6,6 +6,7 @@
 import { tsquery } from "@phenomnomnominal/tsquery";
 import * as Lint from "tslint";
 import * as ts from "typescript";
+import { couldBeType } from "../support";
 
 export class Rule extends Lint.Rules.TypedRule {
   public static metadata: Lint.IRuleMetadata = {
@@ -42,6 +43,7 @@ export class Rule extends Lint.Rules.TypedRule {
         ? options.allowExplicitAny
         : false;
     const failures: Lint.RuleFailure[] = [];
+    const typeChecker = program.getTypeChecker();
 
     const callExpressions = tsquery(
       sourceFile,
@@ -61,14 +63,14 @@ export class Rule extends Lint.Rules.TypedRule {
       }
       if (ts.isArrowFunction(arg) || ts.isFunctionExpression(arg)) {
         const [parameter] = arg.parameters;
-        if (parameter) {
-          this.checkErrorNode(
-            sourceFile,
-            failures,
-            allowExplicitAny,
-            parameter
-          );
+        if (!parameter) {
+          return;
         }
+        const object = expression.expression;
+        if (!couldBeType(typeChecker.getTypeAtLocation(object), "Promise")) {
+          return;
+        }
+        this.checkErrorNode(sourceFile, failures, allowExplicitAny, parameter);
       }
     });
 
