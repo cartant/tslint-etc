@@ -1,0 +1,21 @@
+Promise.reject("Kaboom!").catch(
+  (error: string) => console.error(error)
+   ~~~~~~~~~~~~~ [narrowed]
+);
+Promise.reject("Kaboom!").catch(
+  function (error: string) { console.error(error); }
+            ~~~~~~~~~~~~~ [narrowed]
+);
+
+Promise.reject("Kaboom!").then(
+  () => {},
+  (error: string) => console.error(error)
+   ~~~~~~~~~~~~~ [narrowed]
+);
+Promise.reject("Kaboom!").then(
+  function () {},
+  function (error: string) { console.error(error); }
+            ~~~~~~~~~~~~~ [narrowed]
+);
+
+[narrowed]: Error type must be unknown or any

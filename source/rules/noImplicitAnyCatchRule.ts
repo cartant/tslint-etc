@@ -28,6 +28,7 @@ export class Rule extends Lint.Rules.TypedRule {
 
   public static EXPLICIT_ANY = "Explicit any";
   public static IMPLICIT_ANY = "Implicit any";
+  public static NARROWED = "Error type must be unknown or any";
 
   public applyWithProgram(
     sourceFile: ts.SourceFile,
@@ -94,7 +95,10 @@ export class Rule extends Lint.Rules.TypedRule {
     node: ts.ParameterDeclaration | ts.VariableDeclaration
   ): void {
     if (node.type) {
-      if (node.type.kind === ts.SyntaxKind.AnyKeyword && !allowExplicitAny) {
+      if (node.type.kind === ts.SyntaxKind.AnyKeyword) {
+        if (allowExplicitAny) {
+          return;
+        }
         failures.push(
           new Lint.RuleFailure(
             sourceFile,
@@ -103,6 +107,16 @@ export class Rule extends Lint.Rules.TypedRule {
             Rule.EXPLICIT_ANY,
             this.ruleName,
             Lint.Replacement.replaceNode(node.type, "unknown")
+          )
+        );
+      } else if (node.type.kind !== ts.SyntaxKind.UnknownKeyword) {
+        failures.push(
+          new Lint.RuleFailure(
+            sourceFile,
+            node.getStart(),
+            node.getStart() + node.getWidth(),
+            Rule.NARROWED,
+            this.ruleName
           )
         );
       }
