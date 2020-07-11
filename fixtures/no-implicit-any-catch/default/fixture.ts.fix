@@ -3,6 +3,13 @@ try {} catch (error: unknown) {}
 try {} catch (error: unknown) {}
 
 Promise.reject("Kaboom!").catch(
+  () => console.error("Whoops!")
+);
+Promise.reject("Kaboom!").catch(
+  function () { console.error("Whoops!"); }
+);
+
+Promise.reject("Kaboom!").catch(
   (error: unknown) => console.error(error)
 );
 Promise.reject("Kaboom!").catch(
