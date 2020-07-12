@@ -1,3 +1,10 @@
+<a name="1.12.0"></a>
+## [1.12.0](https://github.com/cartant/tslint-etc/compare/v1.11.1...v1.12.0) (2020-07-12)
+
+### Features
+
+* Added the `no-implicit-any-catch` rule. ([b9aeb5a](https://github.com/cartant/tslint-etc/commit/b9aeb5a))
+
 <a name="1.11.1"></a>
 ## [1.11.1](https://github.com/cartant/tslint-etc/compare/v1.11.0...v1.11.1) (2020-06-24)
 
