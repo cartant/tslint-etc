@@ -65,5 +65,5 @@
     "test:debug": "tslint --test fixtures/no-implicit-any-catch/**/tslint.json",
     "test:tslint": "tslint --test fixtures/**/tslint.json"
   },
-  "version": "1.11.1"
+  "version": "1.12.0"
 }
