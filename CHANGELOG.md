@@ -1,3 +1,10 @@
+<a name="1.13.0"></a>
+## [1.13.0](https://github.com/cartant/tslint-etc/compare/v1.12.0...v1.13.0) (2020-07-18)
+
+### Features
+
+* Added the `no-array-foreach` rule. ([afea026](https://github.com/cartant/tslint-etc/commit/afea026))
+
 <a name="1.12.0"></a>
 ## [1.12.0](https://github.com/cartant/tslint-etc/compare/v1.11.1...v1.12.0) (2020-07-12)
 
