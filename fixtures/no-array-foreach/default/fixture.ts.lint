@@ -1,0 +1,23 @@
+import { of } from "rxjs";
+
+of(42).forEach(value => console.log(value));
+
+[42].forEach(value => console.log(value));
+     ~~~~~~~ [forbidden]
+
+const values = [42];
+values.forEach(value => console.log(value));
+       ~~~~~~~ [forbidden]
+
+function getValues() { return [42]; }
+getValues().forEach(value => console.log(value));
+            ~~~~~~~ [forbidden]
+
+const instance = { values: [42] };
+instance.values.forEach(value => console.log(value));
+                ~~~~~~~ [forbidden]
+
+Array.from([42]).forEach(value => console.log(value));
+                 ~~~~~~~ [forbidden]
+
+[forbidden]: Calling forEach on arrays is forbidden

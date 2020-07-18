@@ -1,0 +1,8 @@
+{
+  "defaultSeverity": "error",
+  "jsRules": {},
+  "rules": {
+    "no-array-foreach": { "severity": "error" }
+  },
+  "rulesDirectory": "../../../build/rules"
+}
