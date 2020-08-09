@@ -1,3 +1,10 @@
+<a name="1.13.1"></a>
+## [1.13.1](https://github.com/cartant/tslint-etc/compare/v1.13.0...v1.13.1) (2020-08-10)
+
+### Fixes
+
+* In the `no-assign-mutated-array` rule, treat `splice` as an array creator - it returns an array containing the deleted elements. ([2298a6f](https://github.com/cartant/tslint-etc/commit/2298a6f))
+
 <a name="1.13.0"></a>
 ## [1.13.0](https://github.com/cartant/tslint-etc/compare/v1.12.0...v1.13.0) (2020-07-18)
 
