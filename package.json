@@ -65,5 +65,5 @@
     "test:debug": "tslint --test fixtures/no-assign-mutated-array/**/tslint.json",
     "test:tslint": "tslint --test fixtures/**/tslint.json"
   },
-  "version": "1.13.0"
+  "version": "1.13.1"
 }
