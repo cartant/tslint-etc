@@ -9,8 +9,8 @@ import * as tsutils from "tsutils";
 import { tsquery } from "@phenomnomnominal/tsquery";
 import { couldBeType } from "../support";
 
-const mutatorRegExp = /^(fill|reverse|sort|splice)$/;
-const creatorRegExp = /^(concat|entries|filter|keys|map|slice|values)$/;
+const mutatorRegExp = /^(fill|reverse|sort)$/;
+const creatorRegExp = /^(concat|entries|filter|keys|map|slice|splice|values)$/;
 
 export class Rule extends Lint.Rules.TypedRule {
   public static metadata: Lint.IRuleMetadata = {
