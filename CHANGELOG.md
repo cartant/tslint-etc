@@ -1,3 +1,10 @@
+<a name="1.13.3"></a>
+## [1.13.3](https://github.com/cartant/tslint-etc/compare/v1.13.2...v1.13.3) (2020-08-23)
+
+### Fixes
+
+* In `expect-type`, ignore diagnostics that don't have lines. ([2fe12e3](https://github.com/cartant/tslint-etc/commit/2fe12e3))
+
 <a name="1.13.2"></a>
 ## [1.13.2](https://github.com/cartant/tslint-etc/compare/v1.13.1...v1.13.2) (2020-08-23)
 
