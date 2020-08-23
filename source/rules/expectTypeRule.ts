@@ -59,7 +59,7 @@ export class Rule extends Lint.Rules.TypedRule {
     expectedType: string,
     actualType: string
   ): string {
-    return `TypeScript@${expectedVersion} expected type to be:\n  ${expectedType}\ngot:\n  ${actualType}`;
+    return `TypeScript@${expectedVersion} expected type to be: ${expectedType}; got: ${actualType}`;
   }
 
   applyWithProgram(
