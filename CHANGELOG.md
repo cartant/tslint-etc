@@ -1,3 +1,10 @@
+<a name="1.13.2"></a>
+## [1.13.2](https://github.com/cartant/tslint-etc/compare/v1.13.1...v1.13.2) (2020-08-23)
+
+### Changes
+
+* Remove newlines from `expect-type` failure message. ([2391839](https://github.com/cartant/tslint-etc/commit/2391839))
+
 <a name="1.13.1"></a>
 ## [1.13.1](https://github.com/cartant/tslint-etc/compare/v1.13.0...v1.13.1) (2020-08-10)
 
