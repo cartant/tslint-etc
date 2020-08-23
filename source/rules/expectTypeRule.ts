@@ -59,7 +59,7 @@ export class Rule extends Lint.Rules.TypedRule {
     expectedType: string,
     actualType: string
   ): string {
-    return `TypeScript@${expectedVersion} expected type to be: ${expectedType}; got: ${actualType}`;
+    return `Expected type to be: ${expectedType}; got: ${actualType}`;
   }
 
   applyWithProgram(
@@ -226,7 +226,7 @@ function walk(
     if (sourceFile.text[end - 1] === "\r") {
       end--;
     }
-    ctx.addFailure(start, end, `TypeScript@${versionName}: ${failure}`);
+    ctx.addFailure(start, end, failure);
   }
 }
 

@@ -1,6 +1,6 @@
 const a = 42; // $ExpectType 42
 const b: boolean = 42; // $ExpectError
 const c = 42; // $ExpectType boolean
-~~~~~~~~~~~~~                             [TypeScript@3.9.7 expected type to be: boolean; got: 42]
+~~~~~~~~~~~~~                             [Expected type to be: boolean; got: 42]
 const d: boolean = true; // $ExpectError
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  [TypeScript@3.9.7: Expected an error on this line, but found none.]
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  [Expected an error on this line, but found none.]
