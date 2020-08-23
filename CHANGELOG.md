@@ -1,3 +1,10 @@
+<a name="1.13.4"></a>
+## [1.13.4](https://github.com/cartant/tslint-etc/compare/v1.13.3...v1.13.4) (2020-08-23)
+
+### Changes
+
+* Don't include the TypeScript version in `expect-type` failure messages. ([405c129](https://github.com/cartant/tslint-etc/commit/405c129))
+
 <a name="1.13.3"></a>
 ## [1.13.3](https://github.com/cartant/tslint-etc/compare/v1.13.2...v1.13.3) (2020-08-23)
 
