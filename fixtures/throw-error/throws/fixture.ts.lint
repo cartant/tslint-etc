@@ -1,7 +1,7 @@
 export const a = () => { throw "kaboom"; };
                          ~~~~~~~~~~~~~~~                [throw-error]
 export const b = () => { throw new Error("kaboom"); };
-export const c = () => { throw new DomException("kaboom"); };
+export const c = () => { throw new DOMException("kaboom"); };
 
 try {
     throw new Error("kaboom");
@@ -10,7 +10,7 @@ try {
 }
 
 try {
-    throw new DomException("kaboom");
+    throw new DOMException("kaboom");
 } catch (error: any) {
     throw error;
 }
