@@ -1,3 +1,10 @@
+<a name="1.13.6"></a>
+## [1.13.6](https://github.com/cartant/tslint-etc/compare/v1.13.5...v1.13.6) (2020-08-25)
+
+### Fixes
+
+* Use the correct `DOMException` capitalization. ([93fe131](https://github.com/cartant/tslint-etc/commit/93fe131))
+
 <a name="1.13.5"></a>
 ## [1.13.5](https://github.com/cartant/tslint-etc/compare/v1.13.4...v1.13.5) (2020-08-25)
 
