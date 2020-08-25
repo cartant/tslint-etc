@@ -132,7 +132,7 @@ export class Walker extends Lint.ProgramAwareRuleWalker {
     const typeChecker = this.getTypeChecker();
     const type = typeChecker.getTypeAtLocation(node.expression);
 
-    if (!isAny(type) && !couldBeType(type, "Error")) {
+    if (!isAny(type) && !couldBeType(type, /^(Error|DomException)$/)) {
       this.addFailureAtNode(node, Rule.FAILURE_STRING);
     }
 

@@ -12,4 +12,8 @@ const kaboom: any = new Error("kaboom");
 export const g = Promise.reject(kaboom);
 export const h = new Promise(function (resolve, reject) { reject(kaboom); });
 
+const boom: DomException = new DomException("boom");
+export const i = Promise.reject(boom);
+export const j = new Promise(function (resolve, reject) { reject(boom); });
+
 [throw-error]: Throwing non-Error values is forbidden

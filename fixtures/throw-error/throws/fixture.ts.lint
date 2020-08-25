@@ -1,9 +1,16 @@
 export const a = () => { throw "kaboom"; };
                          ~~~~~~~~~~~~~~~                [throw-error]
 export const b = () => { throw new Error("kaboom"); };
+export const c = () => { throw new DomException("kaboom"); };
 
 try {
     throw new Error("kaboom");
+} catch (error: any) {
+    throw error;
+}
+
+try {
+    throw new DomException("kaboom");
 } catch (error: any) {
     throw error;
 }
