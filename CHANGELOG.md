@@ -1,3 +1,10 @@
+<a name="1.13.5"></a>
+## [1.13.5](https://github.com/cartant/tslint-etc/compare/v1.13.4...v1.13.5) (2020-08-25)
+
+### Changes
+
+* Relax `throw-error` to allow throwing or rejecting a `DomException`. ([b57d3bb](https://github.com/cartant/tslint-etc/commit/b57d3bb))
+
 <a name="1.13.4"></a>
 ## [1.13.4](https://github.com/cartant/tslint-etc/compare/v1.13.3...v1.13.4) (2020-08-23)
 
