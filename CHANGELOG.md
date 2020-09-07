@@ -1,3 +1,10 @@
+<a name="1.13.7"></a>
+## [1.13.7](https://github.com/cartant/tslint-etc/compare/v1.13.6...v1.13.7) (2020-09-08)
+
+### Changes
+
+* Widen the TypeScript peer dependency range. ([417f224](https://github.com/cartant/tslint-etc/commit/417f224))
+
 <a name="1.13.6"></a>
 ## [1.13.6](https://github.com/cartant/tslint-etc/compare/v1.13.5...v1.13.6) (2020-08-25)
 
