@@ -41,7 +41,7 @@
   "optionalDependencies": {},
   "peerDependencies": {
     "tslint": "^5.0.0 || ^6.0.0",
-    "typescript": "^2.3.0 || ^3.0.0"
+    "typescript": "^2.3.0 || ^3.0.0 || ^4.0.0"
   },
   "private": false,
   "publishConfig": {
