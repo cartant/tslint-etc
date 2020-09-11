@@ -8,6 +8,8 @@
 [![devDependency Status](https://img.shields.io/david/dev/cartant/tslint-etc.svg)](https://david-dm.org/cartant/tslint-etc#info=devDependencies)
 [![peerDependency Status](https://img.shields.io/david/peer/cartant/tslint-etc.svg)](https://david-dm.org/cartant/tslint-etc#info=peerDependencies)
 
+TSLint [is deprecated](https://github.com/palantir/tslint#tslint). All of the rules in this package have equivalent ESLint rules in the [`eslint-plugin-rxjs`](https://github.com/cartant/eslint-plugin-etc) package.
+
 ### What is it?
 
 `tslint-etc` is set of TSLint rules to enforce policies that cannot be specified - or easily specified - with the built-in rules.
