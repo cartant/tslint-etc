@@ -51,7 +51,6 @@
     "no-arg": { "severity": "error" },
     "no-bitwise": { "severity": "error" },
     "no-conditional-assignment": { "severity": "error" },
-    "no-consecutive-blank-lines": { "severity": "error" },
     "no-console": {
       "options": [
         "error",
