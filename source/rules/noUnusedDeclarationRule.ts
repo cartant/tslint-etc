@@ -5,8 +5,8 @@
 /*tslint:disable:no-use-before-declare*/
 
 import * as Lint from "tslint";
-import * as ts from "typescript";
 import * as tsutils from "tsutils";
+import * as ts from "typescript";
 
 export class Rule extends Lint.Rules.TypedRule {
   public static metadata: Lint.IRuleMetadata = {

@@ -3,9 +3,9 @@
  * can be found in the LICENSE file at https://github.com/cartant/tslint-etc
  */
 
+import { tsquery } from "@phenomnomnominal/tsquery";
 import * as Lint from "tslint";
 import * as ts from "typescript";
-import { tsquery } from "@phenomnomnominal/tsquery";
 import { couldBeType } from "../support";
 
 const mutatorRegExp = /^(fill|reverse|sort|splice)$/;

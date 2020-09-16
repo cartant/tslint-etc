@@ -6,7 +6,6 @@
 
 import * as Lint from "tslint";
 import * as ts from "typescript";
-import * as tsutils from "tsutils";
 
 export class Rule extends Lint.Rules.AbstractRule {
   public static metadata: Lint.IRuleMetadata = {
