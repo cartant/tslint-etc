@@ -8,7 +8,9 @@
 [![devDependency Status](https://img.shields.io/david/dev/cartant/tslint-etc.svg)](https://david-dm.org/cartant/tslint-etc#info=devDependencies)
 [![peerDependency Status](https://img.shields.io/david/peer/cartant/tslint-etc.svg)](https://david-dm.org/cartant/tslint-etc#info=peerDependencies)
 
-TSLint [is deprecated](https://github.com/palantir/tslint#tslint). All of the rules in this package have equivalent ESLint rules in the [`eslint-plugin-rxjs`](https://github.com/cartant/eslint-plugin-etc) package.
+TSLint [is deprecated](https://github.com/palantir/tslint#tslint). All of the rules in this package have equivalent ESLint rules in the [`eslint-plugin-etc`](https://github.com/cartant/eslint-plugin-etc) package or have 'official' ESLint equivalents.
+
+And ESLint implementations this package's [`dtslint`](https://github.com/Microsoft/dtslint)-related rules can be found in the [`eslint-plugin-dtslint`](https://github.com/cartant/eslint-plugin-dtslint) package.
 
 ### What is it?
 
