@@ -1,3 +1,10 @@
+<a name="1.13.9"></a>
+## [1.13.9](https://github.com/cartant/tslint-etc/compare/v1.13.8...v1.13.9) (2020-11-28)
+
+### Fixes
+
+* Add `index.js` to `files` in `package.json`. ([836cf8f](https://github.com/cartant/tslint-etc/commit/836cf8f))
+
 <a name="1.13.8"></a>
 ## [1.13.8](https://github.com/cartant/tslint-etc/compare/v1.13.7...v1.13.8) (2020-11-28)
 
