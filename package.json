@@ -71,5 +71,5 @@
     "test:debug": "tslint --test fixtures/expect-type/**/tslint.json",
     "test:tslint": "tslint --test fixtures/**/tslint.json"
   },
-  "version": "1.13.8"
+  "version": "1.13.9"
 }
