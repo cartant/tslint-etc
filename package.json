@@ -22,6 +22,7 @@
   },
   "files": [
     "dist",
+    "index.js",
     "THIRD_PARTY_NOTICES"
   ],
   "homepage": "https://github.com/cartant/tslint-etc",
