@@ -1,3 +1,10 @@
+<a name="1.13.8"></a>
+## [1.13.8](https://github.com/cartant/tslint-etc/compare/v1.13.7...v1.13.8) (2020-11-28)
+
+### Changes
+
+* Use `files` in `package.json` instead of `.npmignore`. ([f5fdb0e](https://github.com/cartant/tslint-etc/commit/f5fdb0e))
+
 <a name="1.13.7"></a>
 ## [1.13.7](https://github.com/cartant/tslint-etc/compare/v1.13.6...v1.13.7) (2020-09-08)
 
