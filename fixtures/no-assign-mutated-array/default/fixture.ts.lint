@@ -106,6 +106,10 @@ t = new Thing(
     a.map(x => x).sort((x, y) => x - y)
 );
 
-let u = Array.from("abc").sort();
+// https://github.com/cartant/eslint-plugin-etc/issues/27
+let u = new Array(10).fill(0);
+u = Array(10).fill(0);
+u = Array.from([0, 1, 2]).reverse();
+u = Array.of(0, 1, 2).sort();
 
 [no-assign-mutated-array]: Assignment of mutated arrays is forbidden

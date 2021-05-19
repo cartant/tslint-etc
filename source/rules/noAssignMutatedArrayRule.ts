@@ -64,6 +64,29 @@ export class Rule extends Lint.Rules.TypedRule {
     return failures;
   }
 
+  private isNewArray(expression: ts.LeftHandSideExpression): boolean {
+    if (tsutils.isArrayLiteralExpression(expression)) {
+      return true;
+    }
+    if (tsutils.isNewExpression(expression)) {
+      return true;
+    }
+    if (tsutils.isCallExpression(expression)) {
+      const callee = expression.expression;
+      if (tsutils.isIdentifier(callee) && callee.text === "Array") {
+        return true;
+      }
+      if (
+        tsutils.isPropertyAccessExpression(callee) &&
+        tsutils.isIdentifier(callee.expression) &&
+        callee.expression.text === "Array"
+      ) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   private mutatesReferencedArray(callExpression: ts.CallExpression): boolean {
     if (tsutils.isPropertyAccessExpression(callExpression.expression)) {
       const propertyAccessExpression = callExpression.expression;
@@ -71,11 +94,11 @@ export class Rule extends Lint.Rules.TypedRule {
       if (creatorRegExp.test(name.getText())) {
         return false;
       }
+      if (this.isNewArray(expression)) {
+        return false;
+      }
       if (tsutils.isCallExpression(expression)) {
         return this.mutatesReferencedArray(expression);
-      }
-      if (tsutils.isArrayLiteralExpression(expression)) {
-        return false;
       }
     }
     return true;
