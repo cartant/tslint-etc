@@ -10,7 +10,7 @@ import * as ts from "typescript";
 import { couldBeType } from "../support";
 
 const mutatorRegExp = /^(fill|reverse|sort)$/;
-const creatorRegExp = /^(concat|entries|filter|keys|map|slice|splice|values)$/;
+const creatorRegExp = /^(concat|entries|filter|from|keys|map|slice|splice|values)$/;
 
 export class Rule extends Lint.Rules.TypedRule {
   public static metadata: Lint.IRuleMetadata = {
