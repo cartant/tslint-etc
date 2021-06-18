@@ -38,7 +38,8 @@ export class Rule extends Lint.Rules.TypedRule {
     );
     identifiers.forEach((node: unknown) => {
       const identifier = node as ts.Identifier;
-      const propertyAccessExpression = identifier.parent as ts.PropertyAccessExpression;
+      const propertyAccessExpression =
+        identifier.parent as ts.PropertyAccessExpression;
       const callExpression = identifier.parent.parent as ts.CallExpression;
       const parent = callExpression.parent;
       if (!tsutils.isExpressionStatement(parent)) {

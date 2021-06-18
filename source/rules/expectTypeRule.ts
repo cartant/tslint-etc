@@ -152,9 +152,8 @@ function walk(
     return;
   }
 
-  const { errorLines, typeAssertions, duplicates } = parseAssertions(
-    sourceFile
-  );
+  const { errorLines, typeAssertions, duplicates } =
+    parseAssertions(sourceFile);
 
   for (const line of duplicates) {
     addFailureAtLine(line, Rule.FAILURE_STRING_DUPLICATE_ASSERTION);
